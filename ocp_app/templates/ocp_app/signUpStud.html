@@ -19,6 +19,19 @@
          <p class="text-center">
             <img src="https://cdn.pixabay.com/photo/2015/10/30/10/40/key-1013662_960_720.jpg" height="210" width="240" />
          </p>
+         <div>
+            <input type="file" name="file-input" id="file-input">
+            <label for="file-input">
+               <div class="fake-btn-upload">
+                  <i class="fas fa-paperclip" aria-hidden="true"></i>
+                  <span class="text" id="imgtext">Upload Image</span>
+               </div>
+            </label>
+            <span>
+               <button onclick="cancel()" class='hideshow' id="cancel" style="display: none;color: red;float: left;background-color: transparent;border-color: transparent;padding: 0%;">Cancel?</button>
+               <h6 class='hideshow' style="display: none;color: green;float: right;padding-top: 5px;">Uploaded successfully</h6>
+            </span>
+         </div>
          <br>
          <div class="input-group-login sombreado-input">
             <div class="input-group-prepend-login">
