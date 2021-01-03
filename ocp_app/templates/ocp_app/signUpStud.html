@@ -9,6 +9,26 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script type="text/javascript">
+         $("document").ready(function() {
+             $('input[type=file]').on('change', function() {
+                 var fileName = $(this).val().replace("C:\\fakepath\\", '');
+                 if (fileName == '') {
+                     fileName = 'Upload Image'
+                 }
+                 var label = $(this).siblings("label");
+                 label.find('.text').html(fileName);
+                 if ($(".hideshow").is(":visible")) {
+                     $(".hideshow").css("display", "none")
+                 } else {
+                     $(".hideshow").css("display", "inline")
+                 }
+             });
+             function cancel() {
+                 document.getElementById("imgtext").value = null;
+             }
+         });
+      </script>
       {% load static %}
       <link rel="stylesheet" href="{% static 'css/signUp.css' %}" type="text/css">
       <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
