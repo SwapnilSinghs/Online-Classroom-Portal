@@ -5,11 +5,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import SignUpStud, Department
+from .models import Student, Department
 from django.conf import settings 
 from django.core.mail import send_mail 
 import random
 import math
+from django.core.files.storage import FileSystemStorage
+
 
 def user_login(request):
     context = {}
@@ -43,13 +45,15 @@ def verifyOTP(request):
     if request.method=="POST":
         enteredOTP = request.POST.get('enteredOTP', '')
         otp = request.POST.get('otp', '')
+        img = request.POST.get('img', '')
         username = request.POST.get('username', '')
         firstname = request.POST.get('firstname', '')
         lastname = request.POST.get('lastname', '')
+        dob = request.POST.get('dob', '')
+        dept = request.POST.get('dept', '')
         email = request.POST.get('email', '')
         phone = request.POST.get('phone', '')
         password = request.POST.get('password', '')
-        print(enteredOTP,otp,username)
         if int(enteredOTP) == int(otp):
             print('OTP verified')
             # Create user
@@ -60,16 +64,22 @@ def verifyOTP(request):
             return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
         else:
             print('Invalid OTP')
-            return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'username':username,'firstname':firstname,'lastname':lastname,'email':email,'phone':phone,'password':password})
+            return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'phone':phone,'password':password})
         return redirect('/signIn/')
     return render(request, 'ocp_app/verifyOTP.html')
 
 def signUpStud(request):
     departments = Department.objects.all()
-    if request.method=="POST":
+    if request.method=="POST" and request.FILES['file-input']:
+        imgfile = request.FILES['file-input']
+        fs = FileSystemStorage()
+        imgfilename = fs.save(imgfile.name,imgfile)
+        imgurl = fs.url(imgfilename)
         username = request.POST.get('username', '')
         firstname = request.POST.get('firstname', '')
         lastname = request.POST.get('lastname', '')
+        dob = request.POST.get('dob', '')
+        dept = request.POST.get('dept', '')
         email = request.POST.get('email', '')
         phone = request.POST.get('phone', '')
         password = request.POST.get('password', '')
@@ -101,7 +111,9 @@ def signUpStud(request):
             email_from = settings.EMAIL_HOST_USER 
             recipient_list = [email, ] 
             send_mail( subject, message, email_from, recipient_list ) 
-            params = {'username':username,'firstname':firstname,'lastname':lastname,'email':email,'phone':phone,'password':password,'OTP':OTP}
+            student = Student(img=imgurl,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,email=email,phone=phone,password=password)
+            student.save()
+            params = {'img':imgurl,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'phone':phone,'password':password,'OTP':OTP}
             print('Mail sent! check your inbox.')
             return render(request, "ocp_app/verifyOTP.html", params)
     return render(request, 'ocp_app/signUpStud.html', {'departments':departments})
