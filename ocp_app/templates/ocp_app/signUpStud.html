@@ -103,6 +103,31 @@
          <div class="input-group-login sombreado-input">
             <div class="input-group-prepend-login">
                <span class="input-group-text fondo-icon">
+               <i class="fas fa-calendar"></i>
+               </span>
+            </div>
+            <input type="text" name="dob" id="dob" class="border-0-login form-control-login input-border-none" placeholder="Date of Birth" onfocus="(this.type='date')"/>
+         </div>
+         <br>
+         <div>
+            <label>
+               <div class="fake-btn-upload">
+                  <i class="fas fa-building"></i>
+                  <select id="dept" name='dept' class="border-0-login form-control-login input-border-none" style="padding-left: 15px;width: 700px;">
+                     {% for i in departments %}
+                        <option style="display:none;" selected>Select Department</option>
+                        <option value="{{ i.dept_name }}">{{ i.dept_name }}</option>
+                     {% endfor %}
+                 </select>
+               </div>
+            </label>
+         </div>
+         <div>
+         </div>
+         <br>
+         <div class="input-group-login sombreado-input">
+            <div class="input-group-prepend-login">
+               <span class="input-group-text fondo-icon">
                <i class="fas fa-envelope"></i>
                </span>
             </div>

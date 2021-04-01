@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import SignUpStud
+from .models import SignUpStud, Department
 from django.conf import settings 
 from django.core.mail import send_mail 
 import random
@@ -65,6 +65,7 @@ def verifyOTP(request):
     return render(request, 'ocp_app/verifyOTP.html')
 
 def signUpStud(request):
+    departments = Department.objects.all()
     if request.method=="POST":
         username = request.POST.get('username', '')
         firstname = request.POST.get('firstname', '')
@@ -103,7 +104,7 @@ def signUpStud(request):
             params = {'username':username,'firstname':firstname,'lastname':lastname,'email':email,'phone':phone,'password':password,'OTP':OTP}
             print('Mail sent! check your inbox.')
             return render(request, "ocp_app/verifyOTP.html", params)
-    return render(request, 'ocp_app/signUpStud.html')
+    return render(request, 'ocp_app/signUpStud.html', {'departments':departments})
 
 def signUpTeach(request):
     if request.method=="POST":
