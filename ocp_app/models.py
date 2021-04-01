@@ -10,3 +10,8 @@ class SignUpStud(models.Model):
     email = models.CharField(max_length=100,default="")
     phone = models.CharField(max_length=10,validators=[MinLengthValidator(10)],default="",help_text = "Enter 10 digit phone number")
     password = models.CharField(max_length=20, default="")
+
+class Department(models.Model):
+    snum = models.AutoField(primary_key=True)
+    dept_id = models.CharField(max_length=3,default="")
+    dept_name = models.CharField(max_length=255,default="")
