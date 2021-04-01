@@ -85,7 +85,7 @@ DATABASES = {
 DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'git_OCP',
+        'NAME': 'ocp',
         'USER': 'root',
         'PASSWORD': "",
         'HOST': "",
@@ -142,3 +142,10 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "<ADMIN EMAIL ADDRESS>"
+EMAIL_HOST_PASSWORD = "<ADMIN EMAIL ADDRESS PASSWORD>"

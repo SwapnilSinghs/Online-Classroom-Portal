@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+   <head>
+      <title>OCP</title>
+      <meta charset = "UTF-8" />
+      <!--Bootsrap 4 CDN-->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+      <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'css/signUp.css' %}" type="text/css">
+      <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+   </head>
+   <body>
+      <form class="form-signin" action="/verifyOTP/" method="post">{% csrf_token %}
+         <p class="text-center">
+            <img src="https://cdn.pixabay.com/photo/2015/10/30/10/40/key-1013662_960_720.jpg" height="210" width="240" />
+         </p>
+         <p><h6>We have sent the OTP on your email id. Enter the 6 digit OTP below.</h6></p>
+         <div class="input-group-login sombreado-input">
+            <div class="input-group-prepend-login">
+               <span class="input-group-text fondo-icon">
+               <i class="fa fa-key"></i>
+               </span>
+            </div>
+            <input type="text" name="enteredOTP" id="enteredOTP" minlength="6" maxlength="6" class="border-0-login form-control-login input-border-none" placeholder="OTP" required/>
+         </div>
+         <div class="hidden" style="display: none;">
+            <input type="text" name="username" id="username" value="{{ username }}"/>
+            <input type="text" name="firstname" id="firstname" value="{{ firstname }}"/>
+            <input type="text" name="lastname" id="lastname" value="{{ lastname }}"/>
+            <input type="email" name="email" id="email" value="{{ email }}"/>
+            <input type="phone" name="phone" id="phone" value="{{ phone }}"/>
+            <input type="password" name="password" id="password" value="{{ password }}"/>
+            <input type="number" name="otp" id="otp" value="{{ OTP }}"/>
+        </div>
+        <br>
+         {% if Valid_OTP %}
+            <p class="text-center" style="color: green;font-weight: 500;"><i class="fa fa-check-circle" aria-hidden="true"></i> Thank you for registering in Online Classroom Portal.</p>
+            <script>
+               $('#enteredOTP').attr("disabled", true)
+            </script>
+            <p class="text-center" style="color: #A00836;font-weight: 500;">Redirecting....</p>
+            <script>
+                setTimeout(function(){window.location.href='/signIn/'},4000);
+            </script>
+         {% endif %}
+         {% if Invalid_OTP %}
+            <p class="text-center" style="color: red;font-weight: 500;"><i class="fa fa-times-circle-o" aria-hidden="true"></i> OTP entered is incorrect.</p>
+         {% endif %}
+        <br>
+         <p class="text-center">
+            <button class="button-signup fondo-color-signup">
+            <b>Verify OTP</b>
+            </button>
+         </p>
+      </form>
+   </body>
+</html>

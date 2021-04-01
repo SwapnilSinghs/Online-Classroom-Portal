@@ -1,8 +1,69 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.urls import reverse
 from .models import SignUpStud
+from django.conf import settings 
+from django.core.mail import send_mail 
+import random
+import math
 
-# Create your views here.
+def user_login(request):
+    context = {}
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return HttpResponseRedirect(reverse('user_success'))
+        else:
+            context["error"] = "Please enter valid username and password."
+            return render(request, "ocp_app/login.html", context)
+    else:
+        return render(request, "ocp_app/login.html", context)
+
+def success(request):
+    context = {}
+    context['user'] = request.user
+    return render(request, "ocp_app/success.html", context)
+
+def user_logout(request):
+    logout(request)
+    messages.success(request,"Successfully logged out.")
+    return HttpResponseRedirect(reverse('signIn'))
+
+def mainPage(request):
+    return render(request, 'ocp_app/mainPage.html')
+
+def verifyOTP(request):
+    if request.method=="POST":
+        enteredOTP = request.POST.get('enteredOTP', '')
+        otp = request.POST.get('otp', '')
+        username = request.POST.get('username', '')
+        firstname = request.POST.get('firstname', '')
+        lastname = request.POST.get('lastname', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        password = request.POST.get('password', '')
+        print(enteredOTP,otp,username)
+        if int(enteredOTP) == int(otp):
+            print('OTP verified')
+            # Create user
+            myuser = User.objects.create_user(username,email,password)
+            myuser.first_name = firstname
+            myuser.last_name = lastname
+            myuser.save()
+            return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
+        else:
+            print('Invalid OTP')
+            return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'username':username,'firstname':firstname,'lastname':lastname,'email':email,'phone':phone,'password':password})
+        return redirect('/signIn/')
+    return render(request, 'ocp_app/verifyOTP.html')
+
 def signUpStud(request):
     if request.method=="POST":
         username = request.POST.get('username', '')
@@ -12,6 +73,81 @@ def signUpStud(request):
         phone = request.POST.get('phone', '')
         password = request.POST.get('password', '')
         cnfpassword = request.POST.get('confpassword', '')
-        signUpStud = SignUpStud(username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,password=password)
-        signUpStud.save()
+
+        if not username.isalnum():
+            messages.error(request, "Username must contain only letters or numbers.")
+            return redirect('/signUpStud/')
+        if firstname.isalpha() == False | lastname.isalpha() == False:
+            messages.error(request, "Name must be alphabetical.")
+            return redirect('/signUpStud/')
+        if len(phone) != 10:
+            messages.error(request, "Phone Number must be 10 digits.")
+            return redirect('/signUpStud/')
+        if phone.isdigit() == False:
+            messages.error(request, "Phone Number must be numeric.")
+            return redirect('/signUpStud/')
+        if password!=cnfpassword:
+            messages.error(request, "Password does not match.")
+            return redirect('/signUpStud/')
+        else:
+            n1 = '\n'
+            digits = "0123456789"
+            OTP = "" 
+            for i in range(6) : 
+                OTP += digits[math.floor(random.random() * 10)]
+            subject = 'OTP Request'
+            message = f'Hi {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}Your OTP is {OTP}. Do not share it with anyone by any means. This is confidential and to be used by you only.{n1}{n1}Warm regards,{n1}Online Classroom Portal(OCP)'
+            email_from = settings.EMAIL_HOST_USER 
+            recipient_list = [email, ] 
+            send_mail( subject, message, email_from, recipient_list ) 
+            params = {'username':username,'firstname':firstname,'lastname':lastname,'email':email,'phone':phone,'password':password,'OTP':OTP}
+            print('Mail sent! check your inbox.')
+            return render(request, "ocp_app/verifyOTP.html", params)
     return render(request, 'ocp_app/signUpStud.html')
+
+def signUpTeach(request):
+    if request.method=="POST":
+        username = request.POST.get('username', '')
+        firstname = request.POST.get('firstname', '')
+        lastname = request.POST.get('lastname', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        password = request.POST.get('password', '')
+        cnfpassword = request.POST.get('confpassword', '')
+
+        if firstname.isalpha() == False | lastname.isalpha() == False:
+            messages.error(request, "Name must be alphabetical")
+            return redirect('/signUpTeach/')
+        if len(phone) != 10:
+            messages.error(request, "Phone Number must be 10 digits")
+            return redirect('/signUpTeach/')
+        if phone.isdigit() == False:
+            messages.error(request, "Phone Number must be numeric")
+            return redirect('/signUpTeach/')
+        if password!=cnfpassword:
+            messages.error(request, "password does not match")
+            return redirect('/signUpTeach/')
+        else:
+            signUpTeach = SignUpTeach(username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,password=password)
+            signUpTeach.save()
+        return redirect('/signIn/')
+    return render(request, 'ocp_app/signUpTeach.html')
+
+def signIn(request):
+    context = {}
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            context = {}
+            context["user"] = request.user
+            context["alert_flag"] = True
+            return render(request, 'ocp_app/signIn.html', context)
+        else:
+            context["error"] = "Please enter valid username and password."
+            context["alert_flag"] = False
+            return render(request, "ocp_app/signIn.html", context)
+    else:
+        return render(request, "ocp_app/signIn.html", context)
