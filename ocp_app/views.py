@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import Student, Department
+from .models import Student, Department, Teacher, Courses
 from django.conf import settings 
 from django.core.mail import send_mail 
 import random
@@ -119,14 +119,25 @@ def signUpStud(request):
     return render(request, 'ocp_app/signUpStud.html', {'departments':departments})
 
 def signUpTeach(request):
-    if request.method=="POST":
+    departments = Department.objects.all()
+    courses = Courses.objects.all()
+    if request.method=="POST" and request.FILES['file-input']:
+        imgfile = request.FILES['file-input']
+        fs = FileSystemStorage()
+        imgfilename = fs.save(imgfile.name,imgfile)
+        imgurl = fs.url(imgfilename)
         username = request.POST.get('username', '')
         firstname = request.POST.get('firstname', '')
         lastname = request.POST.get('lastname', '')
+        dob = request.POST.get('dob', '')
+        dept = request.POST.get('dept', '')
+        designation = request.POST.get('designation', '')
         email = request.POST.get('email', '')
         phone = request.POST.get('phone', '')
         password = request.POST.get('password', '')
         cnfpassword = request.POST.get('confpassword', '')
+        c_id = request.POST.get('courses','')
+
 
         if firstname.isalpha() == False | lastname.isalpha() == False:
             messages.error(request, "Name must be alphabetical")
@@ -141,10 +152,12 @@ def signUpTeach(request):
             messages.error(request, "password does not match")
             return redirect('/signUpTeach/')
         else:
-            signUpTeach = SignUpTeach(username=username,firstname=firstname,lastname=lastname,email=email,phone=phone,password=password)
-            signUpTeach.save()
+            teacher = Teacher(img=imgurl,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,designation=designation,courses=c_id,email=email,phone=phone,password=password)
+            teacher.save()
+            
         return redirect('/signIn/')
-    return render(request, 'ocp_app/signUpTeach.html')
+    return render(request, 'ocp_app/signUpTeach.html', {'departments':departments,'courses':courses})
+
 
 def signIn(request):
     context = {}
@@ -164,3 +177,6 @@ def signIn(request):
             return render(request, "ocp_app/signIn.html", context)
     else:
         return render(request, "ocp_app/signIn.html", context)
+
+
+
