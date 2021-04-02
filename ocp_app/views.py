@@ -43,28 +43,59 @@ def mainPage(request):
 
 def verifyOTP(request):
     if request.method=="POST":
-        enteredOTP = request.POST.get('enteredOTP', '')
-        otp = request.POST.get('otp', '')
-        img = request.POST.get('img', '')
-        username = request.POST.get('username', '')
-        firstname = request.POST.get('firstname', '')
-        lastname = request.POST.get('lastname', '')
-        dob = request.POST.get('dob', '')
-        dept = request.POST.get('dept', '')
-        email = request.POST.get('email', '')
-        phone = request.POST.get('phone', '')
-        password = request.POST.get('password', '')
-        if int(enteredOTP) == int(otp):
-            print('OTP verified')
-            # Create user
-            myuser = User.objects.create_user(username,email,password)
-            myuser.first_name = firstname
-            myuser.last_name = lastname
-            myuser.save()
-            return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
+        designation = request.POST.get('designation', '')
+        if designation == '':
+            enteredOTP = request.POST.get('enteredOTP', '')
+            otp = request.POST.get('otp', '')
+            img = request.POST.get('img', '')
+            username = request.POST.get('username', '')
+            firstname = request.POST.get('firstname', '')
+            lastname = request.POST.get('lastname', '')
+            dob = request.POST.get('dob', '')
+            dept = request.POST.get('dept', '')
+            email = request.POST.get('email', '')
+            phone = request.POST.get('phone', '')
+            password = request.POST.get('password', '')
+            if int(enteredOTP) == int(otp):
+                print('OTP verified')
+                student = Student(img=img,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,email=email,phone=phone,password=password)
+                student.save()
+                # Create user
+                myuser = User.objects.create_user(username,email,password)
+                myuser.first_name = firstname
+                myuser.last_name = lastname
+                myuser.save()
+                return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
+            else:
+                print('Invalid OTP')
+                return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'phone':phone,'password':password})
         else:
-            print('Invalid OTP')
-            return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'phone':phone,'password':password})
+            enteredOTP = request.POST.get('enteredOTP', '')
+            otp = request.POST.get('otp', '')
+            img = request.POST.get('img', '')
+            username = request.POST.get('username', '')
+            firstname = request.POST.get('firstname', '')
+            lastname = request.POST.get('lastname', '')
+            dob = request.POST.get('dob', '')
+            dept = request.POST.get('dept', '')
+            c_id = request.POST.get('course_id', '')
+            designation = request.POST.get('designation', '')
+            email = request.POST.get('email', '')
+            phone = request.POST.get('phone', '')
+            password = request.POST.get('password', '')
+            if int(enteredOTP) == int(otp):
+                print('OTP verified')
+                teacher = Teacher(img=img,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,designation=designation,course_id=c_id,email=email,phone=phone,password=password)
+                teacher.save()
+                # Create user
+                myuser = User.objects.create_user(username,email,password)
+                myuser.first_name = firstname
+                myuser.last_name = lastname
+                myuser.save()
+                return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
+            else:
+                print('Invalid OTP')
+                return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'course_id':course_id,'designation':designation,'email':email,'phone':phone,'password':password})
         return redirect('/signIn/')
     return render(request, 'ocp_app/verifyOTP.html')
 
@@ -111,8 +142,6 @@ def signUpStud(request):
             email_from = settings.EMAIL_HOST_USER 
             recipient_list = [email, ] 
             send_mail( subject, message, email_from, recipient_list ) 
-            student = Student(img=imgurl,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,email=email,phone=phone,password=password)
-            student.save()
             params = {'img':imgurl,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'phone':phone,'password':password,'OTP':OTP}
             print('Mail sent! check your inbox.')
             return render(request, "ocp_app/verifyOTP.html", params)
@@ -151,9 +180,19 @@ def signUpTeach(request):
             messages.error(request, "password does not match")
             return redirect('/signUpTeach/')
         else:
-            teacher = Teacher(img=imgurl,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,designation=designation,course_id=c_id,email=email,phone=phone,password=password)
-            teacher.save()
-        return redirect('/signIn/')
+            n1 = '\n'
+            digits = "0123456789"
+            OTP = "" 
+            for i in range(6) : 
+                OTP += digits[math.floor(random.random() * 10)]
+            subject = 'OTP Request'
+            message = f'Hi {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}Your OTP is {OTP}. Do not share it with anyone by any means. This is confidential and to be used by you only.{n1}{n1}Warm regards,{n1}Online Classroom Portal(OCP)'
+            email_from = settings.EMAIL_HOST_USER 
+            recipient_list = [email, ] 
+            send_mail( subject, message, email_from, recipient_list )
+            params = {'img':imgurl,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'designation':designation,'course_id':c_id,'email':email,'phone':phone,'password':password,'OTP':OTP}
+            print('Mail sent! check your inbox.')
+            return render(request, "ocp_app/verifyOTP.html", params)
     return render(request, 'ocp_app/signUpTeach.html', {'departments':departments,'courses':courses})
 
 
