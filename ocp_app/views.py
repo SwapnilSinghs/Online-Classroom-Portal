@@ -138,7 +138,6 @@ def signUpTeach(request):
         cnfpassword = request.POST.get('confpassword', '')
         c_id = request.POST.get('courses','')
 
-
         if firstname.isalpha() == False | lastname.isalpha() == False:
             messages.error(request, "Name must be alphabetical")
             return redirect('/signUpTeach/')
@@ -152,9 +151,8 @@ def signUpTeach(request):
             messages.error(request, "password does not match")
             return redirect('/signUpTeach/')
         else:
-            teacher = Teacher(img=imgurl,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,designation=designation,courses=c_id,email=email,phone=phone,password=password)
+            teacher = Teacher(img=imgurl,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,designation=designation,course_id=c_id,email=email,phone=phone,password=password)
             teacher.save()
-            
         return redirect('/signIn/')
     return render(request, 'ocp_app/signUpTeach.html', {'departments':departments,'courses':courses})
 

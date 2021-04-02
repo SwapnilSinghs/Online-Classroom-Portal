@@ -132,34 +132,38 @@
         </div>
       </label>
     </div>
-    <div>
-    </div>
     <br>
     <div>
       <label>
         <div class="fake-btn-upload">
-          <i class="fas fa-building"></i>
+          <i class="fas fa-book-open"></i>
           <select id="courses" name='courses' class="border-0-login form-control-login input-border-none"
             style="padding-left: 15px;width: 700px;">
             {% for i in courses %}
             <option style="display:none;" selected>Select Course</option>
-            <option value="{{ i.course_id}}">{{ i.course_id }}</option>
+            <option value="{{ i.course_id}}">{{ i.course_name }} ({{ i.course_id }})</option>
             {% endfor %}
           </select>
         </div>
       </label>
     </div>
-    <div>
-    </div>
     <br>
-    <div class="input-group-login sombreado-input">
-      <div class="input-group-prepend-login">
-        <span class="input-group-text fondo-icon">
+    <div>
+      <label>
+        <div class="fake-btn-upload">
           <i class="fas fa-user"></i>
-        </span>
-      </div>
-      <input type="text" name="designation" id="designation" class="border-0-login form-control-login input-border-none"
-        placeholder="Designation" autocomplete="false" />
+          <select id="designation" name='designation' class="border-0-login form-control-login input-border-none"
+            style="padding-left: 15px;width: 700px;">
+            <option style="display:none;" selected>Select Designation</option>
+            <option>Professor & HoD</option>
+            <option>HOD</option>
+            <option>Professor</option>
+            <option>Emirate Professor</option>
+            <option>Associate Professor</option>
+            <option>Assistant Professor</option>
+          </select>
+        </div>
+      </label>
     </div>
     <br>
     <div class="input-group-login sombreado-input">
