@@ -13,11 +13,14 @@
       <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
    </head>
    <body>
-      <form class="form-signin" action="/verifyOTP/" method="post">{% csrf_token %}
+      <form class="form-signin" action="/verifyOTP/" method="post">
+         {% csrf_token %}
          <p class="text-center">
             <img src="https://cdn.pixabay.com/photo/2015/10/30/10/40/key-1013662_960_720.jpg" height="210" width="240" />
          </p>
-         <p><h6>We have sent the OTP on your email id. Enter the 6 digit OTP below.</h6></p>
+         <p>
+         <h6>We have sent the OTP on your email id. Enter the 6 digit OTP below.</h6>
+         </p>
          <div class="input-group-login sombreado-input">
             <div class="input-group-prepend-login">
                <span class="input-group-text fondo-icon">
@@ -39,22 +42,22 @@
             <input type="phone" name="phone" id="phone" value="{{ phone }}"/>
             <input type="password" name="password" id="password" value="{{ password }}"/>
             <input type="number" name="otp" id="otp" value="{{ OTP }}"/>
-        </div>
-        <br>
+         </div>
+         <br>
          {% if Valid_OTP %}
-            <p class="text-center" style="color: green;font-weight: 500;"><i class="fa fa-check-circle" aria-hidden="true"></i> Thank you for registering in Online Classroom Portal.</p>
-            <script>
-               $('#enteredOTP').attr("disabled", true)
-            </script>
-            <p class="text-center" style="color: #A00836;font-weight: 500;">Redirecting....</p>
-            <script>
-                setTimeout(function(){window.location.href='/signIn/'},4000);
-            </script>
+         <p class="text-center" style="color: green;font-weight: 500;"><i class="fa fa-check-circle" aria-hidden="true"></i> Thank you for registering in Online Classroom Portal.</p>
+         <script>
+            $('#enteredOTP').attr("disabled", true)
+         </script>
+         <p class="text-center" style="color: #A00836;font-weight: 500;">Redirecting....</p>
+         <script>
+            setTimeout(function(){window.location.href='/signIn/'},4000);
+         </script>
          {% endif %}
          {% if Invalid_OTP %}
-            <p class="text-center" style="color: red;font-weight: 500;"><i class="fa fa-times-circle-o" aria-hidden="true"></i> OTP entered is incorrect.</p>
+         <p class="text-center" style="color: red;font-weight: 500;"><i class="fa fa-times-circle-o" aria-hidden="true"></i> OTP entered is incorrect.</p>
          {% endif %}
-        <br>
+         <br>
          <p class="text-center">
             <button class="button-signup fondo-color-signup">
             <b>Verify OTP</b>
