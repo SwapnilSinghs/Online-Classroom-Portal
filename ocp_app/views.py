@@ -41,6 +41,9 @@ def user_logout(request):
 def mainPage(request):
     return render(request, 'ocp_app/mainPage.html')
 
+def dashboard(request):
+    return render(request, 'ocp_app/dashboard.html')
+
 def verifyOTP(request):
     if request.method=="POST":
         designation = request.POST.get('designation', '')
