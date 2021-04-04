@@ -80,15 +80,16 @@ def verifyOTP(request):
             firstname = request.POST.get('firstname', '')
             lastname = request.POST.get('lastname', '')
             dob = request.POST.get('dob', '')
-            dept = request.POST.get('dept', '')
-            c_id = request.POST.get('course_id', '')
+            dept1 = request.POST.getlist('dept', '')
+            dept=', '.join(dept1)
+            #c_id = request.POST.get('course_id', '')
             designation = request.POST.get('designation', '')
             email = request.POST.get('email', '')
             phone = request.POST.get('phone', '')
             password = request.POST.get('password', '')
             if int(enteredOTP) == int(otp):
                 print('OTP verified')
-                teacher = Teacher(img=img,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,designation=designation,course_id=c_id,email=email,phone=phone,password=password)
+                teacher = Teacher(img=img,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,designation=designation,email=email,phone=phone,password=password)
                 teacher.save()
                 # Create user
                 myuser = User.objects.create_user(username,email,password)
@@ -98,7 +99,7 @@ def verifyOTP(request):
                 return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
             else:
                 print('Invalid OTP')
-                return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'course_id':course_id,'designation':designation,'email':email,'phone':phone,'password':password})
+                return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'designation':designation,'email':email,'phone':phone,'password':password})
         return redirect('/signIn/')
     return render(request, 'ocp_app/verifyOTP.html')
 
@@ -152,7 +153,7 @@ def signUpStud(request):
 
 def signUpTeach(request):
     departments = Department.objects.all()
-    courses = Courses.objects.all()
+    #courses = Courses.objects.all()
     if request.method=="POST" and request.FILES['file-input']:
         imgfile = request.FILES['file-input']
         fs = FileSystemStorage()
@@ -162,13 +163,14 @@ def signUpTeach(request):
         firstname = request.POST.get('firstname', '')
         lastname = request.POST.get('lastname', '')
         dob = request.POST.get('dob', '')
-        dept = request.POST.get('dept', '')
+        dept1 = request.POST.getlist('dept', '')
+        dept=', '.join(dept1)
         designation = request.POST.get('designation', '')
         email = request.POST.get('email', '')
         phone = request.POST.get('phone', '')
         password = request.POST.get('password', '')
         cnfpassword = request.POST.get('confpassword', '')
-        c_id = request.POST.get('courses','')
+        #c_id = request.POST.get('courses','')
 
         if firstname.isalpha() == False | lastname.isalpha() == False:
             messages.error(request, "Name must be alphabetical")
@@ -193,10 +195,10 @@ def signUpTeach(request):
             email_from = settings.EMAIL_HOST_USER 
             recipient_list = [email, ] 
             send_mail( subject, message, email_from, recipient_list )
-            params = {'img':imgurl,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'designation':designation,'course_id':c_id,'email':email,'phone':phone,'password':password,'OTP':OTP}
+            params = {'img':imgurl,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'designation':designation,'email':email,'phone':phone,'password':password,'OTP':OTP}
             print('Mail sent! check your inbox.')
             return render(request, "ocp_app/verifyOTP.html", params)
-    return render(request, 'ocp_app/signUpTeach.html', {'departments':departments,'courses':courses})
+    return render(request, 'ocp_app/signUpTeach.html', {'departments':departments})
 
 
 def signIn(request):

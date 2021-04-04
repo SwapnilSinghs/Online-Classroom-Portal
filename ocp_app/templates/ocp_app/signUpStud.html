@@ -120,13 +120,18 @@
                placeholder="Date of Birth" onfocus="(this.type='date')" />
          </div>
          <br>
-         <div class="fake-btn-upload">
-            <select multiple="multiple" id="dept" name='dept'
-               >
-               {% for i in departments %}
-               <option value="{{ i.dept_name }}">{{ i.dept_name }}</option>
-               {% endfor %}
-            </select>
+         <div>
+            <label>
+               <div class="fake-btn-upload">
+                  <i class="fas fa-building"></i>
+                  <select id="dept" name='dept' class="border-0-login form-control-login input-border-none" style="padding-left: 15px;width: 700px;">
+                     {% for i in departments %}
+                        <option style="display:none;" selected>Select Department</option>
+                        <option value="{{ i.dept_name }}">{{ i.dept_name }}</option>
+                     {% endfor %}
+                 </select>
+               </div>
+            </label>
          </div>
          <br>
          <div class="input-group-login sombreado-input">
