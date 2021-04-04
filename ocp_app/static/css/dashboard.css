@@ -36,8 +36,8 @@
     float: left;
     height: 100%;
     width: 290px;
-    background-color: #a00836;
-    color: #CCC;
+    background-color: #008080;
+    color: #98fdf6;
     -webkit-transform: translateX(0);
     -moz-transform: translateX(0);
     transform: translateX(0);
@@ -58,10 +58,10 @@
     color: #EEE;
   }
   .side-nav .heading {
-    background-color: #a00836;
+    background-color: #008080;
     padding: 15px 15px 15px 30px;
     overflow: hidden;
-    border-bottom: 1px solid #b31947
+    border-bottom: 1px solid#029696
   }
   .side-nav .heading > img {
     border-radius: 50%;
@@ -101,10 +101,16 @@
     width: 100%;
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid #b31947;
+    border-bottom: 1px solid #029696;
     padding: 7px 0 7px;
-    color: #DDD
+    color: white;
   }
+
+  ::placeholder {
+    color: #98fdf6;
+    opacity: 0.5;
+  }
+
   .side-nav .search > input ~ i {
     position: absolute;
     top: 22px;
@@ -122,7 +128,7 @@
     cursor: pointer;
   }
   .side-nav .categories > li > a {
-    color: #AAA;
+    color: #98fdf6;
     text-decoration: none;
   }
   /* Start num: there are three options primary, danger and success like Bootstrap */
@@ -222,7 +228,7 @@
   
   
   .main-color {
-    color: #ffc107
+    color:#fca936
   }
   .warning {background-color: #f0ad4e}
   .danger {background-color: #d9534f}
@@ -236,19 +242,19 @@
     left: 0 !important;
   }
   .navbar-default {
-    background-color: #b31947 !important;
+    background-color:#029696 !important;
     border: none !important;
     border-radius: 0 !important;
     margin: 0 !important
   }
   .navbar-default .navbar-nav>li>a {
-    color: #EEE !important;
+    color: #98fdf6 !important;
     line-height: 55px !important;
     padding: 0 10px !important;
   }
   .navbar-default .navbar-brand {color:#FFF !important}
   .navbar-default .navbar-nav>li>a:focus,
-  .navbar-default .navbar-nav>li>a:hover {color: #EEE !important}
+  .navbar-default .navbar-nav>li>a:hover {color: white !important}
   
   .navbar-default .navbar-nav>.open>a,
   .navbar-default .navbar-nav>.open>a:focus,
