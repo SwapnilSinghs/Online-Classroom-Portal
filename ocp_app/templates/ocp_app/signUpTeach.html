@@ -124,7 +124,7 @@
             <select multiple="multiple" id="dept" name='dept'
                >
                {% for i in departments %}
-               <option value="{{ i.dept_name }}">{{ i.dept_name }}</option>
+               <option value="{{ i.dept_id }}">{{ i.dept_name }}</option>
                {% endfor %}
             </select>
          </div>
@@ -203,13 +203,6 @@
             buttonWidth: '395px',
             nonSelectedText: 'Select Department',
             nSelectedText: 'Departments Selected',
-           });
-         });
-         $(document).ready(function() {
-           $('#courses').multiselect({
-            buttonWidth: '395px',
-            nonSelectedText: 'Select Courses',
-            nSelectedText: 'Courses Selected',
            });
          });
       </script>

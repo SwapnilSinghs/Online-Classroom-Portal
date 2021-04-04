@@ -37,7 +37,7 @@ class Teacher(models.Model):
     phone = models.CharField(max_length=10,validators=[MinLengthValidator(10)],default="",help_text = "Enter 10 digit phone number")
     designation = models.CharField(max_length = 15,default=" ")
     password = models.CharField(max_length=20, default="")
-    #course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
+    course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
 
 class studyMaterial(models.Model):
     material_id=models.IntegerField()

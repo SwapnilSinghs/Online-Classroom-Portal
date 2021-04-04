@@ -82,7 +82,6 @@ def verifyOTP(request):
             dob = request.POST.get('dob', '')
             dept1 = request.POST.getlist('dept', '')
             dept=', '.join(dept1)
-            #c_id = request.POST.get('course_id', '')
             designation = request.POST.get('designation', '')
             email = request.POST.get('email', '')
             phone = request.POST.get('phone', '')
@@ -153,7 +152,6 @@ def signUpStud(request):
 
 def signUpTeach(request):
     departments = Department.objects.all()
-    #courses = Courses.objects.all()
     if request.method=="POST" and request.FILES['file-input']:
         imgfile = request.FILES['file-input']
         fs = FileSystemStorage()
@@ -170,7 +168,6 @@ def signUpTeach(request):
         phone = request.POST.get('phone', '')
         password = request.POST.get('password', '')
         cnfpassword = request.POST.get('confpassword', '')
-        #c_id = request.POST.get('courses','')
 
         if firstname.isalpha() == False | lastname.isalpha() == False:
             messages.error(request, "Name must be alphabetical")
