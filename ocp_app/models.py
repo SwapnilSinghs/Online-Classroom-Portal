@@ -11,6 +11,7 @@ class Courses(models.Model):
     course_id = models.CharField(max_length = 150,primary_key=True,default=' ')
     course_name = models.CharField(max_length = 255,default=" ")
     dept = models.ForeignKey(Department,to_field='dept_id', on_delete=models.CASCADE) 
+    year = models.CharField(max_length = 1,default="0")
 
 class Student(models.Model):
     snum = models.AutoField(primary_key=True)
@@ -23,6 +24,7 @@ class Student(models.Model):
     email = models.CharField(max_length=100,default="")
     phone = models.CharField(max_length=10,validators=[MinLengthValidator(10)],default="",help_text = "Enter 10 digit phone number")
     password = models.CharField(max_length=20, default="")
+    year = models.CharField(max_length = 1,default="0")    
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
 
 class Teacher(models.Model):

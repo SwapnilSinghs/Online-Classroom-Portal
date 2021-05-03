@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.urls import reverse
 from .models import Student, Department, Teacher, Courses
+from django.contrib.auth.decorators import login_required
 from django.conf import settings 
 from django.core.mail import send_mail 
 import random
@@ -41,6 +42,7 @@ def user_logout(request):
 def mainPage(request):
     return render(request, 'ocp_app/mainPage.html')
 
+@login_required
 def dashboard(request):
     return render(request, 'ocp_app/dashboard.html')
 
@@ -56,14 +58,14 @@ def verifyOTP(request):
             lastname = request.POST.get('lastname', '')
             dob = request.POST.get('dob', '')
             dept = request.POST.get('dept', '')
+            year = request.POST.get('year','')
             email = request.POST.get('email', '')
             phone = request.POST.get('phone', '')
             password = request.POST.get('password', '')
             if int(enteredOTP) == int(otp):
                 print('OTP verified')
-                student = Student(img=img,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,email=email,phone=phone,password=password)
+                student = Student(img=img,username=username,firstname=firstname,lastname=lastname,dob=dob,dept=dept,email=email,phone=phone,password=password,year=year)
                 student.save()
-                # Create user
                 myuser = User.objects.create_user(username,email,password)
                 myuser.first_name = firstname
                 myuser.last_name = lastname
