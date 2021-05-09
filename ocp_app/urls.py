@@ -15,4 +15,5 @@ urlpatterns = [
     path('announcements/',views.announcements,name='announcements'),
     path('new_announcements/',views.newannouncements,name='new_announcements'),
     path('addAnnouncements/',views.addAnnouncements,name='addAnnouncements'),
+    path('updateProfile/', views.updateProfile, name='updateProfile'),
 ]

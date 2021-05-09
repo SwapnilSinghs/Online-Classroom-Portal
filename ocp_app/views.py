@@ -22,7 +22,7 @@ def fun(request):
     g=request.user.groups.all()
     g_id=Group.objects.get(name=g[0]).id
     id=request.user.username
-    if g_id==3:
+    if g_id==1:
             student=Student.objects.filter(username=id)    
             img=student[0].img
 
@@ -261,7 +261,7 @@ def courseStud(request):
     g=request.user.groups.all()
     g_id=Group.objects.get(name=g[0]).id
     id=request.user.username
-    if g_id==3:
+    if g_id==1:
         student=Student.objects.filter(username=id)
         course=[]
         dept=""
@@ -284,7 +284,7 @@ def addCourse(request):
     g=request.user.groups.all()
     g_id=Group.objects.get(name=g[0]).id
     id=request.user.username
-    if g_id==3:
+    if g_id==1:
         student=Student.objects.filter(username=id)    
         dept=""
         img=student[0].img
@@ -298,6 +298,7 @@ def addCourse(request):
         dept_name=student[0].dept
 
     dept=Department.objects.filter(dept_name=dept_name).first()
+    print(dept.dept_id)
     new_course=Courses.objects.filter(year=year,dept=dept)
     print(new_course)
 
@@ -339,5 +340,7 @@ def addAnnouncements(request):
         announce.save()
         return redirect(newannouncements)
     
-
-
+def updateProfile(request):
+    img,id=fun(request)    
+    params={'img':img,'user':id}    
+    return render(request, 'ocp_app/updateProfile.html',params)
