@@ -1,0 +1,26 @@
+{% extends '../ocp_app/dashboard.html' %}
+
+{% block body %}
+
+
+
+<div style="display: inline-flex;
+align-content: space-between;
+justify-content: space-evenly;
+align-items: flex-end;">
+
+{% for i in new_course %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h3 class="card-title">{{i.course_name}}</h3>
+      <h6 class="card-subtitle mb-2 text-muted">{{i.course_id}}</h6>
+      <p class="card-text">Good Luck</p>
+      <a href="#" class="card-link">Add course</a>
+      <a href="#" class="card-link">Remove Course</a>
+    </div>
+  </div>
+
+{% endfor %}
+</div>
+
+{% endblock %}

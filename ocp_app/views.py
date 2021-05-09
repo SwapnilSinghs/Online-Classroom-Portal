@@ -1,18 +1,35 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.urls import reverse
-from .models import Student, Department, Teacher, Courses
+from .models import Student, Department, Teacher, Courses,Announcement
 from django.contrib.auth.decorators import login_required
 from django.conf import settings 
 from django.core.mail import send_mail 
 import random
 import math
+import datetime
 from django.core.files.storage import FileSystemStorage
 
+
+my_group_student = Group.objects.get_or_create(name='Student')
+my_group_teacher = Group.objects.get_or_create(name='Teacher') 
+
+def fun(request):
+    g=request.user.groups.all()
+    g_id=Group.objects.get(name=g[0]).id
+    id=request.user.username
+    if g_id==3:
+            student=Student.objects.filter(username=id)    
+            img=student[0].img
+
+    else:
+        teacher=Teacher.objects.filter(username=id)
+        img=teacher[0].img
+    return img,id
 
 def user_login(request):
     context = {}
@@ -44,7 +61,11 @@ def mainPage(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'ocp_app/dashboard.html')
+    id=request.user.username
+    student=Student.objects.filter(username=id)
+    img=student[0].img
+    params={'img':img,'user':id}
+    return render(request, 'ocp_app/dashboard.html',params)
 
 def verifyOTP(request):
     if request.method=="POST":
@@ -70,6 +91,12 @@ def verifyOTP(request):
                 myuser.first_name = firstname
                 myuser.last_name = lastname
                 myuser.save()
+                uname=User.objects.get(username=username)
+                uid=uname.id
+                user=User.objects.get(username=username)
+                g = Group.objects.get(name='Student')
+                g.user_set.add(uid)
+
                 return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
             else:
                 print('Invalid OTP')
@@ -97,6 +124,12 @@ def verifyOTP(request):
                 myuser.first_name = firstname
                 myuser.last_name = lastname
                 myuser.save()
+                uname=User.objects.get(username=username)
+                uid=uname.id
+                user=User.objects.get(username=username)
+                g = Group.objects.get(name='Teacher')
+                g.user_set.add(uid)
+                
                 return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
             else:
                 print('Invalid OTP')
@@ -219,5 +252,92 @@ def signIn(request):
     else:
         return render(request, "ocp_app/signIn.html", context)
 
+def signOut(request):
+    logout(request)
+    return redirect(signIn)
+
+@login_required
+def courseStud(request):
+    g=request.user.groups.all()
+    g_id=Group.objects.get(name=g[0]).id
+    id=request.user.username
+    if g_id==3:
+        student=Student.objects.filter(username=id)
+        course=[]
+        dept=""
+        if student!='\0':
+            img=student[0].img
+            for i in student:
+                courses = i.course
+                course.append(courses)
+    
+    
+    else:
+        teacher=Teacher.objects.filter(username=id)
+        img=teacher[0].img
+
+    params={'img':img,'user':id,'course':course}
+    return render (request,'ocp_app/courseStud.html',params)
+
+@login_required
+def addCourse(request):
+    g=request.user.groups.all()
+    g_id=Group.objects.get(name=g[0]).id
+    id=request.user.username
+    if g_id==3:
+        student=Student.objects.filter(username=id)    
+        dept=""
+        img=student[0].img
+        year = student[0].year
+        dept_name=student[0].dept
+    else: 
+        teacher=Teacher.objects.filter(username=id)
+        dept=""
+        img=teacher[0].img
+        year = teacher[0].year
+        dept_name=student[0].dept
+
+    dept=Department.objects.filter(dept_name=dept_name).first()
+    new_course=Courses.objects.filter(year=year,dept=dept)
+    print(new_course)
+
+    params={'img':img,'user':id,'new_course':new_course}
+    return render(request,'ocp_app/addCourse.html',params)
+
+
+@login_required
+def announcements(request):
+    img,id=fun(request)
+    announce=Announcement.objects.all()
+    
+    params={'img':img,'user':id,'announce':announce}
+    return render(request,'ocp_app/announcement.html',params)
+
+
+def newannouncements(request):
+    department=Department.objects.all()
+    params={'department':department}
+    return render(request,'ocp_app/add_announcement.html',params)
+
+def addAnnouncements(request):
+    if request.method=="POST" and request.FILES['announce_file']:
+        name = request.POST.get('name', '')
+        detail = request.POST.get('detail', '')
+        imgfile = request.FILES['announce_file']
+        fs = FileSystemStorage()
+        imgfilename = fs.save(imgfile.name,imgfile)
+        imgurl = fs.url(imgfilename)
+        dept = request.POST.get('dept', '')
+        print(dept)
+        department=Department.objects.filter(dept_name='Computer Science and Engineering')
+        dept_id=department[0].dept_id
+        print(department)
+        date=datetime.date.today()
+        time=datetime.datetime.now()
+        
+        announce=Announcement(announcement_name=name,detail=detail,announcement_file=imgurl,date_of_announcement=date,time_of_announcement=time)
+        announce.save()
+        return redirect(newannouncements)
+    
 
 

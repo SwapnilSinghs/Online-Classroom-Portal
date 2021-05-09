@@ -1,0 +1,29 @@
+{% extends './dashboard.html' %}
+
+{% block body %}
+
+{% if announce %}
+
+{% for i in announce %}
+    <h3> Announcement Name: {{i.announcement_name}}</h3>
+    <br/>
+    <h3> Announcement Detail: {{i.detail}}</h3>
+    <br/>
+    {% if  i.file_type == 'img' %}
+    <img src="{{i.announcement_file}}">
+    {%else%}
+    <embed src="/{{i.announcement_file}}"type="application/pdf" width="100px" height="600px"/>
+    {%endif%}
+    <hr/>
+    <br/>
+    {% endfor %}
+
+
+{%else%}
+
+No Announcement !! 
+
+{% endif %}
+
+
+{% endblock %}

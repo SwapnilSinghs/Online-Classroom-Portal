@@ -1,0 +1,28 @@
+{% extends './dashboard.html' %}
+
+
+{% block body %}
+
+
+{% if course %}
+<h3>Already Added Course</h3>
+<div style="display:inline;">
+{% for i in course %}
+<h2>{{i.course_name}}</h2>
+{% endfor %}
+
+{% else %}
+<h3> No Courses Enrolled </h3>
+
+{% endif %}
+
+
+<div style="justify-content: space-between;
+    align-items: flex-end;"> 
+<h3> Add New  Courses</h3>
+<button type="button" class="btn btn-primary" onclick="location.href='../addCourse/';">Add  Course</button>
+
+
+
+</div>
+{% endblock %}

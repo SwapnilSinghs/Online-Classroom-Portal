@@ -52,8 +52,9 @@ class studyMaterial(models.Model):
 class Announcement(models.Model):
     announcement_id = models.AutoField(primary_key=True)
     announcement_name = models.CharField(max_length = 50)
-    department = models.ForeignKey(Department,to_field='dept_id', on_delete=models.CASCADE)
+    department = models.ForeignKey(Department,to_field='dept_id', on_delete=models.CASCADE,null=True)
     detail = models.CharField(max_length = 150)
     announcement_file = models.FileField(upload_to='announcements/')
+    file_type = models.CharField(max_length=3)
     date_of_announcement = models.DateField(blank=True, null=True)
     time_of_announcement = models.TimeField(auto_now=False, auto_now_add=False)
