@@ -58,3 +58,4 @@ class Announcement(models.Model):
     file_type = models.CharField(max_length=3)
     date_of_announcement = models.DateField(blank=True, null=True)
     time_of_announcement = models.TimeField(auto_now=False, auto_now_add=False)
+    

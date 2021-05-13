@@ -342,5 +342,19 @@ def addAnnouncements(request):
     
 def updateProfile(request):
     img,id=fun(request)    
-    params={'img':img,'user':id}    
+    g=request.user.groups.all()
+    g_id=Group.objects.get(name=g[0]).id
+    id=request.user.username
+    if g_id==1:
+        student=Student.objects.filter(username=id)
+        fname=student[0].firstname
+        lname=student[0].lastname
+        dob=student[0].dob
+        dept=student[0].dept
+        email=student[0].email
+        phone=student[0].phone
+        
+
+    params={'img':img,'user':id,'firstname':fname,'lastname':lname,'dob':dob,'email':email,'phone':phone}    
+    
     return render(request, 'ocp_app/updateProfile.html',params)
