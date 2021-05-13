@@ -90,7 +90,12 @@
           <i class="fa fa-home fa-fw"></i><a href="/dashboard/"> Dashboard</a>
         </li>
         <li><i class="fa fa-bullhorn"></i><a href="../announcements/"> Announcements</a></li>
-        <li><i class="fa fa-book-open"></i><a href="../courseStud/"> Courses</a></li>
+        <li><i class="fa fa-book-open"></i><a href="#"> Courses</a>
+        <ul class="side-nav-dropdown">
+          <li><a href="../courseStud/">View Enrolled Courses</a></li>
+          <li><a href="../addCourse/">Add New Courses</a></li>
+        </ul>
+      </li>
         <li><i class="fa fa-edit"></i><a href="#"> Exam</a></li>
         <li><i class="fa fa-comment-alt"></i><a href="#"> Forum</a></li>
         <li>
@@ -133,8 +138,7 @@
               ></a>
               <ul class="dropdown-menu">
                 <li class="dropdown-item">
-                  <a href=""
-                    ><i class="fa fa-sign-out"></i> LoggedIn -<br />
+                  <a href=""><i class="fa fa-sign-out"></i> LoggedIn -<br />
                     <center>{{user}}</center></a
                   >
                 </li>

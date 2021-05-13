@@ -275,7 +275,9 @@ def courseStud(request):
     else:
         teacher=Teacher.objects.filter(username=id)
         img=teacher[0].img
-
+    if course[0] == None:
+        course=[]
+    
     params={'img':img,'user':id,'course':course}
     return render (request,'ocp_app/courseStud.html',params)
 
