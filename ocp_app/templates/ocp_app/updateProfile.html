@@ -321,7 +321,7 @@ form input[type="file"] {
 				<h5>Update Profile</h5>
 			</div>
 			<div class="card-body">
-				<form action="" method="post">{% csrf_token %}
+				<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <div style="display: flex; justify-content: center">
                         <label for="fileToUpload">
                           <div
@@ -333,7 +333,7 @@ form input[type="file"] {
                             <span>Change Image</span>
                           </div>
                         </label>
-                        <input type="file" name="fileToUpload" id="fileToUpload" />
+                        <input type="file" name="fileToUpload" id="fileToUpload" multiple="false" accept="image/*"/>
                     </div>
                     <br />
                     <div class="input-group form-group">
@@ -385,13 +385,22 @@ form input[type="file"] {
                 </form>
                 <script type="text/javascript">
                     $("document").ready(function () {
-                        $('input[type=file]').on('change', function () {
-                        let img = $(this).val();
-                        console.log(img)
-                        $('#profile-pic').css('background-image', `url(${img})`);
-                        });
+                      $("input[type=file]").on("change", function () {
+                        if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                          $("#profile-pic").css(
+                            "background-image",
+                            "url(" + e.target.result + ")"
+                          );
+                          $("#profile-pic").hide();
+                          $("#profile-pic").fadeIn(650);
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                      }
+                      });
                     });
-                 </script>
+                  </script>
             </div>
 		</div>
 	</div>
