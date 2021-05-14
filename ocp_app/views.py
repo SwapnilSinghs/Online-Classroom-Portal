@@ -13,7 +13,7 @@ import random
 import math
 import datetime
 from django.core.files.storage import FileSystemStorage
-
+from django.http import HttpResponse
 
 my_group_student = Group.objects.get_or_create(name='Student')
 my_group_teacher = Group.objects.get_or_create(name='Teacher') 
@@ -356,4 +356,14 @@ def updateProfile(request):
         email=student[0].email
         phone=student[0].phone
     params={'img':img,'user':id,'firstname':fname,'lastname':lname,'dob':dob,'email':email,'phone':phone}  
+    if request.method=="POST" and 'fileToUpload' in request.FILES:
+        imgfile = request.FILES['fileToUpload']
+        fs = FileSystemStorage()
+        imgfilename = fs.save(imgfile.name,imgfile)
+        imgurl = fs.url(imgfilename)
+        phone = request.POST.get('phone', '')
+        dob = request.POST.get('dob', '')
+        if g_id==1:
+            Student.objects.filter(username=id).update(img=imgurl,phone=phone,dob=dob)
+            return HttpResponse("<script>setTimeout(function(){window.location.href='/updateProfile/'},0000);</script>")
     return render(request, 'ocp_app/updateProfile.html',params)
