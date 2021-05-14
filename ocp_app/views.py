@@ -355,8 +355,5 @@ def updateProfile(request):
         dept=student[0].dept
         email=student[0].email
         phone=student[0].phone
-        
-
-    params={'img':img,'user':id,'firstname':fname,'lastname':lname,'dob':dob,'email':email,'phone':phone}    
-    
+    params={'img':img,'user':id,'firstname':fname,'lastname':lname,'dob':dob,'email':email,'phone':phone}  
     return render(request, 'ocp_app/updateProfile.html',params)

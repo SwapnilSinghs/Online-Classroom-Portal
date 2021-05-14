@@ -10,7 +10,7 @@ align-content: center;
 .card{
 margin-top: 50px;
 margin-bottom: 50px;
-width: 100%;
+width: 70%;
 background-color: white;
 border-color: grey; 
 }
@@ -276,6 +276,42 @@ card-header{
     text-shadow: 1px 1px 3px #000000;
     font-weight: 50;
 }
+
+/* Profile pic in update profile */
+.profile-pic {
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+  background-color: rgba(0,0,0,0.2);
+  vertical-align: middle;
+  text-align: center;
+  color: transparent;
+  transition: all .3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-pic:hover {
+  background-color: rgba(0,0,0,.5);
+  z-index: 10000;
+  color: #fff;
+  transition: all .3s ease;
+  text-decoration: none;
+}
+
+.profile-pic span {
+  display: inline-block;
+  padding-top: 4em;
+  padding-bottom: 4em;
+}
+
+form input[type="file"] {
+        display: none;
+        cursor: pointer;
+}
 {% endblock %}
 {% block body %}
 <div class="container">
@@ -286,6 +322,20 @@ card-header{
 			</div>
 			<div class="card-body">
 				<form action="" method="post">{% csrf_token %}
+                    <div style="display: flex; justify-content: center">
+                        <label for="fileToUpload">
+                          <div
+                            class="profile-pic"
+                            id="profile-pic"
+                            style="background-image: url({{img}})"
+                          >
+                            <span><i class="fas fa-camera"></i></span>
+                            <span>Change Image</span>
+                          </div>
+                        </label>
+                        <input type="file" name="fileToUpload" id="fileToUpload" />
+                    </div>
+                    <br />
                     <div class="input-group form-group">
                         <label class="control-label col-sm-4">Username</label>
 						<div class="input-group-prepend">
@@ -314,24 +364,6 @@ card-header{
 						</div>
 						<input type="text" class="form-control" id="dob" name='dob' value="{{ dob }}" onfocus="(this.type='date')">
                     </div>
-                    <div>
-                        <label class="control-label col-sm-4">Department</label>
-                        <select class="form-control col-sm-6" id="dept" name="dept" style="display: inline-block;" required>
-                            {% for i in departments %}
-                                <option value="{{ i.dept_name }}">{{ i.dept_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <br>
-                    <div>
-                        <label class="control-label col-sm-4">Enrolled Courses</label>
-                        <select class="form-control col-sm-6" id="course" name="course" style="display: inline-block;" required>
-                            {% for i in courses %}
-                            <option value="{{ i.course_id}}">{{ i.course_name }} ({{ i.course_id }})</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <br>
 					<div class="input-group form-group">
                         <label class="control-label col-sm-4">Email Address</label>
 						<div class="input-group-prepend">
@@ -350,8 +382,16 @@ card-header{
 					<div class="form-group text-center">
                         <input type="submit" value="UPDATE MY PROFILE" class="btn signup_btn">
                     </div>
-                    <br>
                 </form>
+                <script type="text/javascript">
+                    $("document").ready(function () {
+                        $('input[type=file]').on('change', function () {
+                        let img = $(this).val();
+                        console.log(img)
+                        $('#profile-pic').css('background-image', `url(${img})`);
+                        });
+                    });
+                 </script>
             </div>
 		</div>
 	</div>
