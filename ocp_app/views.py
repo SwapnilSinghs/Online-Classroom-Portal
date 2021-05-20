@@ -367,3 +367,23 @@ def updateProfile(request):
             Student.objects.filter(username=id).update(img=imgurl,phone=phone,dob=dob)
             return HttpResponse("<script>setTimeout(function(){window.location.href='/updateProfile/'},0000);</script>")
     return render(request, 'ocp_app/updateProfile.html',params)
+
+def forum(request):
+    img,id=fun(request)    
+    g=request.user.groups.all()
+    g_id=Group.objects.get(name=g[0]).id
+    id=request.user.username
+    if g_id==1:
+        student=Student.objects.filter(username=id)
+        name=student[0].firstname + ' ' + student[0].lastname
+        email=student[0].email
+    params={'img':img,'user':id,'name':name,'email':email}  
+    if request.method=="POST":
+        name=request.POST.get('name', '')
+        email=request.POST.get('email', '')
+        subject = request.POST.get('subject', '')
+        msg = request.POST.get('msg', '')
+        if g_id==1:
+            print(name,email,subject,msg)
+            render(request, 'ocp_app/forum.html')
+    return render(request, 'ocp_app/forum.html',params)
