@@ -59,3 +59,9 @@ class Announcement(models.Model):
     date_of_announcement = models.DateField(blank=True, null=True)
     time_of_announcement = models.TimeField(auto_now=False, auto_now_add=False)
     
+class Forum(models.Model):
+    snum = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100,default="")
+    email = models.CharField(max_length=100,default="")
+    subject = models.CharField(max_length=255, default="")
+    msg = models.CharField(max_length = 255,default="")    

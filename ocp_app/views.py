@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
-from .models import Student, Department, Teacher, Courses,Announcement
+from .models import Student, Department, Teacher, Courses,Announcement, Forum
 from django.contrib.auth.decorators import login_required
 from django.conf import settings 
 from django.core.mail import send_mail 
@@ -385,5 +385,7 @@ def forum(request):
         msg = request.POST.get('msg', '')
         if g_id==1:
             print(name,email,subject,msg)
-            render(request, 'ocp_app/forum.html')
+            forum=Forum(name=name,email=email,subject=subject,msg=msg)
+            forum.save()
+            return HttpResponse("<script>setTimeout(function(){window.location.href='/forum/'},0000);</script>")
     return render(request, 'ocp_app/forum.html',params)
