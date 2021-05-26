@@ -1,0 +1,218 @@
+{% extends 'ocp_app/dashboard.html' %}
+{% load static %}
+{% block css %}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 300;
+    letter-spacing: .025rem;
+    color: #494949;
+  }
+  
+  h1 {
+    font-weight: 900;
+  }
+  
+  h2, h3 {
+    font-weight: 700;
+  }
+  
+  h4, h5 {
+    font-weight: 600;
+  }
+  
+  p {
+    color: #6c757d;
+  }
+  
+  img {
+    max-width: 100%;
+  }
+  
+  .about-section {
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .left-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    color: #fff;
+    height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url('https://wallpaperaccess.com/full/2871553.jpg');
+    background-size: cover;
+    padding: 4rem;
+  }
+  
+  .left-header::before {
+    background-color: #fff;
+    position: absolute;
+    content: '';
+    bottom: 50px;
+    left: 30px;
+    margin: 0 1rem;
+    width: 80%;
+    height: 2px;
+  }
+  
+  .left-header::after {
+    background-color: #fff;
+    position: absolute;
+    content: '';
+    bottom: 50px;
+    left: 30px;
+    margin: 0 1rem;
+    height: 80%;
+    width: 2px;
+  }
+  
+  .left-header h2 {
+    margin-left: 4rem;
+  }
+  
+  .v-center-box {
+    min-height: 100%;
+  }
+  
+  .sub-heading {
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .15rem;
+    word-spacing: .05rem;
+  }
+  
+  .about-data {
+    position: relative;
+  }
+  
+  .about-data::before {
+    position: absolute;
+    content: '\003c/ ABOUT \003e';
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    text-align: center;
+    font-size: .8rem;
+    font-weight: 900;
+    color: #dee2e6; 
+    background-color: #fff;
+    width: 8rem;
+  }
+  
+  .about-data i {
+    color: #f12d2d;
+  }
+  
+  .about-data p {
+    font-size: .7rem;
+    letter-spacing: .05rem;
+    word-spacing: .2rem;
+  }
+  .about-data .data-number {
+    color: #494949;
+    font-size: 1.2rem;
+  }
+  
+  .icon-18 {
+    font-size: 1.8rem;
+  }
+  
+  @media (min-width: 992px) and (max-width: 1199px) {
+    .left-header::before {
+      width: 70%;
+    }
+  }
+  
+  @media (min-height: 590px) {
+    .left-header::after {
+      height: 85%;
+    }
+  }
+
+{% endblock %}
+{% block body %}
+<section class="about-section">
+    <div class="container-fluid p-0">
+        <br>
+      <div class="row no-gutters position-relative">
+        <div class="left-header d-none d-lg-block col-lg-3 col-xl-4">
+          <div class="v-center-box d-flex align-items-end text-uppercase">
+            <h2 class="mb-0">Welcome!</h2>
+          </div>
+        </div>
+        <div class="col-lg-9 col-xl-8">
+          <div class="main-content p-5">
+            <div class="main-header mb-4">
+              <h6 class="sub-heading text-uppercase d-block mb-2">Online Learning & Evaluation</h6>
+              <h1 class="main-heading d-inline-block text-uppercase pb-3 border-bottom">&lt; About &gt;</h1>
+            </div>
+  
+            <div class="row mb-5">
+              <div class="mb-5 mb-sm-4 col-md-4">
+                <img src="https://cdn.pixabay.com/photo/2021/03/08/09/56/assessment-6078645_1280.png" alt="Colorful Wall">
+              </div>
+              <div class="col-md-8">
+                <div class="about__text mb-5 mb-sm-4 mb-md-4">
+                  <h3>Vitual Learning</h3>
+                  <p class="m-0">OCP comes with features to help educators streamline the examination process and overcome many of the hurdles. 
+                      It also helps the students get over the traditional methods of 
+                      learning and make them accustomed to the internet where notes for their respective courses are easily available.</p>
+                      <br>
+                  <h3>Virtual Evaluation</h3>
+                  <p class="m-0">It is a fully integrated platform for providing end to end online computer based examination services 
+                      from candidate registration to result processing. Our focus has been on delivering cost effective, secure and efficient examination 
+                      and assessment services for our clients.</p>
+                </div>
+  
+            <div class="about-data">
+              <div class="row no-gutters pt-5 border-top">
+                <div class="mb-4 mb-md-0 pr-sm-3 p-md-0 col-sm-6 col-md-3">
+                  <div class="media">
+                    <i class="fas fa-book-reader icon-18 mr-2"></i>
+                    <div class="media-body">
+                      <p class="data-number m-0 font-weight-bold">40M</p>
+                      <p class="m-0 text-uppercase">Learners</p>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="mb-4 mb-md-0 pl-sm-3 p-md-0 col-sm-6 col-md-3">
+                  <div class="media">
+                    <i class="fas fa-chalkboard-teacher icon-18 mr-2"></i>
+                    <div class="media-body">
+                      <p class="data-number m-0 font-weight-bold">56K</p>
+                      <p class="m-0 text-uppercase">Instructors</p>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="mb-4 mb-md-0 pr-sm-3 p-md-0 col-sm-6 col-md-3">
+                  <div class="media">
+                    <i class="fas fa-laptop-code icon-18 mr-2"></i>
+                    <div class="media-body">
+                      <p class="data-number m-0 font-weight-bold">155K</p>
+                      <p class="m-0 text-uppercase">Courses</p>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="mb-4 mb-md-0 pl-sm-3 p-md-0 col-sm-6 col-md-3">
+                  <div class="media">
+                    <i class="fas fa-user-plus icon-18 mr-2"></i>
+                    <div class="media-body">
+                      <p class="data-number m-0 font-weight-bold">480M</p>
+                      <p class="m-0 text-uppercase">Enrollments</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -60,6 +60,14 @@ def mainPage(request):
     return render(request, 'ocp_app/mainPage.html')
 
 @login_required
+def home(request):
+    id=request.user.username
+    student=Student.objects.filter(username=id)
+    img=student[0].img
+    params={'img':img,'user':id}
+    return render(request, 'ocp_app/home.html',params)
+
+@login_required
 def dashboard(request):
     id=request.user.username
     student=Student.objects.filter(username=id)
@@ -357,7 +365,8 @@ def addAnnouncements(request):
         announce=Announcement(announcement_name=name,detail=detail,announcement_file=imgurl,date_of_announcement=date,time_of_announcement=time)
         announce.save()
         return redirect(newannouncements)
-    
+
+@login_required    
 def updateProfile(request):
     img,id=fun(request)    
     g=request.user.groups.all()
@@ -384,6 +393,7 @@ def updateProfile(request):
             return HttpResponse("<script>setTimeout(function(){window.location.href='/updateProfile/'},0000);</script>")
     return render(request, 'ocp_app/updateProfile.html',params)
 
+@login_required
 def forum(request):
     img,id=fun(request)    
     g=request.user.groups.all()
