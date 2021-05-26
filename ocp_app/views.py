@@ -100,7 +100,7 @@ def verifyOTP(request):
                 return render(request, 'ocp_app/verifyOTP.html', {'Valid_OTP': True})
             else:
                 print('Invalid OTP')
-                return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'phone':phone,'password':password})
+                return render(request, 'ocp_app/verifyOTP.html', {'Invalid_OTP': True,'OTP':otp,'img':img,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'year':year,'phone':phone,'password':password})
         else:
             enteredOTP = request.POST.get('enteredOTP', '')
             otp = request.POST.get('otp', '')
@@ -150,6 +150,7 @@ def signUpStud(request):
         dob = request.POST.get('dob', '')
         dept = request.POST.get('dept', '')
         email = request.POST.get('email', '')
+        year = request.POST.get('year','')
         phone = request.POST.get('phone', '')
         password = request.POST.get('password', '')
         cnfpassword = request.POST.get('confpassword', '')
@@ -180,7 +181,7 @@ def signUpStud(request):
             email_from = settings.EMAIL_HOST_USER 
             recipient_list = [email, ] 
             send_mail( subject, message, email_from, recipient_list ) 
-            params = {'img':imgurl,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'phone':phone,'password':password,'OTP':OTP}
+            params = {'img':imgurl,'username':username,'firstname':firstname,'lastname':lastname,'dob':dob,'dept':dept,'email':email,'year':year,'phone':phone,'password':password,'OTP':OTP}
             print('Mail sent! check your inbox.')
             return render(request, "ocp_app/verifyOTP.html", params)
     return render(request, 'ocp_app/signUpStud.html', {'departments':departments})
