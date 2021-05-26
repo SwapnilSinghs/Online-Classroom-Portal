@@ -10,7 +10,7 @@ align-content: center;
 .card{
 margin-top: 50px;
 margin-bottom: 50px;
-width: 70%;
+width: 90%;
 background-color: white;
 border-color: grey; 
 }
@@ -318,7 +318,7 @@ form input[type="file"] {
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
-				<h5>Forum</h5>
+				<h5>Forum - Ask queries or concerns</h5>
 			</div>
 			<div class="card-body">
 				<form action="" method="post"id="forum" enctype="multipart/form-data">{% csrf_token %}
@@ -344,7 +344,7 @@ form input[type="file"] {
 						<input type="text" class="form-control" id="subject" name='subject'  value="{{ subject }}">
                     </div>
                     <div class="input-group form-group">
-                        <label class="control-label col-sm-4">Message</label>
+                        <label class="control-label col-sm-4">Comments and Questions</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-comments"></i></span>
 						</div>
