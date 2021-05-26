@@ -13,7 +13,7 @@ import random
 import math
 import datetime
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 
 my_group_student = Group.objects.get_or_create(name='Student')
 my_group_teacher = Group.objects.get_or_create(name='Teacher') 
@@ -264,7 +264,6 @@ def courseStud(request):
     if g_id==1:
         student=Student.objects.filter(username=id)
         course=[]
-        dept=""
         if student!='\0':
             img=student[0].img
             for i in student:
@@ -275,11 +274,15 @@ def courseStud(request):
     else:
         teacher=Teacher.objects.filter(username=id)
         img=teacher[0].img
+    if len(course)>1:
+        course.pop(0)    
+
     if course[0] == None:
         course=[]
-    
+    print(course)
     params={'img':img,'user':id,'course':course}
     return render (request,'ocp_app/courseStud.html',params)
+    
 
 @login_required
 def addCourse(request):
@@ -289,9 +292,14 @@ def addCourse(request):
     if g_id==1:
         student=Student.objects.filter(username=id)    
         dept=""
+        course=[]
         img=student[0].img
         year = student[0].year
         dept_name=student[0].dept
+        for i in student:
+                courses = i.course
+                course.append(courses)
+        
     else: 
         teacher=Teacher.objects.filter(username=id)
         dept=""
@@ -300,10 +308,17 @@ def addCourse(request):
         dept_name=student[0].dept
 
     dept=Department.objects.filter(dept_name=dept_name).first()
-    print(dept.dept_id)
-    new_course=Courses.objects.filter(year=year,dept=dept)
+   
+    all_courses=Courses.objects.filter(year=year,dept=dept)
+    new_course=[]
+    if len(course)>1:
+        course.pop(0) 
+    all_courses=list(all_courses)
+    for i in (all_courses):
+        if i not in course:
+            new_course.append(i)
+   # print(list(new_course) - course )
     print(new_course)
-
     params={'img':img,'user':id,'new_course':new_course}
     return render(request,'ocp_app/addCourse.html',params)
 
@@ -389,3 +404,54 @@ def forum(request):
             forum.save()
             return HttpResponse("<script>setTimeout(function(){window.location.href='/forum/'},0000);</script>")
     return render(request, 'ocp_app/forum.html',params)
+
+@login_required
+def add_course(request):
+    if request.method=="GET":
+        img,id=fun(request)
+        announce=Announcement.objects.all()
+        params={'img':img,'user':id,'announce':announce}
+
+        cid = request.GET.get('sid')
+        print(cid)
+        username = request.user.username
+        stud=Student.objects.filter(username=username,course=cid)
+        if stud == None:
+            return JsonResponse({'status':0})
+        else:
+            student=Student.objects.filter(username=username)
+            img=student[0].img
+            fname=student[0].firstname
+            lname=student[0].lastname
+            dob=student[0].dob
+            dept=student[0].dept
+            email=student[0].email
+            phone=student[0].phone
+            password=student[0].password
+            year=student[0].year
+            course=Courses.objects.get(pk=cid)
+            print(course)
+            
+            student = Student(img=img,username=username,firstname=fname,lastname=lname,dob=dob,dept=dept,email=email,phone=phone,password=password,year=year,course=course)
+            student.save()
+        
+        return JsonResponse({'status':1})
+    
+
+
+
+@login_required
+def del_course(request):
+    if request.method=="GET":
+        img,id=fun(request)
+        announce=Announcement.objects.all()
+        params={'img':img,'user':id,'announce':announce}
+
+        cid = request.GET.get('sid')
+        print(cid)
+        username = request.user.username
+        student=Student.objects.filter(username=username,course=cid)
+        student.delete()
+
+        return JsonResponse({'status':1})
+    

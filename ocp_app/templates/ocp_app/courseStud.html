@@ -1,15 +1,54 @@
 {% extends './dashboard.html' %}
+{% load static %}
+{% block css %}
+.enroll_course{
+  display: inline-flex;
+  align-content: space-between;
+  justify-content: space-evenly;
+  align-items: flex-end;
+ 
+  padding:25px;
+  
+}
+.card{
+  margin: 25px 25px 25px 25px;
+  border: 2px solid;
+}
+
+.btn{
+  font-size: 0.8rem;
+}
+
+h2{
+    font-size: 1.75rem;
+    text-align: center;
+    color: green;
+}
+
+{% endblock %}
 
 
 {% block body %}
 
 
 {% if course %}
-<h3>Already Added Course</h3>
-<div style="display:inline;">
-{% for i in course %}
-<h2>{{i.course_name}}</h2>
-{% endfor %}
+<h2>Enrolled Courses</h2>
+<div id="msg"class="alert alert-danger"style="display:none"></div>
+<div class="enroll_course">
+  
+    {% for i in course %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h3 class="card-title"style="color:red;">{{i.course_name}}</h3>
+          <h6 class="card-subtitle mb-2 text-muted">{{i.course_id}}</h6>
+          <p class="card-text">Good Luck</p>
+          <button type="button" class="btn btn-primary">Go To course</button>
+          <input type="button" class="btn btn-danger" id="btn-del" data-sid="{{i.course_id}}" value="Remove course">
+        </div>
+      </div>
+    
+    {% endfor %}
+    </div>
 
 {% else %}
 <h3> No Courses Enrolled !! </h3>
@@ -21,5 +60,9 @@
 
 
 
+
 </div>
+
+{% include "../ocp_app/ajax.html" %}
+
 {% endblock %}

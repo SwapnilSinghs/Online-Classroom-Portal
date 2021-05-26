@@ -17,4 +17,6 @@ urlpatterns = [
     path('addAnnouncements/',views.addAnnouncements,name='addAnnouncements'),
     path('updateProfile/', views.updateProfile, name='updateProfile'),
     path('forum/', views.forum, name='forum'),
+    path('add_course/',views.add_course,name='add_course'),
+    path('del_course/',views.del_course,name='del_course'),
 ]

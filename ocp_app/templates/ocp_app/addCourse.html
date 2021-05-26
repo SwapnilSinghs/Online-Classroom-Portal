@@ -1,26 +1,55 @@
 {% extends '../ocp_app/dashboard.html' %}
 
+
+{% load static %}
+{% block css %}
+.add_announce{
+  display: inline-flex;
+  align-content: space-between;
+  justify-content: space-evenly;
+  align-items: flex-end;
+ 
+  padding:25px;
+  
+}
+.card{
+  margin: 25px 25px 25px 25px;
+  border: 2px solid;
+}
+
+.btn{
+  font-size: 0.8rem;
+}
+h2{
+  font-size: 1.75rem;
+  text-align: center;
+  color: green;
+}
+
+
+{% endblock %}
+
 {% block body %}
 
-
-
-<div style="display: inline-flex;
-align-content: space-between;
-justify-content: space-evenly;
-align-items: flex-end;">
-
+<h2>New Courses</h2>
+<div id="msg"class="alert alert-danger"style="display:none"></div>
+<div class="add_announce">
+ 
 {% for i in new_course %}
 <div class="card" style="width: 18rem;">
     <div class="card-body">
-      <h3 class="card-title">{{i.course_name}}</h3>
-      <h6 class="card-subtitle mb-2 text-muted">{{i.course_id}}</h6>
+      <h3 class="card-title" id="c_name">{{i.course_name}}</h3>
+      <h6 class="card-subtitle mb-2 text-muted" id="c_id">{{i.course_id}}</h6>
       <p class="card-text">Good Luck</p>
-      <a href="#" class="card-link">Add course</a>
-      <a href="#" class="card-link">Remove Course</a>
+      <input type="button" class="btn btn-primary" id="btn-add" data-sid="{{i.course_id}}" value="Add course">
+      
+      
     </div>
   </div>
 
 {% endfor %}
 </div>
+
+{% include "../ocp_app/ajax.html" %}
 
 {% endblock %}

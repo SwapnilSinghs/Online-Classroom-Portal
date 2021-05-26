@@ -1,0 +1,56 @@
+<script>
+    $("body").on('click',"#btn-add",function()
+    {
+        console.log("Add Button Clicked");
+        let id = $(this).attr("data-sid");
+        console.log(id);
+        mydata = {sid : id};
+        $.ajax({
+            url: "{% url 'add_course' %}",
+            method:"GET",
+            data: mydata,
+            success : function(data){
+                if(data.status==1){
+                    $("#msg").text("Course Added Successfully");
+                    $("#msg").show();
+                    setTimeout(function(){
+                    location.reload();
+                    },1000);
+                }
+                if(data.status==0){
+                    $("#msg").text("Course is Already Added");
+                    $("#msg").show();
+                }
+            },
+        });
+    });
+    
+</script>
+
+<script>
+    $("body").on('click',"#btn-del",function()
+    {
+        console.log("Delete Button Clicked");
+        let id = $(this).attr("data-sid");
+        console.log(id);
+        mydata = {sid : id};
+        $.ajax({
+            url: "{% url 'del_course' %}",
+            method:"GET",
+            data: mydata,
+            success : function(data){
+                if(data.status==1){
+                    $("#msg").text("Course Deleted Successfully");
+                    $("#msg").show();
+                    setTimeout(function(){
+                    location.reload();
+                    },1000);
+                   
+                }
+                
+                
+            },
+        });
+    });
+    
+</script>
