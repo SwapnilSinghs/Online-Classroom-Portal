@@ -64,4 +64,5 @@ class Forum(models.Model):
     name = models.CharField(max_length=100,default="")
     email = models.CharField(max_length=100,default="")
     subject = models.CharField(max_length=255, default="")
-    msg = models.CharField(max_length = 255,default="")    
+    msg = models.CharField(max_length = 255,default="")  
+    date = models.DateTimeField(auto_now=True)  
