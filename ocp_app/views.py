@@ -65,7 +65,7 @@ def home(request):
     student=Student.objects.filter(username=id)
     img=student[0].img
     params={'img':img,'user':id}
-    return render(request, 'ocp_app/home.html',params)
+    return render(request,'ocp_app/home.html',params)
 
 @login_required
 def dashboard(request):

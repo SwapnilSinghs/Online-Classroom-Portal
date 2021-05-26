@@ -4,7 +4,10 @@
 {% load static %}
 {% block css %}
 .add_announce{
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  grid-auto-rows: auto;
+  grid-gap: 2rem;
   align-content: space-between;
   justify-content: space-evenly;
   align-items: flex-end;
@@ -15,7 +18,11 @@
 .card{
   margin: 25px 25px 25px 25px;
   border: 2px solid;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  
 }
+
 
 .btn{
   font-size: 0.8rem;
@@ -27,6 +34,7 @@ h2{
 }
 
 
+
 {% endblock %}
 
 {% block body %}
@@ -36,7 +44,7 @@ h2{
 <div class="add_announce">
  
 {% for i in new_course %}
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 18rem; height:15rem;">
     <div class="card-body">
       <h3 class="card-title" id="c_name">{{i.course_name}}</h3>
       <h6 class="card-subtitle mb-2 text-muted" id="c_id">{{i.course_id}}</h6>

@@ -2,7 +2,7 @@
 {% load static %}
 {% block css %}
 .enroll_course{
-  display: inline-flex;
+  display: -webkit-inline-box;
   align-content: space-between;
   justify-content: space-evenly;
   align-items: flex-end;
@@ -24,6 +24,15 @@ h2{
     text-align: center;
     color: green;
 }
+
+.text{
+    padding:50px;
+    font-size: 4.75rem;
+    text-align: center;
+    color: green;
+}
+
+
 
 {% endblock %}
 
@@ -51,7 +60,7 @@ h2{
     </div>
 
 {% else %}
-<h3> No Courses Enrolled !! </h3>
+<h3 class="text"> No Courses Enrolled !! </h3>
 
 {% endif %}
 
