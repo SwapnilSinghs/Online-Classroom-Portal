@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .admin-form{
+            text-align: center;
+            justify-content: center;
+            display: inline-block;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 10px;
+            padding-bottom: 25px;
+            
+                }
+        h2{
+            align-items: center;
+            text-align: center;
+            font-size: 50px;
+            color:white
+        }
+        h1{
+            align-items: center;
+            text-align: center;
+            font-size: 50px;
+            color:red;
+        }
+        .heading{
+            text-align: center;
+            justify-content: center;
+            max-width:420px;
+            margin:auto auto;
+            align-items: center;
+            background-color: grey;
+            padding-top: 20px;
+            border:15px solid black;
+        }
+
+        .login{
+           
+              padding-top: 15%;
+        }
+
+
+        .input-group {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgb(21, 21, 57);
+        }
+        button{
+            padding: 10px;
+            border: 2px solid;
+            border-radius: 5px;
+            font-size: 25px;
+            background-color: rgb(154, 216, 156);
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>Online Classroom Portal</h1>
+        <div class="heading">
+          <h2>Admin Panel</h2>
+          <form class="admin-form"action="../signinhandle/"method="POST">
+              {% csrf_token %}
+      
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon"><i class="fa fa-user"></i></span>
+              <input type="text" class="form-control"name="username" placeholder="Username or email"value="admin">
+                </div>
+      
+              <div class="input-group input-group-lg">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" name="pass"placeholder="Password">
+              </div>
+      
+              <button type="submit" class="float">Login</button>
+             </form>
+               </div>
+       </div>
+</body>
+</html>

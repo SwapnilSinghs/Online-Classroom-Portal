@@ -178,6 +178,9 @@ def signUpStud(request):
         if password!=cnfpassword:
             messages.error(request, "Password does not match.")
             return redirect('/signUpStud/')
+        if len(password)<=8:
+            messages.error(request, "Password should be greater than 8 characters.")
+            return redirect('/signUpStud/')
         else:
             n1 = '\n'
             digits = "0123456789"
