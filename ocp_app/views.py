@@ -68,12 +68,29 @@ def home(request):
     return render(request,'ocp_app/home.html',params)
 
 @login_required
+def homeTeach(request):
+    id=request.user.username
+    teacher=Teacher.objects.filter(username=id)
+    img=teacher[0].img
+    params={'img':img,'user':id}
+    return render(request,'ocp_app/homeTeach.html',params)
+
+@login_required
 def dashboard(request):
     id=request.user.username
     student=Student.objects.filter(username=id)
     img=student[0].img
     params={'img':img,'user':id}
     return render(request, 'ocp_app/dashboard.html',params)
+
+
+@login_required
+def dashboardTeach(request):
+    id=request.user.username
+    teacher=Teacher.objects.filter(username=id)
+    img=teacher[0].img
+    params={'img':img,'user':id}
+    return render(request, 'ocp_app/dashboardTeach.html',params)
 
 def verifyOTP(request):
     if request.method=="POST":
@@ -256,6 +273,15 @@ def signIn(request):
             context = {}
             context["user"] = request.user
             context["alert_flag"] = True
+            g=request.user.groups.all()
+            g_id=Group.objects.get(name=g[0]).id
+            id=request.user.username
+            if g_id==1:
+                student=Student.objects.filter(username=id)
+                context["student"] = True
+            else:
+                teacher=Teacher.objects.filter(username=id)
+                context["teacher"] = True
             return render(request, 'ocp_app/signIn.html', context)
         else:
             context["error"] = "Please enter valid username and password."

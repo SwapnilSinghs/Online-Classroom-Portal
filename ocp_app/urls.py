@@ -20,4 +20,6 @@ urlpatterns = [
     path('add_course/',views.add_course,name='add_course'),
     path('del_course/',views.del_course,name='del_course'),
     path('home/',views.home,name='home'),
+    path('dashboardTeach/', views.dashboardTeach, name='dashboardTeach'),
+    path('homeTeach/',views.homeTeach,name='homeTeach'),
 ]

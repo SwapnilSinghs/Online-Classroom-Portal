@@ -89,6 +89,7 @@
             </button>
          </p>
          <p class="text-center">
+            {% if student %}
             <button
                class="button-signup"
                onclick="location.href='/home/'"
@@ -96,6 +97,15 @@
                >
             <b>Go to Dashboard</b>
             </button>
+            {% else %}
+            <button
+               class="button-signup"
+               onclick="location.href='/homeTeach/'"
+               style="background-color: green"
+               >
+            <b>Go to Dashboard</b>
+            </button>
+            {% endif %}
          </p>
          {% else %}
          <div class="alert alert-light" role="alert">
