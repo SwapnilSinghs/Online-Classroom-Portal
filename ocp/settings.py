@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'ocp_app',
     'admin_interface',
+    'exam',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
