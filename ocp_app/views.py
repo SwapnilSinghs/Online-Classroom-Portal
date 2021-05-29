@@ -312,8 +312,17 @@ def courseStud(request):
     else:
         teacher=Teacher.objects.filter(username=id)
         img=teacher[0].img
+        course=[]
+        if teacher!='\0':
+            for i in teacher:
+                courses = i.course
+                course.append(courses)
+    
+    
+    
+    
     if len(course)>1:
-        course.pop(0)    
+        course.pop(0)
 
     if course[0] == None:
         course=[]
@@ -337,17 +346,37 @@ def addCourse(request):
         for i in student:
                 courses = i.course
                 course.append(courses)
+        dept=Department.objects.filter(dept_name=dept_name).first()
+   
+        all_courses=Courses.objects.filter(year=year,dept=dept)
         
     else: 
         teacher=Teacher.objects.filter(username=id)
-        dept=""
+        dept=[]
+        course=[]
+        all_courses=[]
         img=teacher[0].img
-        year = teacher[0].year
-        dept_name=student[0].dept
+        print(teacher)
+        dep=teacher[0].dept
+        print(dep)
+        dept=list(map(str,dep.strip().split(',')))
+        print(dept)
+        for i in teacher:
+                courses = i.course
+                course.append(courses)
 
-    dept=Department.objects.filter(dept_name=dept_name).first()
-   
-    all_courses=Courses.objects.filter(year=year,dept=dept)
+        print(course)
+
+        for element in dept:
+            
+            element=(element.strip())
+            teach_courses=Courses.objects.filter(dept=element)
+            print(teach_courses)
+            for i in teach_courses:
+                all_courses.append(i)
+        
+        
+    
     new_course=[]
     if len(course)>1:
         course.pop(0) 
@@ -409,6 +438,14 @@ def updateProfile(request):
         dept=student[0].dept
         email=student[0].email
         phone=student[0].phone
+    else:
+        student=Teacher.objects.filter(username=id)
+        fname=student[0].firstname
+        lname=student[0].lastname
+        dob=student[0].dob
+        dept=student[0].dept
+        email=student[0].email
+        phone=student[0].phone
     params={'img':img,'user':id,'firstname':fname,'lastname':lname,'dob':dob,'email':email,'phone':phone}  
     if request.method=="POST" and 'fileToUpload' in request.FILES:
         imgfile = request.FILES['fileToUpload']
@@ -419,6 +456,9 @@ def updateProfile(request):
         dob = request.POST.get('dob', '')
         if g_id==1:
             Student.objects.filter(username=id).update(img=imgurl,phone=phone,dob=dob)
+            return HttpResponse("<script>setTimeout(function(){window.location.href='/updateProfile/'},0000);</script>")
+        else:
+            Teacher.objects.filter(username=id).update(img=imgurl,phone=phone,dob=dob)
             return HttpResponse("<script>setTimeout(function(){window.location.href='/updateProfile/'},0000);</script>")
     return render(request, 'ocp_app/updateProfile.html',params)
 
@@ -432,33 +472,33 @@ def forum(request):
         student=Student.objects.filter(username=id)
         name=student[0].firstname + ' ' + student[0].lastname
         email=student[0].email
+    else:
+        student=Teacher.objects.filter(username=id)
+        name=student[0].firstname + ' ' + student[0].lastname
+        email=student[0].email
     params={'img':img,'user':id,'name':name,'email':email}  
     if request.method=="POST":
         name=request.POST.get('name', '')
         email=request.POST.get('email', '')
         subject = request.POST.get('subject', '')
         msg = request.POST.get('msg', '')
-        if g_id==1:
-            print(name,email,subject,msg)
-            forum=Forum(name=name,email=email,subject=subject,msg=msg)
-            forum.save()
-            return HttpResponse("<script>setTimeout(function(){window.location.href='/forum/'},0000);</script>")
+        #if g_id==1:
+        print(name,email,subject,msg)
+        forum=Forum(name=name,email=email,subject=subject,msg=msg)
+        forum.save()
+        return HttpResponse("<script>setTimeout(function(){window.location.href='/forum/'},0000);</script>")
     return render(request, 'ocp_app/forum.html',params)
 
 @login_required
 def add_course(request):
     if request.method=="GET":
         img,id=fun(request)
-        announce=Announcement.objects.all()
-        params={'img':img,'user':id,'announce':announce}
-
         cid = request.GET.get('sid')
-        print(cid)
-        username = request.user.username
-        stud=Student.objects.filter(username=username,course=cid)
-        if stud == None:
-            return JsonResponse({'status':0})
-        else:
+        g=request.user.groups.all()
+        g_id=Group.objects.get(name=g[0]).id
+        if g_id==1:
+            print(cid)
+            username = request.user.username
             student=Student.objects.filter(username=username)
             img=student[0].img
             fname=student[0].firstname
@@ -471,14 +511,27 @@ def add_course(request):
             year=student[0].year
             course=Courses.objects.get(pk=cid)
             print(course)
-            
+                
             student = Student(img=img,username=username,firstname=fname,lastname=lname,dob=dob,dept=dept,email=email,phone=phone,password=password,year=year,course=course)
             student.save()
         
-        return JsonResponse({'status':1})
-    
-
-
+            return JsonResponse({'status':1})
+        else:
+            username = request.user.username
+            teach=Teacher.objects.filter(username=username)
+            img=teach[0].img
+            fname=teach[0].firstname
+            lname=teach[0].lastname
+            dob=teach[0].dob
+            dept=teach[0].dept
+            email=teach[0].email
+            phone=teach[0].phone
+            password=teach[0].password   
+            desig=teach[0].designation
+            course=Courses.objects.get(pk=cid)
+            teacher = Teacher(img=img,username=username,firstname=fname,lastname=lname,dob=dob,dept=dept,email=email,phone=phone,password=password,designation=desig,course=course)
+            teacher.save()
+            return JsonResponse({'status':1})
 
 @login_required
 def del_course(request):
@@ -486,12 +539,17 @@ def del_course(request):
         img,id=fun(request)
         announce=Announcement.objects.all()
         params={'img':img,'user':id,'announce':announce}
-
+        g=request.user.groups.all() 
+        g_id=Group.objects.get(name=g[0]).id
         cid = request.GET.get('sid')
         print(cid)
         username = request.user.username
-        student=Student.objects.filter(username=username,course=cid)
-        student.delete()
+        if g_id==1:
+            student=Student.objects.filter(username=username,course=cid)
+            student.delete()
+        else:
+            teacher=Teacher.objects.filter(username=username,course=cid)
+            teacher.delete()
 
         return JsonResponse({'status':1})
     
