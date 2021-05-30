@@ -11,6 +11,7 @@ from django.conf import settings
 from django.core.mail import send_mail 
 import random
 import math
+from django.utils import timezone
 import datetime
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse,JsonResponse
@@ -394,35 +395,49 @@ def addCourse(request):
 def announcements(request):
     img,id=fun(request)
     announce=Announcement.objects.all()
-    
-    params={'img':img,'user':id,'announce':announce}
+    g=request.user.groups.all()
+    g_id=Group.objects.get(name=g[0]).id
+    if g_id==1:
+        template_values = 'ocp_app/dashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
+    params={'img':img,'user':id,'announce':announce,'my_template':template_values}
     return render(request,'ocp_app/announcement.html',params)
 
 
-def newannouncements(request):
-    department=Department.objects.all()
-    params={'department':department}
-    return render(request,'ocp_app/add_announcement.html',params)
-
 def addAnnouncements(request):
-    if request.method=="POST" and request.FILES['announce_file']:
-        name = request.POST.get('name', '')
-        detail = request.POST.get('detail', '')
+    img,id=fun(request)
+
+    department=Teacher.objects.filter(username=id)
+    dep=department[0].dept
+    depart=[]
+    dept=list(map(str,dep.strip().split(',')))
+    for i in dept:
+        depart.append(i.strip())
+    depart.sort()
+    print(datetime.date.today(),
+        datetime.datetime.now())
+    print(timezone.now())
+    params={'img':img,'user':id,'dept':depart}
+    return render(request,'ocp_app/addAnnouncement.html',params)
+    
+
+def add_announcement(request):
+    if request.method == "POST" and request.FILES['announce_file']:
         imgfile = request.FILES['announce_file']
         fs = FileSystemStorage()
         imgfilename = fs.save(imgfile.name,imgfile)
         imgurl = fs.url(imgfilename)
-        dept = request.POST.get('dept', '')
-        print(dept)
-        department=Department.objects.filter(dept_name='Computer Science and Engineering')
-        dept_id=department[0].dept_id
-        print(department)
-        date=datetime.date.today()
-        time=datetime.datetime.now()
-        
-        announce=Announcement(announcement_name=name,detail=detail,announcement_file=imgurl,date_of_announcement=date,time_of_announcement=time)
+        name = request.POST.get('name', '')
+        detail = request.POST.get('detail', '')
+        file_type = request.POST.get('file_type','')
+        #date_of_announcement=datetime.date.today()
+        #time_of_announcement=timezone.now
+        dept=request.POST.get('dept', '')
+        depart=Department.objects.get(dept_id=dept)
+        announce=Announcement(announcement_name=name,detail=detail,department=depart,file_type=file_type,announcement_file=imgurl)
         announce.save()
-        return redirect(newannouncements)
+    return redirect(addAnnouncements)
 
 @login_required    
 def updateProfile(request):

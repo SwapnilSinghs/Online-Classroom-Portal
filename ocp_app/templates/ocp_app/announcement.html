@@ -1,18 +1,26 @@
-{% extends './dashboard.html' %}
+{% extends my_template %}
+{% load static %}
+{% block css %}
+h3{
+    
+}
 
+{% endblock %}
 {% block body %}
 
 {% if announce %}
 
 {% for i in announce %}
-    <h3> Announcement Name: {{i.announcement_name}}</h3>
+    <h3><font color="red"> Name :</font><b> {{i.announcement_name}}</b></h3>
     <br/>
-    <h3> Announcement Detail: {{i.detail}}</h3>
+    <h3> <font color="red">Detail:</font> {{i.detail}}</h3>
     <br/>
+    <h4><font color="red">Date:</font> <b> {{i.date_of_announcement}}</b></h4>
+    <h4><font color="red">Time:</font> <b> {{i.time_of_announcement}}</b></h4>
     {% if  i.file_type == 'img' %}
     <img src="{{i.announcement_file}}">
     {%else%}
-    <embed src="/{{i.announcement_file}}"type="application/pdf" width="100px" height="600px"/>
+    <input type="button" class="btn btn-primary" id="btn-pdf" data-sid="{{i.announcement_id}}" value="View">
     {%endif%}
     <hr/>
     <br/>

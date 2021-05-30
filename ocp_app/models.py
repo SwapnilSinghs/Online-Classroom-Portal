@@ -56,8 +56,8 @@ class Announcement(models.Model):
     detail = models.CharField(max_length = 150)
     announcement_file = models.FileField(upload_to='announcements/')
     file_type = models.CharField(max_length=3)
-    date_of_announcement = models.DateField(blank=True, null=True)
-    time_of_announcement = models.TimeField(auto_now=False, auto_now_add=False)
+    date_of_announcement = models.DateField(auto_now=True)
+    time_of_announcement = models.TimeField(auto_now=True)
     
 class Forum(models.Model):
     snum = models.AutoField(primary_key=True)
