@@ -1,0 +1,23 @@
+{% extends my_template %}
+
+{% load static %}
+{% block css %}
+
+{% endblock %}
+{% block body %}
+
+
+{% if material %}
+
+<h1>Hello</h1>
+
+
+{% else %}
+
+<h3> No Material is Present</h3>
+
+{% endif %}
+
+<input type="button" class="btn btn-danger" id="btn-del" onclick="location.href='/addMaterial/' "value="Add Material">
+
+{% endblock %}

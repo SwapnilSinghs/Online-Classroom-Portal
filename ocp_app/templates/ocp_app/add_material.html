@@ -2,20 +2,13 @@
 
 {% load static %}
 {% block css %}
-.form-body{
-  display:block;
-  width:50%;
-  font-size:25px;
-}
-button{
-  padding:15px;
-  
-}
 {% endblock %}
-  {% block body %}
 
-  <div class="form-body">
-    <form class="form-signin" action="/add_announcement/" method="post" enctype="multipart/form-data">
+
+{% block body %}
+
+<div class="form-body">
+    <form class="form-signin" action="#" method="post" enctype="multipart/form-data">
         {% csrf_token %}
     <div class="mb-3">
        <p> <label for="name" class="form-label">Announcement Name</label>
@@ -49,9 +42,4 @@ button{
       </p>
     </form>
 
-    </div>
-
-
-    
-
-    {% endblock %}
+{% endblock %}

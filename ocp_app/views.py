@@ -15,6 +15,7 @@ from django.utils import timezone
 import datetime
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse,JsonResponse
+from django.http import FileResponse, Http404
 
 my_group_student = Group.objects.get_or_create(name='Student')
 my_group_teacher = Group.objects.get_or_create(name='Teacher') 
@@ -401,10 +402,13 @@ def announcements(request):
         template_values = 'ocp_app/dashboard.html'
     else:
         template_values = 'ocp_app/dashboardTeach.html'
+    
+
     params={'img':img,'user':id,'announce':announce,'my_template':template_values}
     return render(request,'ocp_app/announcement.html',params)
 
 
+@login_required
 def addAnnouncements(request):
     img,id=fun(request)
 
@@ -424,13 +428,18 @@ def addAnnouncements(request):
 
 def add_announcement(request):
     if request.method == "POST" and request.FILES['announce_file']:
+        file_type = request.POST.get('file_type','')
         imgfile = request.FILES['announce_file']
-        fs = FileSystemStorage()
-        imgfilename = fs.save(imgfile.name,imgfile)
-        imgurl = fs.url(imgfilename)
+        if file_type=='img':
+            fs = FileSystemStorage()
+            imgfilename = fs.save(imgfile.name,imgfile)
+            imgurl = fs.url(imgfilename)
+        else:
+            imgurl=imgfile
         name = request.POST.get('name', '')
         detail = request.POST.get('detail', '')
         file_type = request.POST.get('file_type','')
+        
         #date_of_announcement=datetime.date.today()
         #time_of_announcement=timezone.now
         dept=request.POST.get('dept', '')
@@ -567,4 +576,24 @@ def del_course(request):
             teacher.delete()
 
         return JsonResponse({'status':1})
+
+def view_material(request,cid):
+    img,id=fun(request)
+    course=Courses.objects.get(pk=cid)
+    material=studyMaterial.objects.filter(course=course)
+    g=request.user.groups.all()
+    g_id=Group.objects.get(name=g[0]).id
+    if g_id==1:
+        template_values = 'ocp_app/dashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
     
+
+        params={'img':img,'user':id,'material':material,'my_template':template_values}
+       
+        return render(request, 'ocp_app/view_study.html',params)
+
+def addMaterial(request):
+    img,id=fun(request)
+    params={'img':img,'user':id}
+    return render(request,'add_material.html',params)

@@ -22,4 +22,6 @@ urlpatterns = [
     path('home/',views.home,name='home'),
     #path('dashboardTeach/', views.dashboardTeach, name='dashboardTeach'),
     path('homeTeach/',views.homeTeach,name='homeTeach'),
+    #path('view_material/<str:cid>',views.view_material,name='view_material'),
+    #path('addMaterial/',views.addMaterial,name='addMaterial'),
 ]

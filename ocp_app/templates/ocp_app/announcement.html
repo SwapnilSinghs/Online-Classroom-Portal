@@ -1,8 +1,9 @@
 {% extends my_template %}
 {% load static %}
 {% block css %}
-h3{
-    
+aimg{
+    height:500px;
+    width:500px;
 }
 
 {% endblock %}
@@ -18,9 +19,10 @@ h3{
     <h4><font color="red">Date:</font> <b> {{i.date_of_announcement}}</b></h4>
     <h4><font color="red">Time:</font> <b> {{i.time_of_announcement}}</b></h4>
     {% if  i.file_type == 'img' %}
-    <img src="{{i.announcement_file}}">
+    <img id="aimg" src="{{i.announcement_file}}">
     {%else%}
-    <input type="button" class="btn btn-primary" id="btn-pdf" data-sid="{{i.announcement_id}}" value="View">
+    <a href="{{i.announcement_file.url}}"><button class="btn btn-primary"> View </button></a>
+    
     {%endif%}
     <hr/>
     <br/>
@@ -32,6 +34,7 @@ h3{
 No Announcement !! 
 
 {% endif %}
+
 
 
 {% endblock %}
