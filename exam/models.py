@@ -29,14 +29,14 @@ class Assignment(models.Model):
 
 class Answer(models.Model):
     ans_id = models.AutoField(primary_key=True)
-    stud_id = models.CharField(max_length=50,default="")
+    stud_id = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     submittedfile = models.FileField(upload_to='uploads/')
     date = models.DateTimeField(auto_now=True)
 
 class Result(models.Model):
     result_id = models.AutoField(primary_key=True)
-    stud_id = models.CharField(max_length=50,default="")
+    stud_id = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     dept = models.CharField(max_length=255,default="")
     exam_type = models.CharField(max_length = 255,default="")
@@ -45,7 +45,7 @@ class Result(models.Model):
 
 class Query(models.Model):
     query_id = models.AutoField(primary_key=True)
-    stud_id = models.CharField(max_length=50,default="")
+    stud_id = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     exam_type = models.CharField(max_length = 255,default="")
     query_subject = models.CharField(max_length=255,default="")
