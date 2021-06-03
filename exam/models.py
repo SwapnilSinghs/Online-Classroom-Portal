@@ -1,5 +1,5 @@
 from django.db import models
-from ocp_app.models import Courses
+from ocp_app.models import Courses,Student,Teacher
 
 # Create your models here.
 class Exam(models.Model):
@@ -13,7 +13,7 @@ class Exam(models.Model):
     exam_fileUpload = models.FileField(upload_to='uploads/')
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     dept = models.CharField(max_length=255,default="")
-    uploaded_by = models.CharField(max_length = 255,default="")
+    uploaded_by = models.ForeignKey(Teacher, to_field='username', on_delete=models.CASCADE,null=True)
 
 class Assignment(models.Model):
     assignment_id = models.AutoField(primary_key=True)
@@ -25,7 +25,7 @@ class Assignment(models.Model):
     assignment_fileUpload = models.FileField(upload_to='uploads/')
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     dept = models.CharField(max_length=255,default="")
-    uploaded_by = models.CharField(max_length = 255,default="")
+    uploaded_by = models.ForeignKey(Teacher, to_field='username', on_delete=models.CASCADE,null=True)
 
 class Answer(models.Model):
     ans_id = models.AutoField(primary_key=True)

@@ -16,7 +16,7 @@ class Courses(models.Model):
 class Student(models.Model):
     snum = models.AutoField(primary_key=True)
     img = models.ImageField(default="")
-    username = models.CharField(max_length=15,default="")
+    username = models.CharField(max_length=15,default="",unique=True)
     firstname = models.CharField(max_length=20,default="")
     lastname = models.CharField(max_length=20,default="")
     dob = models.DateField(blank=True, null=True)
@@ -25,12 +25,12 @@ class Student(models.Model):
     phone = models.CharField(max_length=10,validators=[MinLengthValidator(10)],default="",help_text = "Enter 10 digit phone number")
     password = models.CharField(max_length=20, default="")
     year = models.CharField(max_length = 1,default="0")    
-    course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
+    course = models.CharField(max_length=255,default="")
 
 class Teacher(models.Model):
     tnum = models.AutoField(primary_key=True)
     img = models.ImageField(default=" ")
-    username = models.CharField(max_length=15,default="")
+    username = models.CharField(max_length=15,default="",unique=True)
     firstname = models.CharField(max_length=20,default="")
     lastname = models.CharField(max_length=20,default="")
     dob = models.DateField(blank=True, null=True)
@@ -39,7 +39,7 @@ class Teacher(models.Model):
     phone = models.CharField(max_length=10,validators=[MinLengthValidator(10)],default="",help_text = "Enter 10 digit phone number")
     designation = models.CharField(max_length = 15,default=" ")
     password = models.CharField(max_length=20, default="")
-    course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
+    course = models.CharField(max_length=255,default="")
 
 class studyMaterial(models.Model):
     material_id=models.IntegerField()
