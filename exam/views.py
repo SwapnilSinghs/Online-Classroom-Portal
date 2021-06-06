@@ -13,3 +13,6 @@ def examDashboard(request):
 
 def addAssignment(request):
     return render(request, 'addAssignment.html')
+
+def addExam(request):
+    return render(request, 'addExam.html')

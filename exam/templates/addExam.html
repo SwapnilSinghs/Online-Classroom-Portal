@@ -282,22 +282,22 @@ card-header{
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
-				<h5>Create a new Assignment</h5>
+				<h5>Create a new Exam</h5>
 			</div>
 			<div class="card-body">
-				<form action="" method="post" id="addAssignment" enctype="multipart/form-data">{% csrf_token %}
+				<form action="" method="post" id="addExam" enctype="multipart/form-data">{% csrf_token %}
                     <div class="input-group form-group">
-                        <label class="control-label col-sm-4">Assignment Name</label>
+                        <label class="control-label col-sm-4">Exam Name</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-tasks"></i></span>
 						</div>
-						<input type="text" class="form-control" id="assign_name" name='assign_name'>
+						<input type="text" class="form-control" id="examName" name='examName'>
                     </div>
                     <div class="input-group form-group">
-                        <label class="control-label col-sm-4">Upload Assignment</label>
+                        <label class="control-label col-sm-4">Upload Question Paper</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="assign_file">
-                            <label class="custom-file-label" for="assign_file">Choose file</label>
+                            <input type="file" class="custom-file-input" id="exam_Qpaper_file">
+                            <label class="custom-file-label" for="exam_Qpaper_file">Choose file</label>
                         </div>
                     </div>
                     <div class="input-group form-group">
@@ -305,21 +305,32 @@ card-header{
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-calendar"> </i></span>
 						</div>
-						<input type="text" class="form-control" id="doa" name='doa'  onfocus="(this.type='date')">
+						<input type="text" class="form-control" id="doe" name='doe'  onfocus="(this.type='date')">
                     </div>
                     <div class="input-group form-group">
                         <label class="control-label col-sm-4">Start Time</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-clock"></i></span>
 						</div>
-						<input type="time" class="form-control" id="ast" name='ast'>
+						<input type="time" class="form-control" id="est" name='est'>
                     </div>
                     <div class="input-group form-group">
                         <label class="control-label col-sm-4">End Time</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-clock"></i></span>
 						</div>
-						<input type="time" class="form-control" id="aet" name='aet'>
+						<input type="time" class="form-control" id="eet" name='eet'>
+                    </div>
+                    <br>
+                    <div>
+                        <label class="control-label col-sm-4">Exam Type</label>
+                        <select class="form-control col-sm-7" id="examType" name='examType' style="display: inline-block;" required>
+                            <option style="display:none;" selected>Select Exam Type</option>
+                            <option>Sessional Test - 1</option>
+                            <option>Sessional Test - 2</option>
+                            <option>Pre-University Test</option>
+                            <option>University Test</option>
+                        </select>
                     </div>
                     <br>
                     <div>
@@ -354,11 +365,11 @@ card-header{
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-comments"></i></span>
 						</div>
-                        <textarea form ="addAssignment" id="detail" name='detail' rows="8" wrap="soft" class="form-control"></textarea>
+                        <textarea form ="addExam" id="detail" name='detail' rows="8" wrap="soft" class="form-control"></textarea>
                     </div>
                     <br>
 					<div class="form-group text-center">
-                        <input type="submit" value="Create Assignment" class="btn signup_btn">
+                        <input type="submit" value="Create Exam" class="btn signup_btn">
                     </div>
                 </form>
                 <script type="application/javascript">
