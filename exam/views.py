@@ -9,3 +9,7 @@ from ocp_app.models import Student, Department, Teacher, Courses,Announcement, F
 
 def examDashboard(request):
     return render(request, 'examDashboard.html')
+
+
+def addAssignment(request):
+    return render(request, 'addAssignment.html')

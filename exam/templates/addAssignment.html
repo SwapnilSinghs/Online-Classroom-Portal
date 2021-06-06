@@ -10,7 +10,7 @@ align-content: center;
 .card{
 margin-top: 50px;
 margin-bottom: 50px;
-width: 90%;
+width: 100%;
 background-color: white;
 border-color: grey; 
 }
@@ -276,83 +276,82 @@ card-header{
     text-shadow: 1px 1px 3px #000000;
     font-weight: 50;
 }
-
-/* Profile pic in update profile */
-.profile-pic {
-  border-radius: 50%;
-  height: 150px;
-  width: 150px;
-  background-size: cover;
-  background-position: center;
-  background-blend-mode: multiply;
-  background-color: rgba(0,0,0,0.2);
-  vertical-align: middle;
-  text-align: center;
-  color: transparent;
-  transition: all .3s ease;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.profile-pic:hover {
-  background-color: rgba(0,0,0,.5);
-  z-index: 10000;
-  color: #fff;
-  transition: all .3s ease;
-  text-decoration: none;
-}
-
-.profile-pic span {
-  display: inline-block;
-  padding-top: 4em;
-  padding-bottom: 4em;
-}
-
-form input[type="file"] {
-        display: none;
-        cursor: pointer;
-}
 {% endblock %}
 {% block body %}
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
 			<div class="card-header">
-				<h5>Forum - Ask queries or concerns</h5>
+				<h5>Create a new Assignment</h5>
 			</div>
 			<div class="card-body">
-				<form action="" method="post" id="forum" enctype="multipart/form-data">{% csrf_token %}
+				<form action="" method="post" id="addAssignment" enctype="multipart/form-data">{% csrf_token %}
                     <div class="input-group form-group">
-                        <label class="control-label col-sm-4">Name</label>
+                        <label class="control-label col-sm-4">Assignment Name</label>
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-tasks"></i></span>
+						</div>
+						<input type="text" class="form-control" id="assign_name" name='assign_name'>
+                    </div>
+                    <div class="input-group form-group">
+                        <label class="control-label col-sm-4">Due date</label>
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-calendar"> </i></span>
+						</div>
+						<input type="text" class="form-control" id="doa" name='doa'  onfocus="(this.type='date')">
+                    </div>
+                    <div class="input-group form-group">
+                        <label class="control-label col-sm-4">Start Time</label>
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-clock"></i></span>
+						</div>
+						<input type="time" class="form-control" id="ast" name='ast'>
+                    </div>
+                    <div class="input-group form-group">
+                        <label class="control-label col-sm-4">End Time</label>
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-clock"></i></span>
+						</div>
+						<input type="time" class="form-control" id="aet" name='aet'>
+                    </div>
+                    <br>
+                    <div>
+                        <label class="control-label col-sm-4">Course</label>
+                        <select class="form-control col-sm-7" id="course" name='course' style="display: inline-block;" required>
+                            {% for i in courses %}
+                                <option style="display:none;" selected>Select Course</option>
+                                <option value="{{ i.course_name }}">{{ i.course_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <div>
+                        <label class="control-label col-sm-4">Department</label>
+                        <select class="form-control col-sm-7" id="dept" name='dept' style="display: inline-block;" required>
+                            {% for i in department %}
+                                <option style="display:none;" selected>Select Department</option>
+                                <option value="{{ i.dept_name }}">{{ i.dept_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <div class="input-group form-group">
+                        <label class="control-label col-sm-4">Uploaded By</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" id="name" name='name' value="{{ name }}" readonly>
-                    </div>
-					<div class="input-group form-group">
-                        <label class="control-label col-sm-4">Email Address</label>
-						<div class="input-group-prepend">
-							<span class="input-group-text"><i class="fas fa-envelope"></i></span>
-						</div>
-						<input type="email" class="form-control" id="email" name='email' value="{{ email }}" readonly>
-					</div>
-                    <div class="input-group form-group">
-                        <label class="control-label col-sm-4">Subject</label>
-						<div class="input-group-prepend">
-							<span class="input-group-text"><i class="fas fa-book"></i></span>
-						</div>
-						<input type="text" class="form-control" id="subject" name='subject'  value="{{ subject }}">
+						<input type="text" class="form-control" id="uploadedBy" name='uploadedBy'  value="{{ uploadedBy }}" readonly>
                     </div>
                     <div class="input-group form-group">
-                        <label class="control-label col-sm-4">Comments and Questions</label>
+                        <label class="control-label col-sm-4">Instructions/Details</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-comments"></i></span>
 						</div>
-                        <textarea form ="forum" name="msg" id="msg" rows="8" wrap="soft" class="form-control"></textarea>
+                        <textarea form ="addAssignment" id="detail" name='detail' rows="8" wrap="soft" class="form-control"></textarea>
                     </div>
                     <br>
 					<div class="form-group text-center">
-                        <input type="submit" value="Submit" class="btn signup_btn">
+                        <input type="submit" value="Create Assignment" class="btn signup_btn">
                     </div>
                 </form>
             </div>
