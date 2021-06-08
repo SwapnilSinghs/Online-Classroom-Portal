@@ -5,7 +5,7 @@ from ocp_app.models import Courses,Student,Teacher
 class Exam(models.Model):
     exam_id = models.AutoField(primary_key=True)
     exam_name = models.CharField(max_length = 255,default="")
-    exam_type = models.CharField(max_length = 15,default="")
+    exam_type = models.CharField(max_length = 255,default="")
     exam_date = models.DateField(blank=True, null=True)
     exam_start_time = models.TimeField(blank=True, null=True)
     exam_end_time = models.TimeField(blank=True, null=True)
