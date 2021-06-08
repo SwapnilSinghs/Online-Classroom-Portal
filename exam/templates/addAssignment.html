@@ -1,4 +1,4 @@
-{% extends 'ocp_app/dashboard.html' %}
+{% extends 'examDashboard.html' %}
 {% load static %}
 {% block css %}
 
@@ -296,7 +296,7 @@ card-header{
                     <div class="input-group form-group">
                         <label class="control-label col-sm-4">Upload Assignment</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="assign_file">
+                            <input type="file" class="custom-file-input" id="assign_file" name="assign_file">
                             <label class="custom-file-label" for="assign_file">Choose file</label>
                         </div>
                     </div>
@@ -312,14 +312,14 @@ card-header{
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-clock"></i></span>
 						</div>
-						<input type="time" class="form-control" id="ast" name='ast'>
+						<input type="time" class="form-control" id="ast" name='ast' min="09:00" max="18:00" value="13:30">
                     </div>
                     <div class="input-group form-group">
                         <label class="control-label col-sm-4">End Time</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-clock"></i></span>
 						</div>
-						<input type="time" class="form-control" id="aet" name='aet'>
+						<input type="time" class="form-control" id="aet" name='aet' min="09:00" max="18:00" value="13:30">
                     </div>
                     <br>
                     <div>
@@ -335,7 +335,7 @@ card-header{
                     <div>
                         <label class="control-label col-sm-4">Department</label>
                         <select class="form-control col-sm-7" id="dept" name='dept' style="display: inline-block;" required>
-                            {% for i in department %}
+                            {% for i in departments %}
                                 <option style="display:none;" selected>Select Department</option>
                                 <option value="{{ i.dept_name }}">{{ i.dept_name }}</option>
                             {% endfor %}

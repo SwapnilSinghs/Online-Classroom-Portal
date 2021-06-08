@@ -1,4 +1,4 @@
-{% extends 'ocp_app/dashboard.html' %}
+{% extends 'examDashboard.html' %}
 {% load static %}
 {% block css %}
 
@@ -312,14 +312,14 @@ card-header{
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-clock"></i></span>
 						</div>
-						<input type="time" class="form-control" id="est" name='est'>
+                        <input type="time" class="form-control" id="est" name='est' min="09:00" max="18:00" value="13:30">
                     </div>
                     <div class="input-group form-group">
                         <label class="control-label col-sm-4">End Time</label>
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-clock"></i></span>
 						</div>
-						<input type="time" class="form-control" id="eet" name='eet'>
+                        <input type="time" class="form-control" id="eet" name='eet' min="09:00" max="18:00" value="13:30">
                     </div>
                     <br>
                     <div>
