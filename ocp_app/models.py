@@ -48,6 +48,9 @@ class studyMaterial(models.Model):
     material = models.FileField(upload_to='uploads/')
     department = models.ForeignKey(Department,to_field='dept_id', on_delete=models.CASCADE)
     course = models.ForeignKey(Courses,to_field='course_id', on_delete=models.CASCADE)
+    uploaded_by = models.CharField(max_length = 150)    
+    date_of_upload = models.DateField(auto_now=True)
+    time_of_upload = models.TimeField(auto_now=True)
     
 class Announcement(models.Model):
     announcement_id = models.AutoField(primary_key=True)

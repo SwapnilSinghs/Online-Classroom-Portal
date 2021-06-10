@@ -51,7 +51,7 @@ h2{
           <h3 class="card-title"style="color:red;">{{i.course_name}}</h3>
           <h6 class="card-subtitle mb-2 text-muted">{{i.course_id}}</h6>
           <p class="card-text">Good Luck</p>
-          <button type="button" class="btn btn-primary">Go To course</button>
+          <input type="button" class="btn btn-primary"id="btn-course" onclick="location.href='/view_material/{{i.course_id}}';" value="Go To course">
           <input type="button" class="btn btn-danger" id="btn-del" data-sid="{{i.course_id}}" value="Remove course">
         </div>
       </div>

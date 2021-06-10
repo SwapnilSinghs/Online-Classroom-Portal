@@ -1,8 +1,13 @@
-{% extends './dashboard.html' %}
+{% extends '../ocp_app/dashboard.html' %}
+
+
 {% load static %}
 {% block css %}
-.enroll_course{
-  display: -webkit-inline-box;
+.add_announce{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  grid-auto-rows: auto;
+  grid-gap: 2rem;
   align-content: space-between;
   justify-content: space-evenly;
   align-items: flex-end;
@@ -13,63 +18,44 @@
 .card{
   margin: 25px 25px 25px 25px;
   border: 2px solid;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  
 }
+
 
 .btn{
   font-size: 0.8rem;
 }
-
 h2{
-    font-size: 1.75rem;
-    text-align: center;
-    color: green;
-}
-
-.text{
-    padding:50px;
-    font-size: 4.75rem;
-    text-align: center;
-    color: green;
+  font-size: 1.75rem;
+  text-align: center;
+  color: green;
 }
 
 
 
 {% endblock %}
 
-
 {% block body %}
 
-
-{% if course %}
-<h2>Enrolled Courses</h2>
+<h2>New Courses</h2>
 <div id="msg"class="alert alert-danger"style="display:none"></div>
-<div class="enroll_course">
-  
-    {% for i in course %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h3 class="card-title"style="color:red;">{{i.course_name}}</h3>
-          <h6 class="card-subtitle mb-2 text-muted">{{i.course_id}}</h6>
-          <p class="card-text">Good Luck</p>
-          <input type="button" class="btn btn-primary"id="btn-course" onclick="location.href='/view_material/{{i.course_id}}';" value="Go To course">
-          <input type="button" class="btn btn-danger" id="btn-del" data-sid="{{i.course_id}}" value="Remove course">
-        </div>
-      </div>
-    
-    {% endfor %}
+<div class="add_announce">
+ 
+{% for i in new_course %}
+<div class="card" style="width: 18rem; height:15rem;">
+    <div class="card-body">
+      <h3 class="card-title" id="c_name">{{i.course_name}}</h3>
+      <h6 class="card-subtitle mb-2 text-muted" id="c_id">{{i.course_id}}</h6>
+      <p class="card-text">Good Luck</p>
+      <input type="button" class="btn btn-primary" id="btn-add" data-sid="{{i.course_id}}" value="Add course">
+      
+      
     </div>
+  </div>
 
-{% else %}
-<h3 class="text"> No Courses Enrolled !! </h3>
-
-{% endif %}
-
-
-
-
-
-
-
+{% endfor %}
 </div>
 
 {% include "../ocp_app/ajax.html" %}

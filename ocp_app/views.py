@@ -5,7 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
-from .models import Student, Department, Teacher, Courses, Announcement, Forum
+
+from .models import Student, Department, Teacher, Courses, Announcement, Forum , studyMaterial
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.mail import send_mail
@@ -325,8 +326,10 @@ def courseStud(request):
         course = []
         if student != '\0':
             img = student[0].img
-            for i in student:
-                courses = i.course
+            cours = student[0].course
+            arr = list(map(str, cours.strip().split()))
+            for i in arr:
+                courses = Courses.objects.get(course_id=i)
                 course.append(courses)
 
     else:
@@ -334,16 +337,12 @@ def courseStud(request):
         img = teacher[0].img
         course = []
         if teacher != '\0':
-            for i in teacher:
-                courses = i.course
+            cours = teacher[0].course
+            arr = list(map(str, cours.strip().split()))
+            for i in arr:
+                courses = Courses.objects.get(course_id=i)
                 course.append(courses)
 
-    if len(course) > 1:
-        course.pop(0)
-
-    if course[0] == None:
-        course = []
-    print(course)
     params = {'img': img, 'user': id, 'course': course}
     return render(request, 'ocp_app/courseStud.html', params)
 
@@ -360,9 +359,12 @@ def addCourse(request):
         img = student[0].img
         year = student[0].year
         dept_name = student[0].dept
-        for i in student:
-            courses = i.course
+        cours = student[0].course
+        arr = list(map(str, cours.strip().split()))
+        for i in arr:
+            courses = Courses.objects.get(course_id=i)
             course.append(courses)
+
         dept = Department.objects.filter(dept_name=dept_name).first()
 
         all_courses = Courses.objects.filter(year=year, dept=dept)
@@ -378,8 +380,10 @@ def addCourse(request):
         print(dep)
         dept = list(map(str, dep.strip().split(',')))
         print(dept)
-        for i in teacher:
-            courses = i.course
+        cours = teacher[0].course
+        arr = list(map(str, cours.strip().split()))
+        for i in arr:
+            courses = Courses.objects.get(course_id=i)
             course.append(courses)
 
         print(course)
@@ -393,8 +397,6 @@ def addCourse(request):
                 all_courses.append(i)
 
     new_course = []
-    if len(course) > 1:
-        course.pop(0)
     all_courses = list(all_courses)
     for i in (all_courses):
         if i not in course:
@@ -544,39 +546,24 @@ def add_course(request):
             print(cid)
             username = request.user.username
             student = Student.objects.filter(username=username)
-            img = student[0].img
-            fname = student[0].firstname
-            lname = student[0].lastname
-            dob = student[0].dob
-            dept = student[0].dept
-            email = student[0].email
-            phone = student[0].phone
-            password = student[0].password
-            year = student[0].year
-            course = Courses.objects.get(pk=cid)
-            print(course)
+            cours = student[0].course
+            arr = list(map(str, cours.strip().split()))
+            arr.append(cid)
 
-            student = Student(img=img, username=username, firstname=fname, lastname=lname, dob=dob,
-                              dept=dept, email=email, phone=phone, password=password, year=year, course=course)
-            student.save()
+            new_cours = ' '.join(arr)
+
+            Student.objects.filter(username=id).update(course=new_cours)
 
             return JsonResponse({'status': 1})
         else:
             username = request.user.username
             teach = Teacher.objects.filter(username=username)
-            img = teach[0].img
-            fname = teach[0].firstname
-            lname = teach[0].lastname
-            dob = teach[0].dob
-            dept = teach[0].dept
-            email = teach[0].email
-            phone = teach[0].phone
-            password = teach[0].password
-            desig = teach[0].designation
-            course = Courses.objects.get(pk=cid)
-            teacher = Teacher(img=img, username=username, firstname=fname, lastname=lname, dob=dob,
-                              dept=dept, email=email, phone=phone, password=password, designation=desig, course=course)
-            teacher.save()
+            cours = teach[0].course
+            arr = list(map(str, cours.strip().split()))
+            arr.append(cid)
+            new_cours = ' '.join(arr)
+            Teacher.objects.filter(username=id).update(course=new_cours)
+
             return JsonResponse({'status': 1})
 
 
@@ -584,19 +571,29 @@ def add_course(request):
 def del_course(request):
     if request.method == "GET":
         img, id = fun(request)
-        announce = Announcement.objects.all()
-        params = {'img': img, 'user': id, 'announce': announce}
+
+        params = {'img': img, 'user': id}
         g = request.user.groups.all()
         g_id = Group.objects.get(name=g[0]).id
         cid = request.GET.get('sid')
         print(cid)
         username = request.user.username
         if g_id == 1:
-            student = Student.objects.filter(username=username, course=cid)
-            student.delete()
+            student = Student.objects.filter(username=username)
+            cours = student[0].course
+            arr = list(map(str, cours.strip().split()))
+            arr.remove(cid)
+            new_cours = ' '.join(arr)
+            Student.objects.filter(username=id).update(course=new_cours)
+
         else:
-            teacher = Teacher.objects.filter(username=username, course=cid)
-            teacher.delete()
+
+            teach = Teacher.objects.filter(username=username)
+            cours = teach[0].course
+            arr = list(map(str, cours.strip().split()))
+            arr.remove(cid)
+            new_cours = ' '.join(arr)
+            Teacher.objects.filter(username=id).update(course=new_cours)
 
         return JsonResponse({'status': 1})
 
@@ -607,18 +604,52 @@ def view_material(request, cid):
     material = studyMaterial.objects.filter(course=course)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
+
     if g_id == 1:
         template_values = 'ocp_app/dashboard.html'
     else:
         template_values = 'ocp_app/dashboardTeach.html'
 
         params = {'img': img, 'user': id, 'material': material,
-                  'my_template': template_values}
+                  'my_template': template_values, 'course_id': cid}
 
         return render(request, 'ocp_app/view_study.html', params)
 
 
-def addMaterial(request):
+def addMaterial(request, cid):
+    img, id = fun(request)
+    params = {'img': img, 'user': id, 'course_id': cid}
+
+    return render(request, 'ocp_app/add_material.html', params)
+
+
+def add_Material(request, cid):
     img, id = fun(request)
     params = {'img': img, 'user': id}
-    return render(request, 'add_material.html', params)
+    if request.method == "POST" and request.FILES['material_file']:
+        file_type = request.POST.get('file_type', '')
+        imgfile = request.FILES['material_file']
+        if file_type == 'img':
+            fs = FileSystemStorage()
+            imgfilename = fs.save(imgfile.name, imgfile)
+            imgurl = fs.url(imgfilename)
+        else:
+            imgurl = imgfile
+
+        m_id = request.POST.get('m_id', '')
+
+        detail = request.POST.get('detail', '')
+
+        cours = Courses.objects.get(pk=cid)
+        cours1 = Courses.objects.filter(pk=cid)
+
+        dept = cours1[0].dept
+
+        depart = Department.objects.filter(dept_id=dept)
+        print(depart)
+        material = studyMaterial(material_id=m_id, material_type=file_type, material_DESC=detail,
+                                 material=imgurl, department=dept, course=cours, uploaded_by=id)
+        material.save()
+
+        params = {'img': img, 'user': id, 'course_id': cid}
+        return render(request, 'ocp_app/add_material.html', params)
