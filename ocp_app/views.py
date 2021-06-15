@@ -343,7 +343,12 @@ def courseStud(request):
                 courses = Courses.objects.get(course_id=i)
                 course.append(courses)
 
-    params = {'img': img, 'user': id, 'course': course}
+    if g_id == 1:
+        template_values = 'ocp_app/dashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
+
+    params = {'img': img, 'user': id, 'course': course,'my_template':template_values}
     return render(request, 'ocp_app/courseStud.html', params)
 
 
@@ -403,7 +408,11 @@ def addCourse(request):
             new_course.append(i)
    # print(list(new_course) - course )
     print(new_course)
-    params = {'img': img, 'user': id, 'new_course': new_course}
+    if g_id == 1:
+        template_values = 'ocp_app/dashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
+    params = {'img': img, 'user': id, 'new_course': new_course,'my_template':template_values}
     return render(request, 'ocp_app/addCourse.html', params)
 
 
@@ -487,8 +496,12 @@ def updateProfile(request):
         dept = student[0].dept
         email = student[0].email
         phone = student[0].phone
+    if g_id == 1:
+        template_values = 'ocp_app/dashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
     params = {'img': img, 'user': id, 'firstname': fname,
-              'lastname': lname, 'dob': dob, 'email': email, 'phone': phone}
+              'lastname': lname, 'dob': dob, 'email': email, 'phone': phone,'my_template':template_values}
     if request.method == "POST" and 'fileToUpload' in request.FILES:
         imgfile = request.FILES['fileToUpload']
         fs = FileSystemStorage()
@@ -521,7 +534,11 @@ def forum(request):
         student = Teacher.objects.filter(username=id)
         name = student[0].firstname + ' ' + student[0].lastname
         email = student[0].email
-    params = {'img': img, 'user': id, 'name': name, 'email': email}
+    if g_id == 1:
+        template_values = 'ocp_app/dashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
+    params = {'img': img, 'user': id, 'name': name, 'email': email,'my_template':template_values}
     if request.method == "POST":
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
@@ -653,3 +670,29 @@ def add_Material(request, cid):
 
         params = {'img': img, 'user': id, 'course_id': cid}
         return render(request, 'ocp_app/add_material.html', params)
+
+
+def viewStudent(request):
+    img, id = fun(request)
+    params = {'img': img, 'user': id}
+    return render(request,'ocp_app/viewStudent.html',params)
+
+
+def search_student(request):
+    img, id = fun(request)
+
+    if request.method == 'GET':
+        sname=request.GET.get('sid','')
+        print(sname)
+        student=Student.objects.filter(username=sname).values()
+        student_data=list(student)
+        
+        if student :
+           
+            return JsonResponse({'status': 1 , 'student':student_data})
+
+        else:
+            return JsonResponse({'status': 0})
+
+    else:
+        return JsonResponse({'status': 0})

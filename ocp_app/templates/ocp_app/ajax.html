@@ -54,3 +54,61 @@
     });
     
 </script>
+
+
+
+
+<script>
+     $("#btnsearch").click(function()
+    {
+        console.log("Search Button Clicked");
+        let id = $('#sid').val();
+        console.log(id);
+        mydata = {sid : id};
+        $.ajax({
+            url: "{% url 'search_student' %}",
+            method:"GET",
+            data: mydata,
+            success : function(data){
+                
+                if(data.status==1){
+                    x=data.student
+                    
+                    console.log(x[0])
+                    $("#msg").text("Student Found");
+                    $("#msg").show().delay(2000).fadeOut();
+                    var image = x[0].img;
+                    var image_file = '<img src="'+ image+'" height="200" width="200" />';
+                    console.log(image.url,5)
+                    $("#userTable td#img ").append(image_file);
+                    var username = x[0].username;
+                    $("#userTable td#uname ").append(username);
+                    var firstname = x[0].firstname;
+                    $("#userTable td#fname ").append(firstname);
+                    var lastname = x[0].lastname;
+                    $("#userTable td#lname ").append(lastname);
+                    var dob = x[0].dob;
+                    $("#userTable td#dob ").append(dob);
+                    var dept = x[0].dept;
+                    $("#userTable td#dept ").append(dept);
+                    var email = x[0].email;
+                    $("#userTable td#email ").append(email);
+                    var phone = x[0].phone;
+                    $("#userTable td#phone ").append(phone);
+                    var year = x[0].year;
+                    $("#userTable td#year ").append(year);
+                    var course = x[0].course;
+                    console.log(course)
+                    $("#userTable td#course ").append(course);
+                }
+
+                if(data.status==0){
+                    $("#msg").text("Student not found");
+                    $("#msg").show().delay(2000).fadeOut();
+                }
+                $("form")[0].reset();
+            },
+        });
+    });
+    
+</script>
