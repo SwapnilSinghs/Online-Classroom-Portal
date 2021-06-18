@@ -1,0 +1,53 @@
+{% extends './dashboard.html' %}
+
+{% load static %}
+{% block css %}
+.depart{
+    padding:25px;
+    margin:25px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 3px solid grey;
+    text-align: left;
+    padding: 8px;
+  }
+
+{% endblock %}
+{% block body %}
+
+<div id="msg"class="alert alert-danger"style="display:none"></div>
+<div class="depart">
+<table>
+    
+        <thead>
+                <tr>
+                    <th>Department Id</th>
+                    <th>Department Name</th>
+                    <th>Action</th>
+
+                </tr>
+        </thead>
+        {% for i in department %}
+        <tr>
+           <td> {{i.dept_id}}</td>
+           <td> {{i.dept_name}}</td>
+           <td> <input type="button" class="btn btn-danger" value="Delete" id="btn-del"data-sid="{{i.dept_id}}"/></td>
+        </tr>
+
+        {% endfor %}
+    </table>
+
+
+</div>
+
+
+{% include "ajax.html" %}
+
+{% endblock %}

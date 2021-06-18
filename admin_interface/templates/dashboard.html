@@ -90,51 +90,47 @@
       </div>
       <ul class="categories">
         <li>
-          <i class="fa fa-home fa-fw"></i><a href="/home/"> Dashboard</a>
+          <i class="fa fa-home fa-fw"></i><a href="/admin/dashboard/"> Dashboard</a>
         </li>
-        <li><i class="fa fa-bullhorn"></i><a href="../announcements/"> Announcements</a></li>
+        <li><i class="fa fa-bullhorn"></i><a href="#"> Announcements</a>
+          <ul class="side-nav-dropdown">
+            <li><a href="../addAnnouncement/">Add Announcement</a></li>
+            <li><a href="../viewAnnouncement/">View Announcement</a></li>
+          </ul></li>
+
         <li><i class="fa fa-book-open"></i><a href="#"> Courses</a>
         <ul class="side-nav-dropdown">
-          <li><a href="../courseStud/">View Enrolled Courses</a></li>
-          <li><a href="../addCourse/">Add New Courses</a></li>
+          <li><a href="../createCourse/">Create New Courses</a></li>
           <li><a href="../deleteCourse/">Delete Courses</a></li>
         </ul>
       </li>
         <li><i class="fa fa-building"></i><a href="#"> Department</a>
         <ul class="side-nav-dropdown">
-            <li><a href="../courseStud/">View Enrolled Courses</a></li>
-            <li><a href="../addCourse/">Add New Courses</a></li>
-            <li><a href="../deleteCourse/">Delete Courses</a></li>
+            <li><a href="../viewDepartment/">View Departments</a></li>
+            <li><a href="../createDepartment/">Add New Department</a></li>
+            
         </ul>
         </li>
 
         <li><i class="fas fa-user"></i><a href="#"> Students</a>
         <ul class="side-nav-dropdown">
-            <li><a href="../courseStud/">View Student Details</a></li>
-            <li><a href="../addCourse/">Update Student Details</a></li>
-            <li><a href="../deleteCourse/">Delete Student</a></li>
+            <li><a href="../viewStudent/">View Student Details</a></li>
+            
+      
         </ul>
         </li>
         
         <li><i class="fas fa-user"></i><a href="#"> Faculty</a>
         <ul class="side-nav-dropdown">
-            <li><a href="../courseStud/">View Faculty Details</a></li>
-            <li><a href="../addCourse/">Add Faculty Details</a></li>
-            <li><a href="../deleteCourse/">Delete Faculty</a></li>
+            <li><a href="../viewFaculty/">View Faculty Details</a></li>
+            
         </ul>
         </li>
 
         <li><i class="fa fa-edit"></i><a href="#"> Exams</a></li>
 
         <li><i class="fa fa-comment-alt"></i><a href="/forum/"> Forum</a></li>
-        <li>
-            
-          <i class="fa fa-user"></i><a href="#"> Profile</a>
-          <ul class="side-nav-dropdown">
-            <!---<li><a href="/viewProfile/">View Profile</a></li>-->
-            <li><a href="/updateProfile/">View/Update Profile</a></li>
-          </ul>
-        </li>
+        
       </ul>
     </aside>
     <section id="contents">

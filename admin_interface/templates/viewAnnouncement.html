@@ -1,7 +1,7 @@
-{% extends my_template %}
+{% extends './dashboard.html' %}
 {% load static %}
 {% block css %}
-img{
+#aimg{
     height:500px;
     width:500px;
 }
@@ -11,6 +11,8 @@ img{
 
 {% if announce %}
 
+<div id="msg"class="alert alert-danger"style="display:none"></div>
+
 {% for i in announce %}
     <h3><font color="red"> Name :</font><b> {{i.announcement_name}}</b></h3>
     <br/>
@@ -19,12 +21,15 @@ img{
     <h4><font color="red">Date:</font> <b> {{i.date_of_announcement}}</b></h4>
     <h4><font color="red">Time:</font> <b> {{i.time_of_announcement}}</b></h4>
     {% if  i.file_type == 'img' %}
-    <img id="aimg" src="{{i.announcement_file}}">
+    <p><img id="aimg" src="{{i.announcement_file}}"></p>
+    
     {%else%}
-    <a href="{{i.announcement_file.url}}"><button class="btn btn-primary"> View </button></a>
+    <p><a href="{{i.announcement_file.url}}"><button class="btn btn-primary"> View </button></a></p>
     
     {%endif%}
+    <p><input type="button" class="btn btn-danger" id="btnannounce" data-sid="{{i.announcement_id}}" value="Delete"><p></p>
     <hr/>
+    
     <br/>
     {% endfor %}
 
@@ -35,6 +40,6 @@ No Announcement !!
 
 {% endif %}
 
-
+{% include "ajax.html" %}
 
 {% endblock %}

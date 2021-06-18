@@ -1,0 +1,57 @@
+{% extends './dashboard.html' %}
+
+{% load static %}
+{% block css %}
+.form-body{
+  display:block;
+  width:50%;
+  font-size:25px;
+}
+button{
+  padding:15px;
+  
+}
+{% endblock %}
+  {% block body %}
+
+  <div class="form-body">
+    <form class="form-signin" action="/admin/add_announcement/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="mb-3">
+       <p> <label for="name" class="form-label">Announcement Name</label>
+        <input type="text" class="form-control" id="name"name="name" placeholder="announcement_name"></p>
+      </div>
+      <div class="mb-3">
+       <p><label for="detail" class="form-label">Announcement Detail</label>
+        <textarea class="form-control" id="detail" name="detail" rows="3"></textarea></p>
+      </div>
+
+      <p><select class="form-select" aria-label="Default select example" id="file_type" name="file_type">
+        <option selected>File Type</option>
+        <option value="img">Image</option>
+        <option value="pdf">Pdf</option>
+        </select>
+        </p>
+    <p><select class="form-select" aria-label="Default select example" id="dept"name="dept">
+        <option selected>Select Department</option>
+        <option value="All">All</option>
+        {% for i in dept %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+        
+    
+    </select>
+    </p>
+    <p><input type="file" name="announce_file" id="announce_file"></p>
+
+    <p><button class="btn btn-primary" type="submit">
+        <b>Submit</b></button>
+      </p>
+    </form>
+
+    </div>
+
+
+    
+
+    {% endblock %}

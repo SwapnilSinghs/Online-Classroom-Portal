@@ -1,0 +1,111 @@
+{% extends './dashboard.html' %}
+{% load static %}
+{% block css %}
+
+.studentview{
+    padding-top:15px;
+    align-items:center;
+    justify-content:center;
+    width:50%;
+    
+    margin:auto;
+}
+
+.container{
+    padding-top:55px;
+    margin-bottom:15px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 3px solid grey;
+    text-align: left;
+    padding: 8px;
+  }
+
+#img{
+    height:50px;
+    width:50px;
+}
+
+
+
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="studentview">
+
+<form class="d-flex" method='get'>
+    <input class="form-control me-2" type="search"id="sid" placeholder="Search" ,aria-label="Search">
+    <input type="button" class="btn btn-outline-success" id="btnsearch"value="Search">
+</form>
+<div id="msg"class="alert alert-danger"style="display:none"></div>
+
+</div>
+
+
+<div class="container">
+    <table id="userTable" border="1" >
+       <thead>
+        <tr>
+            <th width="20%">Image</th>
+            <td id="img"></td>
+         </tr>
+         <tr>
+           <th width="20%">Username</th>
+           <td id="uname"></td>
+        </tr>
+        <tr>
+           <th width="20%">First Name</th>
+           <td id="fname"></td>
+        </tr>
+        <tr>
+           <th width="30%">Last Email</th>
+           <td id="lname"></td>
+         </tr>
+         <tr>
+            <th width="30%">DOB</th>
+            <td id="dob"></td>
+          </tr>
+          <tr>
+            <th width="30%">Department</th>
+            <td id="dept"></td>
+          </tr>
+          <tr>
+            <th width="30%">Email</th>
+            <td id="email"></td>
+          </tr>
+          <tr>
+            <th width="30%">Phone</th>
+            <td id="phone"></td>
+          </tr>
+          <tr>
+            <th width="30%">Year</th>
+            <td id="year"></td>
+          </tr>
+          <tr>
+            <th width="30%">Course</th>
+            <td id="course"></td>
+          </tr>
+       </thead>
+       
+    </table>
+
+    <div id="delbutton"></div>
+
+ </div>
+
+
+{% include "ajax.html" %}
+
+
+{% endblock %}
+

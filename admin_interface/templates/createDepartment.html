@@ -1,0 +1,19 @@
+{% extends './dashboard.html' %}
+
+{% block body %}
+
+<div class="form-body">
+    <form class="form-signin" action="/admin/create_Department/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="mb-3">
+       <p> <label for="name" class="form-label">Department ID</label>
+        <input type="text" class="form-control" id="name"name="dept_id" ></p>
+      </div>
+      <div class="mb-3">
+       <p><label for="detail" class="form-label">Department Name</label>
+        <input type="text" class="form-control" id="detail" name="dept_name"></textarea></p>
+      </div>
+
+      <button class="btn btn-success">Submit</button>
+
+{% endblock %}
