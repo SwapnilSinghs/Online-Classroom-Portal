@@ -5,6 +5,7 @@ urlpatterns = [
     path('examDashboard/',views.examDashboard,name='examDashboard'),
     path('addAssignment/',views.addAssignment,name='addAssignment'),
     path('viewAssignment/<int:assignid>',views.viewAssignment,name='viewAssignment'),
+    path('deleteAssignment/<int:assignid>',views.deleteAssignment,name='deleteAssignment'),
     path('viewExam/<int:examid>',views.viewExam,name='viewExam'),
     path('viewAllAssignment/',views.viewAllAssignment,name='viewAllAssignment'),
     path('viewAllExam/',views.viewAllExam,name='viewAllExam'),

@@ -65,34 +65,53 @@ def addAssignment(request):
     return render(request, 'addAssignment.html', params)
 
 
-def viewAssignment(request,assignid):
+def viewAssignment(request, assignid):
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
     id = request.user.username
-    if g_id == 1:
-        assign = Assignment.objects.filter(assignment_id=assignid)
-        print(assign)
-        name = assign[0].assignment_name
-        date = assign[0].assignment_date
-        st = assign[0].assignment_start_time
-        et = assign[0].assignment_end_time
-        detail = assign[0].assignment_detail
-        fileUpload = assign[0].assignment_fileUpload
-        dept = assign[0].dept
-        uploadedBy = assign[0].uploaded_by_id
-        cid = assign[0].course_id
-    else:
-        return render(request, 'examDashboard.html')
+    assign = Assignment.objects.filter(assignment_id=assignid)
+    name = assign[0].assignment_name
+    date = assign[0].assignment_date
+    st = assign[0].assignment_start_time
+    et = assign[0].assignment_end_time
+    detail = assign[0].assignment_detail
+    fileUpload = assign[0].assignment_fileUpload
+    dept = assign[0].dept
+    uploadedBy = assign[0].uploaded_by_id
+    cid = assign[0].course_id
     params = {'name': name, 'date': date, 'st': st, 'et': et, 'detail': detail,
               'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
     return render(request, 'viewAssignment.html', params)
 
 
+def deleteAssignment(request, assignid):
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id == 1:
+        return render(request, 'examDashboard.html')
+    else:
+        dc = Assignment.objects.get(assignment_id=assignid)
+        dc.delete()
+        return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllAssignment/'},0000);</script>")
+    return render(request, 'viewAllAssignment.html')
+
+
 def viewAllAssignment(request):
     assignments = Assignment.objects.all()
-    params = {'assignments':assignments}
-    return render(request, 'viewAllAssignment.html',params)
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id == 1:
+        deleteVisible = False
+    else:
+        deleteVisible = True
+    params = {'assignments': assignments, 'deleteVisible': deleteVisible}
+    return render(request, 'viewAllAssignment.html', params)
+
 
 def addExam(request):
     img, id = fun(request)
@@ -132,7 +151,7 @@ def addExam(request):
     return render(request, 'addExam.html', params)
 
 
-def viewExam(request,examid):
+def viewExam(request, examid):
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
@@ -158,5 +177,5 @@ def viewExam(request,examid):
 
 def viewAllExam(request):
     exams = Exam.objects.all()
-    params = {'exams':exams}
-    return render(request, 'viewAllExam.html',params)
+    params = {'exams': exams}
+    return render(request, 'viewAllExam.html', params)
