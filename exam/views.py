@@ -65,13 +65,14 @@ def addAssignment(request):
     return render(request, 'addAssignment.html', params)
 
 
-def viewAssignment(request):
+def viewAssignment(request,assignid):
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
     id = request.user.username
     if g_id == 1:
-        assign = Assignment.objects.filter(assignment_id=4)
+        assign = Assignment.objects.filter(assignment_id=assignid)
+        print(assign)
         name = assign[0].assignment_name
         date = assign[0].assignment_date
         st = assign[0].assignment_start_time
@@ -85,8 +86,13 @@ def viewAssignment(request):
         return render(request, 'examDashboard.html')
     params = {'name': name, 'date': date, 'st': st, 'et': et, 'detail': detail,
               'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
-    return render(request, 'viewAssignment.html',params)
+    return render(request, 'viewAssignment.html', params)
 
+
+def viewAllAssignment(request):
+    assignments = Assignment.objects.all()
+    params = {'assignments':assignments}
+    return render(request, 'viewAllAssignment.html',params)
 
 def addExam(request):
     img, id = fun(request)
@@ -125,6 +131,7 @@ def addExam(request):
             return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/addExam/'},0000);</script>")
     return render(request, 'addExam.html', params)
 
+
 def viewExam(request):
     img, id = fun(request)
     g = request.user.groups.all()
@@ -146,4 +153,8 @@ def viewExam(request):
         return render(request, 'examDashboard.html')
     params = {'name': name, 'etype': etype, 'date': date, 'st': st, 'et': et, 'detail': detail,
               'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
-    return render(request, 'viewExam.html',params)
+    return render(request, 'viewExam.html', params)
+
+
+def viewAllExam(request):
+    return render(request, 'viewAllExam.html')
