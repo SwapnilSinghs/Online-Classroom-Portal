@@ -132,13 +132,13 @@ def addExam(request):
     return render(request, 'addExam.html', params)
 
 
-def viewExam(request):
+def viewExam(request,examid):
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
     id = request.user.username
     if g_id == 1:
-        exam = Exam.objects.filter(exam_id=1)
+        exam = Exam.objects.filter(exam_id=examid)
         name = exam[0].exam_name
         etype = exam[0].exam_type
         date = exam[0].exam_date
@@ -157,4 +157,6 @@ def viewExam(request):
 
 
 def viewAllExam(request):
-    return render(request, 'viewAllExam.html')
+    exams = Exam.objects.all()
+    params = {'exams':exams}
+    return render(request, 'viewAllExam.html',params)

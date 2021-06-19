@@ -219,7 +219,7 @@
                 <div class="row">
                     <!-- Grid column -->
                     <div class="col-md-12">
-                        <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text" style="color: rgb(66, 8, 8);">List of All Assignments</h2>
+                        <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text" style="color: rgb(66, 8, 8);">List of All Exams/Tests</h2>
                     </div>
                     <!-- Grid column -->
                 </div>
@@ -242,16 +242,16 @@
                         <!--Table head-->
                         <!--Table body-->
                             <tbody>
-                                {% for i in assignments %}
+                                {% for i in exams %}
                                     <tr>
-                                        <td>{{i.assignment_id}}</td>
-                                        <td>{{i.assignment_name}}</td>
+                                        <td>{{i.exam_id}}</td>
+                                        <td>{{i.exam_name}}</td>
                                         <td>{{i.course_id}}</td>
-                                        <td>{{i.assignment_date}}</td>
-                                        <td>{{i.assignment_start_time}} to {{i.assignment_end_time}}</td>
+                                        <td>{{i.exam_date}}</td>
+                                        <td>{{i.exam_start_time}} to {{i.exam_end_time}}</td>
                                         <td>{{i.uploaded_by_id}}</td>
                                         <td>
-                                            <a href="/exam/viewAssignment/{{i.assignment_id}}" class="btn btn-danger">View</a>
+                                            <a href="/exam/viewExam/{{i.exam_id}}" class="btn btn-danger">View</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
