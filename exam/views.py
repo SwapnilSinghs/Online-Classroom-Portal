@@ -66,7 +66,27 @@ def addAssignment(request):
 
 
 def viewAssignment(request):
-    return render(request, 'viewAssignment.html')
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id == 1:
+        assign = Assignment.objects.filter(assignment_id=4)
+        print(assign)
+        name = assign[0].assignment_name
+        date = assign[0].assignment_date
+        st = assign[0].assignment_start_time
+        et = assign[0].assignment_end_time
+        detail = assign[0].assignment_detail
+        fileUpload = assign[0].assignment_fileUpload
+        dept = assign[0].dept
+        uploadedBy = assign[0].uploaded_by_id
+        cid = assign[0].course_id
+    else:
+        return render(request, 'examDashboard.html')
+    params = {'name': name, 'date': date, 'st': st, 'et': et, 'detail': detail,
+              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
+    return render(request, 'viewAssignment.html',params)
 
 
 def addExam(request):
