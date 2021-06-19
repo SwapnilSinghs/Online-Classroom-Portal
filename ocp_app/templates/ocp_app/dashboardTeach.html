@@ -87,7 +87,9 @@
         <input type="text" placeholder="Search" /><i class="fa fa-search"></i>
       </div>
       <ul class="categories">
-        <li><i class="fa fa-home fa-fw"></i><a href="/homeTeach/">Dashboard</a></li>
+        <li>
+          <i class="fa fa-home fa-fw"></i><a href="/homeTeach/">Dashboard</a>
+        </li>
         <li>
           <i class="fa fa-bullhorn"></i>
           <a href="#"> Announcements</a>
@@ -104,7 +106,18 @@
           </ul>
         </li>
         <li>
-          <i class="fa fa-edit"></i><a href="#"> Exam</a>
+          <i class="fa fa-edit"></i><a href="#">Exam</a>
+          <ul class="side-nav-dropdown">
+            <li><a href="/exam/addExam">Create New Exam/Test</a></li>
+            <li><a href="/exam/viewAllExam">View Exams/Tests</a></li>
+          </ul>
+        </li>
+        <li>
+          <i class="fa fa-edit"></i><a href="#">Assignment</a>
+          <ul class="side-nav-dropdown">
+            <li><a href="/exam/addAssignment">Create New Assignment</a></li>
+            <li><a href="/exam/viewAllAssignment">View Assignments</a></li>
+          </ul>
         </li>
         <li>
           <i class="fa fa-user"></i><a href="#"> Student</a>
