@@ -156,20 +156,17 @@ def viewExam(request, examid):
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
     id = request.user.username
-    if g_id == 1:
-        exam = Exam.objects.filter(exam_id=examid)
-        name = exam[0].exam_name
-        etype = exam[0].exam_type
-        date = exam[0].exam_date
-        st = exam[0].exam_start_time
-        et = exam[0].exam_end_time
-        detail = exam[0].exam_detail
-        fileUpload = exam[0].exam_fileUpload
-        dept = exam[0].dept
-        uploadedBy = exam[0].uploaded_by_id
-        cid = exam[0].course_id
-    else:
-        return render(request, 'examDashboard.html')
+    exam = Exam.objects.filter(exam_id=examid)
+    name = exam[0].exam_name
+    etype = exam[0].exam_type
+    date = exam[0].exam_date
+    st = exam[0].exam_start_time
+    et = exam[0].exam_end_time
+    detail = exam[0].exam_detail
+    fileUpload = exam[0].exam_fileUpload
+    dept = exam[0].dept
+    uploadedBy = exam[0].uploaded_by_id
+    cid = exam[0].course_id
     params = {'name': name, 'etype': etype, 'date': date, 'st': st, 'et': et, 'detail': detail,
               'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
     return render(request, 'viewExam.html', params)
@@ -177,5 +174,27 @@ def viewExam(request, examid):
 
 def viewAllExam(request):
     exams = Exam.objects.all()
-    params = {'exams': exams}
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id == 1:
+        deleteVisible = False
+    else:
+        deleteVisible = True
+    params = {'exams': exams, 'deleteVisible': deleteVisible}
     return render(request, 'viewAllExam.html', params)
+
+
+def deleteExam(request, examid):
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id == 1:
+        return render(request, 'examDashboard.html')
+    else:
+        dc = Exam.objects.get(exam_id=examid)
+        dc.delete()
+        return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllExam/'},0000);</script>")
+    return render(request, 'viewAllExam.html')

@@ -226,9 +226,11 @@
                 <!-- Grid row -->
                 <div>
                     <!--Table-->
+                    
                     <table class="table table-striped">
                         <!--Table head-->
                         <thead>
+                            {% if deleteVisible %}
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
@@ -237,12 +239,41 @@
                                 <th>Timing</th>
                                 <th>Created By</th>
                                 <th>View</th>
+                                <th>Delete</th>
                             </tr>
+                            {% else %}
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Due date</th>
+                                <th>Timing</th>
+                                <th>Created By</th>
+                                <th>View</th>
+                                <th>Delete</th>
+                            </tr>
+                            {% endif %}
                         </thead>
                         <!--Table head-->
                         <!--Table body-->
                             <tbody>
                                 {% for i in exams %}
+                                {% if deleteVisible %}
+                                    <tr>
+                                        <td>{{i.exam_id}}</td>
+                                        <td>{{i.exam_name}}</td>
+                                        <td>{{i.course_id}}</td>
+                                        <td>{{i.exam_date}}</td>
+                                        <td>{{i.exam_start_time}} to {{i.exam_end_time}}</td>
+                                        <td>{{i.uploaded_by_id}}</td>
+                                        <td>
+                                            <a href="/exam/viewExam/{{i.exam_id}}" class="btn btn-danger">View</a>
+                                        </td>
+                                        <td>
+                                            <a href="/exam/deleteExam/{{i.exam_id}}" class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% else %}
                                     <tr>
                                         <td>{{i.exam_id}}</td>
                                         <td>{{i.exam_name}}</td>
@@ -254,6 +285,7 @@
                                             <a href="/exam/viewExam/{{i.exam_id}}" class="btn btn-danger">View</a>
                                         </td>
                                     </tr>
+                                    {% endif %}
                                 {% endfor %}
                             </tbody>
                         <!--Table body-->
