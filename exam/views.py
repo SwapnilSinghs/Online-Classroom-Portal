@@ -86,7 +86,8 @@ def viewAssignment(request, assignid):
         if g_id == 1:
             solutionfile = request.FILES['fileassign']
             fileurl = solutionfile
-            solution = AssignmentAnswer(assign_ans_id=assignid,stud_id=id,submittedfile=fileurl,course_id=cid)
+            solution = AssignmentAnswer(
+                assign_id=assignid, stud_id=id, submittedfile=fileurl, course_id=cid)
             solution.save()
             return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllAssignment/'},0000);</script>")
     return render(request, 'viewAssignment.html', params)
@@ -176,6 +177,14 @@ def viewExam(request, examid):
     cid = exam[0].course_id
     params = {'name': name, 'etype': etype, 'date': date, 'st': st, 'et': et, 'detail': detail,
               'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
+    if request.method == "POST" and request.FILES['exam_file']:
+        if g_id == 1:
+            solutionfile = request.FILES['exam_file']
+            fileurl = solutionfile
+            solution = ExamAnswer(exam_id=examid, stud_id=id,
+                                  submittedfile=fileurl, course_id=cid)
+            solution.save()
+            return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllExam/'},0000);</script>")
     return render(request, 'viewExam.html', params)
 
 
