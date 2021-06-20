@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from ocp_app.models import Student, Department, Teacher, Courses, Announcement, Forum
-from exam.models import Exam, Assignment
+from exam.models import Exam, Assignment, AssignmentAnswer, ExamAnswer
 from django.http import HttpResponse
 # Create your views here.
 
@@ -82,6 +82,13 @@ def viewAssignment(request, assignid):
     cid = assign[0].course_id
     params = {'name': name, 'date': date, 'st': st, 'et': et, 'detail': detail,
               'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
+    if request.method == "POST" and request.FILES['fileassign']:
+        if g_id == 1:
+            solutionfile = request.FILES['fileassign']
+            fileurl = solutionfile
+            solution = AssignmentAnswer(assign_ans_id=assignid,stud_id=id,submittedfile=fileurl,course_id=cid)
+            solution.save()
+            return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllAssignment/'},0000);</script>")
     return render(request, 'viewAssignment.html', params)
 
 

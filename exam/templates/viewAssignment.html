@@ -287,68 +287,94 @@ input[type=checkbox] {
 {% endblock %}
 {% block body %}
 <div class="container">
-	<div class="d-flex justify-content-center">
-		<div class="card">
-			<div class="card-header">
-                <h2>{{name}};{{cid}}</h2>
-                <br>
-                <div>
-                    <h6 style="float: left;">{{uploadedBy}} uploaded the assignment</h6>
-                    <h6 style="float: right;">Timing - {{st}} to {{et}}</h6>
-                    <h6 style="float: right;margin-right: 1%;">Due {{date}}  |</h6>
-                </div>
-			</div>
-			<div class="card-body">
-                Instructions:
-                <br>
-                {{detail}}
-                <hr>
-                <label class="col-sm-8">Click the following button to open the question paper</label>
-                <a href="{{fileUpload.url}}"><button class="btn btn-primary"> View Question Paper</button></a>
-            </div>
-		</div>
+    <div class="d-flex justify-content-center">
+      <div class="card">
+        <div class="card-header">
+          <h2>{{name}};{{cid}}</h2>
+          <br />
+          <div>
+            <h6 style="float: left">{{uploadedBy}} uploaded the assignment</h6>
+            <h6 style="float: right">Timing - {{st}} to {{et}}</h6>
+            <h6 style="float: right; margin-right: 1%">Due {{date}} |</h6>
+          </div>
+        </div>
+        <div class="card-body">
+          Instructions:
+          <br />
+          {{detail}}
+          <hr />
+          <label class="col-sm-8"
+            >Click the following button to open the question paper</label
+          >
+          <a href="{{fileUpload.url}}"
+            ><button class="btn btn-primary">View Question Paper</button></a
+          >
+        </div>
+      </div>
     </div>
     <div class="d-flex justify-content-center">
-		<div class="card">
-			<div class="card-header">
-				<h5>Your Work</h5>
-			</div>
-			<div class="card-body">
-                <label class="col-sm-8">Upload Answer sheet</label>
-                <div class="input-group form-group">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exam_file" name="exam_file">
-                        <label class="custom-file-label" for="exam_file">Choose file</label>
-                    </div>
-                </div>
-                <div>
-                    <input type="checkbox" name="question" class="clickable" id="2" required/>
-                    <label for="2">Mark as done</label>
-                </div>
-                <br>
-				<div class="form-group text-center">
-                    <input type="submit" value="Turn In" class="btn signup_btn">
-                </div>
-            </div>
+      <div class="card">
+        <div class="card-header">
+          <h5>Your Work</h5>
         </div>
-        <div class="card" style="margin-left: 2%;">
-			<div class="card-header">
-				<h5>Comments and Concerns</h5>
-			</div>
-			<div class="card-body">
-                <div class="input-group form-group">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" class="form-control" id="examName" name='examName' placeholder="Add commments...">
-                    <input type="submit" value="Send" class="btn">
-                </div>
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="card-body">
+            <label class="col-sm-8">Upload Answer sheet</label>
+            <div class="input-group form-group">
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="fileassign"
+                  name="fileassign"
+                />
+                <label class="custom-file-label" for="fileassign"
+                  >Choose file</label
+                >
+              </div>
             </div>
-		</div>
-	</div>
-</div>
-<script type="application/javascript">
-    $('input[type="file"]').change(function(e){
-        var fileName = e.target.files[0].name;
-        $('.custom-file-label').html(fileName);
+            <div>
+              <input
+                type="checkbox"
+                name="question"
+                class="clickable"
+                id="2"
+                required
+              />
+              <label for="2">Mark as done</label>
+            </div>
+            <br />
+            <div class="form-group text-center">
+              <input type="submit" value="Turn In" class="btn signup_btn" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card" style="margin-left: 2%">
+        <div class="card-header">
+          <h5>Comments and Concerns</h5>
+        </div>
+        <div class="card-body">
+          <div class="input-group form-group">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <input
+              type="text"
+              class="form-control"
+              id="commments"
+              name="commments"
+              placeholder="Add commments..."
+            />
+            <input type="submit" value="Send" class="btn" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="application/javascript">
+    $('input[type="file"]').change(function (e) {
+      var fileName = e.target.files[0].name;
+      $(".custom-file-label").html(fileName);
     });
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
