@@ -27,9 +27,16 @@ class Assignment(models.Model):
     dept = models.CharField(max_length=255,default="")
     uploaded_by = models.ForeignKey(Teacher, to_field='username', on_delete=models.CASCADE,null=True)
 
-class Answer(models.Model):
-    ans_id = models.AutoField(primary_key=True)
-    stud_id = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
+class AssignmentAnswer(models.Model):
+    assign_ans_id = models.AutoField(primary_key=True)
+    stud = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
+    course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
+    submittedfile = models.FileField(upload_to='uploads/')
+    date = models.DateTimeField(auto_now=True)
+
+class ExamAnswer(models.Model):
+    exam_ans_id = models.AutoField(primary_key=True)
+    stud = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     submittedfile = models.FileField(upload_to='uploads/')
     date = models.DateTimeField(auto_now=True)
