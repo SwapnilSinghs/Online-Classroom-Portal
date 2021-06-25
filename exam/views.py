@@ -25,8 +25,16 @@ def fun(request):
 
 
 def examDashboard(request):
-    return render(request, 'examDashboard.html')
-
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id == 1:
+        student = Student.objects.filter(username=id)
+        img = student[0].img
+        params = {'img': img, 'user': id}
+        return render(request, 'examDashboard.html', params)
+    else:
+        return HttpResponse("<script>setTimeout(function(){window.location.href='/signIn/'},0000);</script>")
 
 def addAssignment(request):
     img, id = fun(request)
@@ -80,8 +88,12 @@ def viewAssignment(request, assignid):
     dept = assign[0].dept
     uploadedBy = assign[0].uploaded_by_id
     cid = assign[0].course_id
+    if g_id == 1:
+        template_values = 'examDashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
     params = {'name': name, 'date': date, 'st': st, 'et': et, 'detail': detail,
-              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
+              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid, 'template': template_values}
     if request.method == "POST" and request.FILES['fileassign']:
         if g_id == 1:
             solutionfile = request.FILES['fileassign']
@@ -115,9 +127,12 @@ def viewAllAssignment(request):
     id = request.user.username
     if g_id == 1:
         deleteVisible = False
+        template_values = 'examDashboard.html'
     else:
         deleteVisible = True
-    params = {'assignments': assignments, 'deleteVisible': deleteVisible}
+        template_values = 'ocp_app/dashboardTeach.html'
+    params = {'assignments': assignments,
+              'deleteVisible': deleteVisible, 'template': template_values}
     return render(request, 'viewAllAssignment.html', params)
 
 
@@ -175,8 +190,12 @@ def viewExam(request, examid):
     dept = exam[0].dept
     uploadedBy = exam[0].uploaded_by_id
     cid = exam[0].course_id
+    if g_id == 1:
+        template_values = 'examDashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
     params = {'name': name, 'etype': etype, 'date': date, 'st': st, 'et': et, 'detail': detail,
-              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid}
+              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid, 'template': template_values}
     if request.method == "POST" and request.FILES['exam_file']:
         if g_id == 1:
             solutionfile = request.FILES['exam_file']
@@ -196,9 +215,12 @@ def viewAllExam(request):
     id = request.user.username
     if g_id == 1:
         deleteVisible = False
+        template_values = 'examDashboard.html'
     else:
         deleteVisible = True
-    params = {'exams': exams, 'deleteVisible': deleteVisible}
+        template_values = 'ocp_app/dashboardTeach.html'
+    params = {'exams': exams, 'deleteVisible': deleteVisible,
+              'template': template_values}
     return render(request, 'viewAllExam.html', params)
 
 

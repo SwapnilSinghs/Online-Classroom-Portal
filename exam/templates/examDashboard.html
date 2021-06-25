@@ -53,8 +53,7 @@
       crossorigin="anonymous"
     />
 
-    <script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js">
-    </script>
+    <script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
 
     <title>OCP</title>
 
@@ -65,7 +64,9 @@
       href="{% static 'css/dashboard.css' %}"
       type="text/css"
     />
-    <style>{% block css %}{% endblock %}</style>
+    <style>
+      {% block css %}{% endblock %}
+    </style>
   </head>
   <body>
     <aside class="side-nav" id="show-side-navigation1">
@@ -74,10 +75,7 @@
         data-close="show-side-navigation1"
       ></i>
       <div class="heading">
-        <img
-          src={{img}}
-          alt=""
-        />
+        <img src="{{img}}" alt="" />
         <div class="info">
           <h3>
             <a href="">O<span class="main-color">C</span>P</a>
@@ -89,15 +87,25 @@
         <input type="text" placeholder="Search" /><i class="fa fa-search"></i>
       </div>
       <ul class="categories">
-        <li>
-          <i class="fa fa-home fa-fw"></i><a href=""> Dashboard</a>
-        </li>
+        <li><i class="fa fa-home fa-fw"></i><a href=""> Dashboard</a></li>
         <li><i class="fa fa-bullhorn"></i><a href=""> Announcements</a></li>
-        <li><i class="fa fa-edit"></i><a href="#"> Exam</a>
+        <li>
+          <i class="fa fa-edit"></i><a href="#">Exam</a>
           <ul class="side-nav-dropdown">
-            <li><a href="/exam/addExam">Exam</a></li>
-            <li><a href="/exam/addAssignment">Assignment</a></li>
-            <li><a href="">Result</a></li>
+            <li><a href="/exam/viewAllExam">View Exams/Tests</a></li>
+          </ul>
+        </li>
+        <li>
+          <i class="fa fa-edit"></i><a href="#">Assignment</a>
+          <ul class="side-nav-dropdown">
+            <li><a href="/exam/viewAllAssignment">View Assignments</a></li>
+          </ul>
+        </li>
+        <li>
+          <i class="fa fa-edit"></i><a href="#"> Result</a>
+          <ul class="side-nav-dropdown">
+            <li><a href="">Exam/Test</a></li>
+            <li><a href="">Assignment</a></li>
           </ul>
         </li>
         <li><i class="fa fa-comment-alt"></i><a href=""> Forum</a></li>
@@ -121,7 +129,7 @@
         >
           <i class="fa fa-align-right"></i>
         </button>
-        <a class="navbar-brand" href="" style="text-shadow: 1px 1px 3px #000000;"
+        <a class="navbar-brand" href="" style="text-shadow: 1px 1px 3px #000000"
           >Online<span class="main-color">Classroom</span>Portal</a
         >
         <div
@@ -141,12 +149,15 @@
               ></a>
               <ul class="dropdown-menu">
                 <li class="dropdown-item">
-                  <a href=""><i class="fa fa-sign-out"></i> LoggedIn -<br />
+                  <a href=""
+                    ><i class="fa fa-sign-out"></i> LoggedIn -<br />
                     <center>{{user}}</center></a
                   >
                 </li>
                 <li class="dropdown-item">
-                  <a href="/updateProfile/"><i class="fa fa-user-o fw"></i> My profile</a>
+                  <a href="/updateProfile/"
+                    ><i class="fa fa-user-o fw"></i> My profile</a
+                  >
                 </li>
                 <li class="dropdown-item">
                   <a href=""><i class="fa fa-envelope-o fw"></i> My inbox</a>
@@ -155,7 +166,9 @@
                   <a href=""><i class="fa fa-question-circle-o fw"></i> Help</a>
                 </li>
                 <li class="dropdown-item">
-                  <a href="../signOut/"><i class="fa fa-sign-out"></i> Log out</a>
+                  <a href="../signOut/"
+                    ><i class="fa fa-sign-out"></i> Log out</a
+                  >
                 </li>
               </ul>
             </li>
@@ -174,8 +187,7 @@
       <div class="welcome">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-12">
-              {% block body %}{% endblock %}</div>
+            <div class="col-lg-12">{% block body %}{% endblock %}</div>
           </div>
         </div>
       </div>
