@@ -219,7 +219,7 @@
                 <div class="row">
                     <!-- Grid column -->
                     <div class="col-md-12">
-                        <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text" style="color: rgb(66, 8, 8);">List of All Assignments</h2>
+                        <h3 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text" style="color: rgb(66, 8, 8);">List of students who have submitted the Assignment-{{assign_id}} for Course {{course_id}}</h3>
                     </div>
                     <!-- Grid column -->
                 </div>
@@ -229,61 +229,27 @@
                     <table class="table table-striped">
                         <!--Table head-->
                         <thead>
-                            {% if deleteVisible %}
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Course</th>
-                                <th>Due date</th>
-                                <th>Timing</th>
-                                <th>Created By</th>
-                                <th>View</th>
-                                <th>Delete</th>
+                                <th>Username</th>
+                                <th>Student Name</th>
+                                <th>Submission Date & Time</th>
+                                <th>View Submission</th>
                             </tr>
-                            {% else %}
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Course</th>
-                                <th>Due date</th>
-                                <th>Timing</th>
-                                <th>Created By</th>
-                                <th>View</th>
-                            </tr>
-                            {% endif %}
                         </thead>
                         <!--Table head-->
                         <!--Table body-->
                             <tbody>
-                                {% for i in assignments %}
-                                {% if deleteVisible %}
+                                {% for i in assignmentAnswer %}
                                     <tr>
-                                        <td>{{i.assignment_id}}</td>
-                                        <td>{{i.assignment_name}}</td>
-                                        <td>{{i.course_id}}</td>
-                                        <td>{{i.assignment_date}}</td>
-                                        <td>{{i.assignment_start_time}} to {{i.assignment_end_time}}</td>
-                                        <td>{{i.uploaded_by_id}}</td>
+                                        <td>{{i.stud_id}}</td>
+                                        <td>{{studName.firstname}} {{studName.lastname}}</td>
+                                        <td>{{i.date}}</td>
                                         <td>
-                                            <a href="/exam/viewSubmitAssignTeach/{{i.assignment_id}}" class="btn btn-danger">View</a>
-                                        </td>
-                                        <td>
-                                            <a href="/exam/deleteAssignment/{{i.assignment_id}}" class="btn btn-danger">Delete</a>
+                                            <a href="{{i.submittedfile.url}}" target="_blank"
+                                                ><button class="btn btn-primary">View Answer Sheet</button></a
+                                            >
                                         </td>
                                     </tr>
-                                    {% else %}
-                                    <tr>
-                                        <td>{{i.assignment_id}}</td>
-                                        <td>{{i.assignment_name}}</td>
-                                        <td>{{i.course_id}}</td>
-                                        <td>{{i.assignment_date}}</td>
-                                        <td>{{i.assignment_start_time}} to {{i.assignment_end_time}}</td>
-                                        <td>{{i.uploaded_by_id}}</td>
-                                        <td>
-                                            <a href="/exam/viewAssignment/{{i.assignment_id}}" class="btn btn-danger">View</a>
-                                        </td>
-                                    </tr>
-                                    {% endif %}
                                 {% endfor %}
                             </tbody>
                         <!--Table body-->

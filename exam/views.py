@@ -138,6 +138,22 @@ def viewAllAssignment(request):
     return render(request, 'viewAllAssignment.html', params)
 
 
+def viewSubmitAssignTeach(request, assignid):
+    answers = AssignmentAnswer.objects.filter(assign_id=assignid)
+    assign_id=answers[0].assign_id
+    course_id=answers[0].course_id
+    stud_id = answers[0].stud_id
+    studName = Student.objects.filter(username=stud_id).values('firstname','lastname')
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id != 1:
+        template_values = 'ocp_app/dashboardTeach.html'
+    params = {'assignmentAnswer': answers, 'template': template_values, 'assign_id':assign_id, 'course_id':course_id, 'studName': studName[0]}
+    return render(request, 'viewSubmitAssignTeach.html', params)
+
+
 def addExam(request):
     img, id = fun(request)
     g = request.user.groups.all()
