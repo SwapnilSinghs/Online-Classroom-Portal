@@ -14,6 +14,7 @@ class Exam(models.Model):
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     dept = models.CharField(max_length=255,default="")
     uploaded_by = models.ForeignKey(Teacher, to_field='username', on_delete=models.CASCADE,null=True)
+    exam_marksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0,unique=True)
 
 class Assignment(models.Model):
     assignment_id = models.AutoField(primary_key=True)
@@ -26,6 +27,7 @@ class Assignment(models.Model):
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     dept = models.CharField(max_length=255,default="")
     uploaded_by = models.ForeignKey(Teacher, to_field='username', on_delete=models.CASCADE,null=True)
+    assignment_marksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0,unique=True)
 
 class AssignmentAnswer(models.Model):
     sno = models.AutoField(primary_key=True)
@@ -34,6 +36,8 @@ class AssignmentAnswer(models.Model):
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     submittedfile = models.FileField(upload_to='uploads/')
     date = models.DateTimeField(auto_now=True)
+    amarksObtained = models.DecimalField(max_digits = 6,decimal_places = 2,default=0)
+    amarksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0)
 
 class ExamAnswer(models.Model):
     sno = models.AutoField(primary_key=True)
@@ -42,15 +46,17 @@ class ExamAnswer(models.Model):
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     submittedfile = models.FileField(upload_to='uploads/')
     date = models.DateTimeField(auto_now=True)
+    emarksObtained = models.DecimalField(max_digits = 6,decimal_places = 2,default=0)
+    emarksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0)
 
-class Result(models.Model):
-    result_id = models.AutoField(primary_key=True)
-    stud_id = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
-    course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
-    dept = models.CharField(max_length=255,default="")
-    exam_type = models.CharField(max_length = 255,default="")
-    total_marks = models.DecimalField(max_digits = 6,decimal_places = 2)
-    obtained_marks = models.DecimalField(max_digits = 6,decimal_places = 2)
+# class Result(models.Model):
+#     result_id = models.AutoField(primary_key=True)
+#     stud_id = models.ForeignKey(Student, to_field='username', on_delete=models.CASCADE,null=True)
+#     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
+#     dept = models.CharField(max_length=255,default="")
+#     exam_type = models.CharField(max_length = 255,default="")
+#     total_marks = models.DecimalField(max_digits = 6,decimal_places = 2)
+#     obtained_marks = models.DecimalField(max_digits = 6,decimal_places = 2)
 
 class Query(models.Model):
     query_id = models.AutoField(primary_key=True)

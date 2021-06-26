@@ -36,6 +36,7 @@ def examDashboard(request):
     else:
         return HttpResponse("<script>setTimeout(function(){window.location.href='/signIn/'},0000);</script>")
 
+
 def addAssignment(request):
     img, id = fun(request)
     g = request.user.groups.all()
@@ -63,11 +64,12 @@ def addAssignment(request):
         uploadedBy = request.POST.get('uploadedBy', '')
         upby = Teacher.objects.get(username=id)
         detail = request.POST.get('detail', '')
+        amarks_outof = request.POST.get('amarks_outof')
         if g_id == 1:
             return render(request, 'examDashboard.html')
         else:
             assignment = Assignment(assignment_fileUpload=fileurl, assignment_name=assign_name, assignment_date=doa, assignment_start_time=ast,
-                                    assignment_end_time=aet, assignment_detail=detail, dept=dept, uploaded_by=upby, course=course)
+                                    assignment_end_time=aet, assignment_detail=detail, dept=dept, uploaded_by=upby, course=course, assignment_marksOutOf=amarks_outof)
             assignment.save()
             return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/addAssignment/'},0000);</script>")
     return render(request, 'addAssignment.html', params)
@@ -164,11 +166,12 @@ def addExam(request):
         uploadedBy = request.POST.get('uploadedBy', '')
         upby = Teacher.objects.get(username=id)
         detail = request.POST.get('detail', '')
+        emarks_outof = request.POST.get('emarks_outof')
         if g_id == 1:
             return render(request, 'examDashboard.html')
         else:
             exam = Exam(exam_fileUpload=fileurl, exam_name=examName, exam_type=examtype, exam_date=doe,
-                        exam_start_time=est, exam_end_time=eet, exam_detail=detail, course=course, dept=dept, uploaded_by=upby)
+                        exam_start_time=est, exam_end_time=eet, exam_detail=detail, course=course, dept=dept, uploaded_by=upby, exam_marksOutOf=emarks_outof)
             exam.save()
             return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/addExam/'},0000);</script>")
     return render(request, 'addExam.html', params)
