@@ -11,5 +11,6 @@ urlpatterns = [
     path('viewAllAssignment/',views.viewAllAssignment,name='viewAllAssignment'),
     path('viewAllExam/',views.viewAllExam,name='viewAllExam'),
     path('deleteExam/<int:examid>',views.deleteExam,name='deleteExam'),
+    path('viewSubmitExamTeach/<int:examid>',views.viewSubmitExamTeach,name='viewSubmitExamTeach'),
     path('addExam/',views.addExam,name='addExam'),
 ]

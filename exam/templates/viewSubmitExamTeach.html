@@ -219,72 +219,37 @@
                 <div class="row">
                     <!-- Grid column -->
                     <div class="col-md-12">
-                        <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text" style="color: rgb(66, 8, 8);">List of All Exams/Tests</h2>
+                        <h3 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text" style="color: rgb(66, 8, 8);">Answer sheet submission</h3>
                     </div>
                     <!-- Grid column -->
                 </div>
                 <!-- Grid row -->
                 <div>
                     <!--Table-->
-                    
                     <table class="table table-striped">
                         <!--Table head-->
                         <thead>
-                            {% if deleteVisible %}
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Course</th>
-                                <th>Due date</th>
-                                <th>Timing</th>
-                                <th>Created By</th>
-                                <th>View</th>
-                                <th>Delete</th>
+                                <th>Username</th>
+                                <th>Student Name</th>
+                                <th>Submission Date & Time</th>
+                                <th>View Submission</th>
                             </tr>
-                            {% else %}
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Course</th>
-                                <th>Due date</th>
-                                <th>Timing</th>
-                                <th>Created By</th>
-                                <th>View</th>
-                            </tr>
-                            {% endif %}
                         </thead>
                         <!--Table head-->
                         <!--Table body-->
                             <tbody>
-                                {% for i in exams %}
-                                {% if deleteVisible %}
+                                {% for i in examAnswer %}
                                     <tr>
-                                        <td>{{i.exam_id}}</td>
-                                        <td>{{i.exam_name}}</td>
-                                        <td>{{i.course_id}}</td>
-                                        <td>{{i.exam_date}}</td>
-                                        <td>{{i.exam_start_time}} to {{i.exam_end_time}}</td>
-                                        <td>{{i.uploaded_by_id}}</td>
+                                        <td>{{i.stud_id}}</td>
+                                        <td>{{studName.firstname}} {{studName.lastname}}</td>
+                                        <td>{{i.date}}</td>
                                         <td>
-                                            <a href="/exam/viewSubmitExamTeach/{{i.exam_id}}" class="btn btn-danger">View</a>
-                                        </td>
-                                        <td>
-                                            <a href="/exam/deleteExam/{{i.exam_id}}" class="btn btn-danger">Delete</a>
+                                            <a href="{{i.submittedfile.url}}" target="_blank"
+                                                ><button class="btn btn-primary">View Answer Sheet</button></a
+                                            >
                                         </td>
                                     </tr>
-                                    {% else %}
-                                    <tr>
-                                        <td>{{i.exam_id}}</td>
-                                        <td>{{i.exam_name}}</td>
-                                        <td>{{i.course_id}}</td>
-                                        <td>{{i.exam_date}}</td>
-                                        <td>{{i.exam_start_time}} to {{i.exam_end_time}}</td>
-                                        <td>{{i.uploaded_by_id}}</td>
-                                        <td>
-                                            <a href="/exam/viewExam/{{i.exam_id}}" class="btn btn-danger">View</a>
-                                        </td>
-                                    </tr>
-                                    {% endif %}
                                 {% endfor %}
                             </tbody>
                         <!--Table body-->

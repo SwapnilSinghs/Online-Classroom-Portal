@@ -243,6 +243,22 @@ def viewAllExam(request):
     return render(request, 'viewAllExam.html', params)
 
 
+def viewSubmitExamTeach(request, examid):
+    answers = ExamAnswer.objects.filter(exam_id=examid)
+    exam_id=answers[0].exam_id
+    course_id=answers[0].course_id
+    stud_id = answers[0].stud_id
+    studName = Student.objects.filter(username=stud_id).values('firstname','lastname')
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if g_id != 1:
+        template_values = 'ocp_app/dashboardTeach.html'
+    params = {'examAnswer': answers, 'template': template_values, 'exam_id':exam_id, 'course_id':course_id, 'studName': studName[0]}
+    return render(request, 'viewSubmitExamTeach.html', params)
+
+
 def deleteExam(request, examid):
     img, id = fun(request)
     g = request.user.groups.all()
