@@ -1,0 +1,35 @@
+{% extends my_template %}
+
+{% load static %}
+{% block css %}
+div{
+    padding-top:5px;
+}
+#query1{
+    background-color: pink;
+    padding:15px;
+}
+#query2{
+    background-color: lightgreen;
+    padding:15px;
+}
+.msg{
+    padding:15px;
+}
+{% endblock %}
+{% block body %}
+
+<div id="query1">Asked Queies</div>
+{% for i in query1 %}
+<p class="msg">{{i.msg}}</p>
+
+{% endfor %}
+
+<div id="query2">Solution Queries</div>
+{% for i in query2 %}
+
+<p class="msg">{{i.msg}}</p>
+
+{% endfor %}
+
+{% endblock %}

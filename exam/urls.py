@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path('examDashboard/',views.examDashboard,name='examDashboard'),
+    path('examlogin/',views.examlogin,name='examlogin'),
+    path('examloginhandle/',views.examloginhandle,name='examloginhandle'),
     path('addAssignment/',views.addAssignment,name='addAssignment'),
     path('viewAssignment/<int:assignid>',views.viewAssignment,name='viewAssignment'),
     path('viewSubmitAssignTeach/<int:assignid>',views.viewSubmitAssignTeach,name='viewSubmitAssignTeach'),

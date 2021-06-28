@@ -15,7 +15,7 @@ class Courses(models.Model):
 
 class Student(models.Model):
     snum = models.AutoField(primary_key=True)
-    img = models.ImageField(default="")
+    img = models.ImageField(upload_to='images/')
     username = models.CharField(max_length=15,default="",unique=True)
     firstname = models.CharField(max_length=20,default="")
     lastname = models.CharField(max_length=20,default="")
@@ -29,7 +29,7 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     tnum = models.AutoField(primary_key=True)
-    img = models.ImageField(default=" ")
+    img = models.ImageField(upload_to='images/')
     username = models.CharField(max_length=15,default="",unique=True)
     firstname = models.CharField(max_length=20,default="")
     lastname = models.CharField(max_length=20,default="")
@@ -66,6 +66,7 @@ class Forum(models.Model):
     snum = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,default="")
     email = models.CharField(max_length=100,default="")
+    r_email = models.CharField(max_length=100,default="")
     subject = models.CharField(max_length=255, default="")
     msg = models.CharField(max_length = 255,default="")  
     date = models.DateTimeField(auto_now=True)  

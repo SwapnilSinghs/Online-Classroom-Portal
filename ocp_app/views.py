@@ -542,11 +542,12 @@ def forum(request):
     if request.method == "POST":
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
+        r_email = request.POST.get('r_email','')
         subject = request.POST.get('subject', '')
         msg = request.POST.get('msg', '')
         # if g_id==1:
         print(name, email, subject, msg)
-        forum = Forum(name=name, email=email, subject=subject, msg=msg)
+        forum = Forum(name=name, email=email, r_email=r_email, subject=subject, msg=msg)
         forum.save()
         return HttpResponse("<script>setTimeout(function(){window.location.href='/forum/'},0000);</script>")
     return render(request, 'ocp_app/forum.html', params)
@@ -696,3 +697,20 @@ def search_student(request):
 
     else:
         return JsonResponse({'status': 0})
+
+def view_query(request):
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+
+    query1 = Forum.objects.filter(email=request.user.email)
+    query2 = Forum.objects.filter(r_email=request.user.email)
+
+    if g_id == 1:
+        template_values = 'ocp_app/dashboard.html'
+    else:
+        template_values = 'ocp_app/dashboardTeach.html'
+
+    params = {'img': img, 'user': id,'query1':query1,'query2':query2,'my_template':template_values}
+
+    return render(request,'viewQueries.html',params)

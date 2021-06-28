@@ -7,6 +7,10 @@ from django.contrib.auth.models import User, Group
 from ocp_app.models import Student, Department, Teacher, Courses, Announcement, Forum
 from exam.models import Exam, Assignment, AssignmentAnswer, ExamAnswer
 from django.http import HttpResponse
+from . import facesTrain
+import numpy as np
+import cv2
+import pickle
 # Create your views here.
 
 
@@ -23,6 +27,60 @@ def fun(request):
         img = teacher[0].img
     return img, id
 
+def faceTest(request):
+    face_cascade = cv2.CascadeClassifier('exam/haarcascade_frontalface_alt2.xml')
+
+    recognizer = cv2.face.LBPHFaceRecognizer_create()
+    recognizer.read("exam/trainner.yml")
+
+    labels = {"person_name": 1}
+    with open("exam/labels.pickle", 'rb') as f:
+        og_labels = pickle.load(f)
+        labels = {v:k for k,v in og_labels.items()}
+
+    #intiating webcam 
+    cap = cv2.VideoCapture(0)
+
+
+    while(True):
+        # Capture frame-by-frame
+        ret, frame = cap.read()
+        #converting image into gray
+        gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        #getting faces
+        faces = face_cascade.detectMultiScale(gray, 1.2,5)
+        
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 10)
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_color = frame[y:y+h, x:x+w]
+            #pridicting faces 
+            id_, conf = recognizer.predict(roi_gray)
+            # confi sbesically accuracy of the pridiction 
+            # if conf>=70 and conf <= 80:
+            #     font = cv2.FONT_HERSHEY_SIMPLEX
+            print(labels[id_] , conf)
+            return labels[id_]
+
+def examlogin(request):
+    return render(request,'examlogin.html')
+
+def examloginhandle(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        ans=faceTest(request)
+        l=list(map(str,ans.split('.')))
+        if l[0].lower()==username.lower():
+            user=authenticate(username=username,password=password)
+            login(request,user)
+        
+            return redirect('../examDashboard/')
+        else:
+            # context = "Please enter valid username and password."
+            return render(request,'examlogin.html/',context)
+    else:
+        return render(request,'examlogin.html/',context)
 
 def examDashboard(request):
     g = request.user.groups.all()

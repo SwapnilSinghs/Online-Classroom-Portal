@@ -1,227 +1,280 @@
 <script>
-    $("body").on('click',"#btn-del",function()
-    {
+    $("body").on('click', "#btn-del", function () {
         console.log("Delete Button Clicked");
         let id = $(this).attr("data-sid");
         console.log(id);
-        mydata = {sid : id};
+        mydata = { sid: id };
         $.ajax({
             url: "{% url 'del_department' %}",
-            method:"GET",
+            method: "GET",
             data: mydata,
-            success : function(data){
-                if(data.status==1){
+            success: function (data) {
+                if (data.status == 1) {
                     $("#msg").text("Department Deleted Successfully");
                     $("#msg").show();
-                    setTimeout(function(){
-                    location.reload();
-                    },1000);
-                   
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+
                 }
-                
-                
+
+
             },
         });
     });
-    
+
 </script>
 
 <script>
-    $("p").on('click',"#btnannounce",function()
-    {
+    $("p").on('click', "#btnannounce", function () {
         console.log("Delete Button Clicked");
         let id = $(this).attr("data-sid");
         console.log(id);
-        mydata = {sid : id};
+        mydata = { sid: id };
         $.ajax({
             url: "{% url 'del_announce' %}",
-            method:"GET",
+            method: "GET",
             data: mydata,
-            success : function(data){
-                if(data.status==1){
+            success: function (data) {
+                if (data.status == 1) {
                     $("#msg").text("Announcement Deleted Successfully");
                     $("#msg").show();
-                    setTimeout(function(){
-                    location.reload();
-                    },1000);
-                   
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+
                 }
-                
-                
+
+
             },
         });
     });
-    
+
 </script>
 
 <script>
-    $("#btnsearch").click(function()
-   {
-       console.log("Search Button Clicked");
-       let id = $('#sid').val();
-       console.log(id);
-       mydata = {sid : id};
-       $.ajax({
-           url: "{% url 'search_student' %}",
-           method:"GET",
-           data: mydata,
-           success : function(data){
-               
-               if(data.status==1){
-                   x=data.student
-                   
-                   console.log(x[0])
-                   $("#msg").text("Student Found");
-                   $("#msg").show().delay(2000).fadeOut();
-                   var image = x[0].img;
-                   var image_file = '<img src="'+ image+'" height="200" width="200" />';
-                   console.log(image.url,5)
-                   $("#userTable td#img ").append(image_file);
-                   var username = x[0].username;
-                   $("#userTable td#uname ").append(username);
-                   var firstname = x[0].firstname;
-                   $("#userTable td#fname ").append(firstname);
-                   var lastname = x[0].lastname;
-                   $("#userTable td#lname ").append(lastname);
-                   var dob = x[0].dob;
-                   $("#userTable td#dob ").append(dob);
-                   var dept = x[0].dept;
-                   $("#userTable td#dept ").append(dept);
-                   var email = x[0].email;
-                   $("#userTable td#email ").append(email);
-                   var phone = x[0].phone;
-                   $("#userTable td#phone ").append(phone);
-                   var year = x[0].year;
-                   $("#userTable td#year ").append(year);
-                   var course = x[0].course;
-                   console.log(course)
-                   $("#userTable td#course ").append(course);
-                   butt='<input type="button" class="btn btn-danger" value="Delete" data-sid='+ x[0].username +'/>';
-                   $("#delbutton ").append(butt);
-               }
+    $("#btnsearch").click(function () {
+        console.log("Search Button Clicked");
+        let id = $('#sid').val();
+        console.log(id);
+        mydata = { sid: id };
+        $.ajax({
+            url: "{% url 'search_student' %}",
+            method: "GET",
+            data: mydata,
+            success: function (data) {
 
-               if(data.status==0){
-                   $("#msg").text("Student not found");
-                   $("#msg").show().delay(2000).fadeOut();
-               }
-               $("form")[0].reset();
-           },
-       });
-   });
-   
+                if (data.status == 1) {
+                    x = data.student
+
+                    console.log(x[0])
+                    $("#msg").text("Student Found");
+                    $("#msg").show().delay(2000).fadeOut();
+                    var image = x[0].img;
+                    var image_file = '<img src="' + image + '" height="200" width="200" />';
+                    console.log(image.url, 5)
+                    $("#userTable td#img ").append(image_file);
+                    var username = x[0].username;
+                    $("#userTable td#uname ").append(username);
+                    var firstname = x[0].firstname;
+                    $("#userTable td#fname ").append(firstname);
+                    var lastname = x[0].lastname;
+                    $("#userTable td#lname ").append(lastname);
+                    var dob = x[0].dob;
+                    $("#userTable td#dob ").append(dob);
+                    var dept = x[0].dept;
+                    $("#userTable td#dept ").append(dept);
+                    var email = x[0].email;
+                    $("#userTable td#email ").append(email);
+                    var phone = x[0].phone;
+                    $("#userTable td#phone ").append(phone);
+                    var year = x[0].year;
+                    $("#userTable td#year ").append(year);
+                    var course = x[0].course;
+                    console.log(course)
+                    $("#userTable td#course ").append(course);
+                    butt = '<input type="button" id="studel" class="btn btn-danger" value="Delete" data-sid=' + x[0].username + '>';
+                    $("#delbutton ").append(butt);
+                }
+
+                if (data.status == 0) {
+                    $("#msg").text("Student not found");
+                    $("#msg").show().delay(2000).fadeOut();
+                }
+                $("form")[0].reset();
+            },
+        });
+    });
+
 </script>
 
 <script>
-    $("#btnfaculty").click(function()
-   {
-       console.log("Search Button Clicked");
-       let id = $('#sid').val();
-       console.log(id);
-       mydata = {sid : id};
-       $.ajax({
-           url: "{% url 'search_faculty' %}",
-           method:"GET",
-           data: mydata,
-           success : function(data){
-               
-               if(data.status==1){
-                   x=data.teacher
-                   
-                   console.log(x[0])
-                   $("#msg").text("Faculty Found");
-                   $("#msg").show().delay(2000).fadeOut();
-                   var image = x[0].img;
-                   var image_file = '<img src="'+ image+'" height="200" width="200" />';
-                   console.log(image.url,5)
-                   $("#userTable td#img ").append(image_file);
-                   var username = x[0].username;
-                   $("#userTable td#uname ").append(username);
-                   var firstname = x[0].firstname;
-                   $("#userTable td#fname ").append(firstname);
-                   var lastname = x[0].lastname;
-                   $("#userTable td#lname ").append(lastname);
-                   var dob = x[0].dob;
-                   $("#userTable td#dob ").append(dob);
-                   var dept = x[0].dept;
-                   $("#userTable td#dept ").append(dept);
-                   var email = x[0].email;
-                   $("#userTable td#email ").append(email);
-                   var phone = x[0].phone;
-                   $("#userTable td#phone ").append(phone);
-                   var year = x[0].year;
-                   $("#userTable td#year ").append(year);
-                   var course = x[0].course;
-                   console.log(course)
-                   $("#userTable td#course ").append(course);
-                   butt='<input type="button" class="btn btn-danger" value="Delete" data-sid='+ x[0].username +'/>';
-                   $("#delfaculty ").append(butt);
-               }
+    $("#btnfaculty").click(function () {
+        console.log("Search Button Clicked");
+        let id = $('#sid').val();
+        console.log(id);
+        mydata = { sid: id };
+        $.ajax({
+            url: "{% url 'search_faculty' %}",
+            method: "GET",
+            data: mydata,
+            success: function (data) {
 
-               if(data.status==0){
-                   $("#msg").text("Faculty not found");
-                   $("#msg").show().delay(2000).fadeOut();
-               }
-               $("form")[0].reset();
-           },
-       });
-   });
-   
+                if (data.status == 1) {
+                    x = data.teacher
+
+                    console.log(x[0])
+                    $("#msg").text("Faculty Found");
+                    $("#msg").show().delay(2000).fadeOut();
+                    var image = x[0].img;
+                    var image_file = '<img src="' + image + '" height="200" width="200" />';
+                    console.log(image.url, 5)
+                    $("#userTable td#img ").append(image_file);
+                    var username = x[0].username;
+                    $("#userTable td#uname ").append(username);
+                    var firstname = x[0].firstname;
+                    $("#userTable td#fname ").append(firstname);
+                    var lastname = x[0].lastname;
+                    $("#userTable td#lname ").append(lastname);
+                    var dob = x[0].dob;
+                    $("#userTable td#dob ").append(dob);
+                    var dept = x[0].dept;
+                    $("#userTable td#dept ").append(dept);
+                    var email = x[0].email;
+                    $("#userTable td#email ").append(email);
+                    var phone = x[0].phone;
+                    $("#userTable td#phone ").append(phone);
+                    var year = x[0].year;
+                    $("#userTable td#year ").append(year);
+                    var course = x[0].course;
+                    console.log(course)
+                    $("#userTable td#course ").append(course);
+                    butt = '<input type="button" id="facdel" class="btn btn-danger" value="Delete" data-sid=' + x[0].username + '>';
+                    $("#delfaculty ").append(butt);
+                }
+
+                if (data.status == 0) {
+                    $("#msg").text("Faculty not found");
+                    $("#msg").show().delay(2000).fadeOut();
+                }
+                $("form")[0].reset();
+            },
+        });
+    });
+
 </script>
 
 
 <script>
-    $("#delbutton").click(function()
-    {
+    $("#delbutton").on('click', '#studel', function () {
         console.log("Delete Button Clicked");
         let id = $(this).attr("data-sid");
         console.log(id);
-        mydata = {sid : id};
+        mydata = { sid: id };
         $.ajax({
             url: "{% url 'del_student' %}",
-            method:"GET",
+            method: "GET",
             data: mydata,
-            success : function(data){
-                if(data.status==1){
+            success: function (data) {
+                if (data.status == 1) {
                     $("#msg").text("Student Deleted Successfully");
                     $("#msg").show();
-                    setTimeout(function(){
-                    location.reload();
-                    },1000);
-                   
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+
                 }
-                
-                
+
+
             },
         });
     });
-    
+
 </script>
 
 
 <script>
-    $("#delfaculty").click(function()
-    {
+    $("#delfaculty").on('click', '#facdel', function () {
         console.log("Delete Button Clicked");
         let id = $(this).attr("data-sid");
         console.log(id);
-        mydata = {sid : id};
+        mydata = { sid: id };
         $.ajax({
             url: "{% url 'del_teacher' %}",
-            method:"GET",
+            method: "GET",
             data: mydata,
-            success : function(data){
-                if(data.status==1){
+            success: function (data) {
+                if (data.status == 1) {
                     $("#msg").text("Faculty Deleted Successfully");
                     $("#msg").show();
-                    setTimeout(function(){
-                    location.reload();
-                    },1000);
-                   
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+
                 }
-                
-                
+
+
             },
         });
     });
-    
+
+</script>
+
+<script>
+    $("#vcourse").click(function () {
+        console.log("Search Button Clicked");
+        let dept = $('#dept').val();
+        let year = $('#year').val();
+
+        mydata = { dept: dept, year: year };
+        $.ajax({
+            url: "{% url 'view_course' %}",
+            method: "GET",
+            data: mydata,
+
+            success: function (data) {
+
+                if (data.status == 1) {
+                    x = data.course;
+                    console.log(x);
+                    $("#tbody").append(null);
+                    console.log(x[0].course_id)
+                    for (i = 0; i < x.length; i++) {
+                        output = "<tr><td>" + x[i].course_id + "</td><td>" + x[i].course_name + "</td><td><input type='button' class='btn btn-danger'value='Delete'id='delcourse'data-sid=" + x[i].course_id + ">";
+                        $("#tbody").append(output);
+
+                    }
+                    $("form")[0].reset();
+                }
+
+            },
+        });
+    });
+
+</script>
+
+<script>
+    $("#tbody").on('click', '#delcourse', function () {
+        console.log("Delete Button Clicked");
+        let id = $(this).attr("data-sid");
+        console.log(id);
+        mydata = { sid: id };
+        $.ajax({
+            url: "{% url 'del_course' %}",
+            method: "GET",
+            data: mydata,
+            success: function (data) {
+                if (data.status == 1) {
+                    $("#msg").text("Course Deleted Successfully");
+                    $("#msg").show();
+                    setTimeout(function () {
+                        location.reload();
+                    }, 5000);
+
+                }
+
+
+            },
+        });
+    });
 </script>

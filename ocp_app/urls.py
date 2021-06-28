@@ -27,4 +27,5 @@ urlpatterns = [
     path('add_Material/<str:cid>',views.add_Material,name='add_Material'),
     path('viewStudent/',views.viewStudent,name='viewStudent'),
     path('search_student/',views.search_student,name='search_student'),
+    path('viewQuery/',views.view_query,name='viewQuery'),
 ]

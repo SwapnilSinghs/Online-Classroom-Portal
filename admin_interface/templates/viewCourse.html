@@ -1,0 +1,88 @@
+{% extends './dashboard.html' %}
+{% load static %}
+{% block css %}
+.form{
+padding-top:15px;
+align-items:center;
+justify-content:center;
+width:50%;
+
+margin:auto;
+}
+
+.view_tab{
+padding-top:5%;
+}
+table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 50%;
+align-items:center;
+justify-content:center;
+margin:auto;
+padding-top:15px;
+
+}
+#msg{
+padding-top:15px;
+}
+td, th {
+border: 0px solid grey;
+text-align: left;
+padding: 8px;
+}
+{% endblock %}
+
+
+{% block body %}
+
+<div id="msg" class="alert alert-danger" style="display:none"></div>
+
+<div class="form">
+    <form method="GET">
+        <div class="mb-3">
+
+            <p><select class="form-select" aria-label="Default select example" id="dept" name="dept" required>
+                    <option selected>Select Department</option>
+                    {% for i in depart %}
+                    <option value="{{i.dept_id}}">{{i.dept_id}}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p><select class="form-select" aria-label="Default select example" id="year" name="year" required>
+                    <option selected>Select Year</option>
+                    {% for i in list %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+        <div>
+            <input type="button" id="vcourse" class="btn btn-success" value="Submit">
+        </div>
+    </form>
+</div>
+
+<div class='view_tab'>
+    <table>
+        <thead>
+            <tr>
+                <th> Course ID </th>
+                <th> Course Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id='tbody'>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tbody>
+    </table>
+</div>
+
+
+{% include "ajax.html" %}
+
+{% endblock %}

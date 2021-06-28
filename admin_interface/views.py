@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 
-from ocp_app.models import Student, Department, Teacher, Courses, Announcement, Forum , studyMaterial
+from ocp_app.models import Student, Department, Teacher, Courses, Announcement, Forum, studyMaterial
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.mail import send_mail
@@ -19,23 +19,24 @@ from django.http import HttpResponse, JsonResponse
 from django.http import FileResponse, Http404
 
 # Create your views here.
+
+
 def home(request):
-    return render(request,'login.html')
+    return render(request, 'login.html')
 
 
 @login_required
 def admin_dashboard(request):
-    id=request.user.username
-    total_dep=Department.objects.all().count()
-    total_stud=Student.objects.all().count()
-    total_fac=Teacher.objects.all().count()
-    total_course=Courses.objects.all().count()
+    id = request.user.username
+    total_dep = Department.objects.all().count()
+    total_stud = Student.objects.all().count()
+    total_fac = Teacher.objects.all().count()
+    total_course = Courses.objects.all().count()
 
+    params = {'user': id, "total_dep": total_dep, "total_stud": total_stud,
+              "total_fac": total_fac, "total_course": total_course}
 
-
-    params={'user':id,"total_dep":total_dep,"total_stud":total_stud,"total_fac":total_fac,"total_course":total_course}
-
-    return render(request, 'admin_dashboard.html',params)
+    return render(request, 'admin_dashboard.html', params)
 
 
 def signinhandle(request):
@@ -45,21 +46,21 @@ def signinhandle(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-        
+
     return redirect(admin_dashboard)
 
 
-
 def signup(request):
-    return render(request,'signup.html')
+    return render(request, 'signup.html')
+
 
 def signOut(request):
     logout(request)
-    return redirect(admin/home)
+    return redirect('/admin/login/')
 
 
 def signuphandle(request):
-    if request.method =="POST":
+    if request.method == "POST":
         username = "admin123"
         firstname = request.POST.get('firstname', '')
         lastname = request.POST.get('lastname', '')
@@ -68,26 +69,27 @@ def signuphandle(request):
         confirm_pass = request.POST.get('confirm_pass', '')
 
         if not username.isalnum():
-            messages.error(request, "Username must contain only letters or numbers.")
+            messages.error(
+                request, "Username must contain only letters or numbers.")
             return redirect('/admin/signup/')
         if firstname.isalpha() == False | lastname.isalpha() == False:
             messages.error(request, "Name must be alphabetical.")
             return redirect('/admin/signup/')
-       
-        if password!=confirm_pass:
+
+        if password != confirm_pass:
             messages.error(request, "Password does not match.")
             return redirect('/admin/signup/')
-        if len(password)<=8:
-            messages.error(request, "Password should be greater than 8 characters.")
+        if len(password) <= 8:
+            messages.error(
+                request, "Password should be greater than 8 characters.")
             return redirect('/admin/signup/')
 
-        myuser = User.objects.create_user(username,email,password)
+        myuser = User.objects.create_user(username, email, password)
         myuser.first_name = firstname
         myuser.last_name = lastname
         myuser.save()
 
-        return render(request,'home.html')
-
+        return render(request, 'home.html')
 
 
 @login_required
@@ -97,16 +99,18 @@ def viewAnnouncements(request):
     params = {'user': id, 'announce': announce}
     return render(request, 'viewAnnouncement.html', params)
 
+
 @login_required
 def addAnnouncements(request):
     id = request.user.username
     department = Department.objects.all()
-    depart=[]
+    depart = []
     for i in department:
         depart.append(i.dept_id)
-    
-    params = { 'user': id, 'dept': depart}
+
+    params = {'user': id, 'dept': depart}
     return render(request, 'addAnnouncement.html', params)
+
 
 def add_announcement(request):
     if request.method == "POST" and request.FILES['announce_file']:
@@ -131,9 +135,9 @@ def add_announcement(request):
 
 def del_announce(request):
     if request.method == "GET":
-        aid=request.GET.get('sid','')
+        aid = request.GET.get('sid', '')
         print(aid)
-        announce = Announcement.objects.get(announcement_id = aid)
+        announce = Announcement.objects.get(announcement_id=aid)
         announce.delete()
         return JsonResponse({'status': 1})
 
@@ -142,17 +146,18 @@ def del_announce(request):
 
 
 def createDepartment(request):
-    return render(request,'createDepartment.html')
+    return render(request, 'createDepartment.html')
+
 
 def create_Department(request):
     if request.method == "POST":
-        dept_id=request.POST.get('dept_id','')
-        dept_name = request.POST.get('dept_name','')
+        dept_id = request.POST.get('dept_id', '')
+        dept_name = request.POST.get('dept_name', '')
 
-        if dept_id =="" or dept_name=="":
+        if dept_id == "" or dept_name == "":
             return redirect('../createDepartment')
 
-        depart=Department(dept_id=dept_id,dept_name=dept_name)
+        depart = Department(dept_id=dept_id, dept_name=dept_name)
 
         depart.save()
 
@@ -161,17 +166,17 @@ def create_Department(request):
 
 def viewDepartment(request):
     id = request.user.username
-    depart=Department.objects.all()
+    depart = Department.objects.all()
     print(depart)
-    params={'user':id,'department':depart}
-    return render(request,'viewDepartment.html',params)
+    params = {'user': id, 'department': depart}
+    return render(request, 'viewDepartment.html', params)
 
 
 def del_department(request):
     if request.method == "GET":
-        did=request.GET.get('sid','')
+        did = request.GET.get('sid', '')
         print(did)
-        depart = Department.objects.get(dept_id = did)
+        depart = Department.objects.get(dept_id=did)
         depart.delete()
         return JsonResponse({'status': 1})
 
@@ -182,21 +187,21 @@ def del_department(request):
 def viewStudent(request):
     id = request.user.username
     params = {'user': id}
-    return render(request,'viewStudent.html',params)
+    return render(request, 'viewStudent.html', params)
 
 
 def search_student(request):
     id = request.user.username
 
     if request.method == 'GET':
-        sname=request.GET.get('sid','')
-        print(sname)
-        student=Student.objects.filter(username=sname).values()
-        student_data=list(student)
-        
-        if student :
-           
-            return JsonResponse({'status': 1 , 'student':student_data})
+        sname = request.GET.get('sid', '')
+        print(sname, 5)
+        student = Student.objects.filter(username=sname).values()
+        student_data = list(student)
+
+        if student:
+
+            return JsonResponse({'status': 1, 'student': student_data})
 
         else:
             return JsonResponse({'status': 0})
@@ -204,24 +209,25 @@ def search_student(request):
     else:
         return JsonResponse({'status': 0})
 
+
 def viewFaculty(request):
     id = request.user.username
     params = {'user': id}
-    return render(request,'viewFaculty.html',params)
+    return render(request, 'viewFaculty.html', params)
 
 
 def search_faculty(request):
     id = request.user.username
 
     if request.method == 'GET':
-        sname=request.GET.get('sid','')
+        sname = request.GET.get('sid', '')
         print(sname)
-        teacher=Teacher.objects.filter(username=sname).values()
-        teacher_data=list(teacher)
-        
-        if teacher :
-           
-            return JsonResponse({'status': 1 , 'teacher':teacher_data})
+        teacher = Teacher.objects.filter(username=sname).values()
+        teacher_data = list(teacher)
+        print(teacher)
+        if teacher:
+
+            return JsonResponse({'status': 1, 'teacher': teacher_data})
 
         else:
             return JsonResponse({'status': 0})
@@ -230,24 +236,102 @@ def search_faculty(request):
         return JsonResponse({'status': 0})
 
 
-
 def del_student(request):
     if request.method == "GET":
-        sid=request.GET.get('sid','')
+        sid = request.GET.get('sid', '')
         print(sid)
-        student = Student.objects.get(username = sid)
+        student = Student.objects.get(username=sid)
         student.delete()
         return JsonResponse({'status': 1})
 
     else:
         return JsonResponse({'status': 0})
 
+
 def del_teacher(request):
     if request.method == "GET":
-        fid=request.GET.get('sid','')
+        fid = request.GET.get('sid', '')
         print(fid)
-        teacher = Teacher.objects.get(username = fid)
+        teacher = Teacher.objects.get(username=fid)
         teacher.delete()
+        return JsonResponse({'status': 1})
+
+    else:
+        return JsonResponse({'status': 0})
+
+
+def addCourse(request):
+    id = request.user.username
+    depart = Department.objects.all()
+    lis = [1, 2, 3, 4]
+    params = {'user': id, "depart": depart, 'list': lis}
+    return render(request, 'addCourse.html', params)
+
+
+def create_course(request):
+    id = request.user.username
+    if request.method == 'POST':
+        dept = request.POST.get('dept')
+        year = request.POST.get('year')
+        cid = request.POST.get('c_id')
+        course_name = request.POST.get('name')
+
+        message = ""
+        check = Courses.objects.filter(course_id=cid).values()
+        print(check)
+        if check.exists():
+            message = "Already Exits"
+            depart = Department.objects.all()
+            lis = [1, 2, 3, 4]
+            params = {'user': id, "depart": depart,
+                      'list': lis, 'message': message}
+            print(message)
+            return render(request, 'addCourse.html', params)
+
+        department = Department.objects.get(dept_id=dept)
+        check = Courses.objects
+        course = Courses(course_id=cid, course_name=course_name,
+                         dept=department, year=year)
+        course.save()
+        params = {'user': id, 'message': message}
+        print(message, 5)
+        return redirect('../addCourse')
+
+
+def viewCourse(request):
+    id = request.user.username
+    depart = Department.objects.all()
+    lis = [1, 2, 3, 4]
+    params = {'user': id, "depart": depart, 'list': lis}
+    return render(request, 'viewCourse.html', params)
+
+
+def view_course(request):
+    id = request.user.username
+    if request.method == 'GET':
+        dept = request.GET.get('dept')
+        year = request.GET.get('year')
+
+        courses = Courses.objects.filter(dept=dept, year=year).values()
+        course_data = list(courses)
+        if courses:
+
+            return JsonResponse({'status': 1, 'course': course_data})
+
+        else:
+            return JsonResponse({'status': 0})
+
+    else:
+        return JsonResponse({'status': 0})
+
+
+def del_course(request):
+    if request.method == 'GET':
+        cid = request.GET.get('sid')
+
+        course = Courses.objects.get(course_id=cid)
+        course.delete()
+
         return JsonResponse({'status': 1})
 
     else:

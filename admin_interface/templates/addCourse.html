@@ -1,0 +1,52 @@
+{% extends './dashboard.html' %}
+{% load static %}
+{% block css %}
+.form-body{
+  padding:15px;
+}
+{% endblock %}
+
+
+{% block body %}
+
+<div class="form-body">
+  {% if message %}
+  <p color='red'>{{message}}</p>
+  {%endif%}
+  <form class="form-signin" action="/admin/create_course/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <p><select class="form-select" aria-label="Default select example" id="dept" name="dept" required>
+          <option selected>Select Department</option>
+          {% for i in depart %}
+          <option value="{{i.dept_id}}">{{i.dept_id}}</option>
+          {% endfor %}
+        </select>
+      </p>
+    </div>
+    <div class="mb-3">
+      <p><select class="form-select" aria-label="Default select example" id="year" name="year" required>
+          <option selected>Select Year</option>
+          {% for i in list %}
+          <option value="{{i}}">{{i}}</option>
+          {% endfor %}
+        </select>
+      </p>
+    </div>
+    <div class="mb-3">
+      <p> <label for="name" class="form-label">Course Id</label>
+        <input type="text" class="form-control" id="c_id" name="c_id" placeholder="Course ID" required>
+      </p>
+    </div>
+    <div class="mb-3">
+      <p> <label for="name" class="form-label">Course Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Course Name" required>
+      </p>
+    </div>
+
+
+    <button class="btn btn-success">Submit</button>
+
+
+
+    {% endblock %}
