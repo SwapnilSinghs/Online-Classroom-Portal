@@ -50,7 +50,7 @@ def addAssignment(request):
         courses = Courses.objects.all()
         departments = Department.objects.all()
     params = {'uploadedBy': uploadedBy,
-              'courses': courses, 'departments': departments}
+              'courses': courses, 'departments': departments, 'img': img}
     if request.method == "POST" and request.FILES['assign_file']:
         assignfile = request.FILES['assign_file']
         fileurl = assignfile
@@ -90,18 +90,19 @@ def viewAssignment(request, assignid):
     dept = assign[0].dept
     uploadedBy = assign[0].uploaded_by_id
     cid = assign[0].course_id
+    moutof = assign[0].assignment_marksOutOf
     if g_id == 1:
         template_values = 'examDashboard.html'
     else:
         template_values = 'ocp_app/dashboardTeach.html'
     params = {'name': name, 'date': date, 'st': st, 'et': et, 'detail': detail,
-              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid, 'template': template_values}
+              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid, 'template': template_values, 'img': img}
     if request.method == "POST" and request.FILES['fileassign']:
         if g_id == 1:
             solutionfile = request.FILES['fileassign']
             fileurl = solutionfile
             solution = AssignmentAnswer(
-                assign_id=assignid, stud_id=id, submittedfile=fileurl, course_id=cid)
+                assign_id=assignid, stud_id=id, submittedfile=fileurl, course_id=cid, amarksOutOf=moutof)
             solution.save()
             return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllAssignment/'},0000);</script>")
     return render(request, 'viewAssignment.html', params)
@@ -134,24 +135,36 @@ def viewAllAssignment(request):
         deleteVisible = True
         template_values = 'ocp_app/dashboardTeach.html'
     params = {'assignments': assignments,
-              'deleteVisible': deleteVisible, 'template': template_values}
+              'deleteVisible': deleteVisible, 'template': template_values, 'img': img}
     return render(request, 'viewAllAssignment.html', params)
 
 
 def viewSubmitAssignTeach(request, assignid):
     answers = AssignmentAnswer.objects.filter(assign_id=assignid)
-    assign_id=answers[0].assign_id
-    course_id=answers[0].course_id
-    stud_id = answers[0].stud_id
-    studName = Student.objects.filter(username=stud_id).values('firstname','lastname')
+    assign_id = answers[0].assign_id
+    course_id = answers[0].course_id
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
     id = request.user.username
     if g_id != 1:
         template_values = 'ocp_app/dashboardTeach.html'
-    params = {'assignmentAnswer': answers, 'template': template_values, 'assign_id':assign_id, 'course_id':course_id, 'studName': studName[0]}
+    params = {'assignmentAnswer': answers, 'template': template_values,
+              'assign_id': assign_id, 'course_id': course_id, 'img': img}
     return render(request, 'viewSubmitAssignTeach.html', params)
+
+
+def submitAssignScore(request, assignid, studid):
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if request.method == "POST":
+        if g_id != 1:
+            mgot = request.POST.get('mgot', '')
+            AssignmentAnswer.objects.filter(
+                assign_id=assignid, stud=studid).update(amarksObtained=mgot)
+    return HttpResponse("<script>setTimeout(function(){window.history.back();},0000);</script>")
 
 
 def addExam(request):
@@ -167,7 +180,7 @@ def addExam(request):
         courses = Courses.objects.all()
         departments = Department.objects.all()
     params = {'uploadedBy': uploadedBy,
-              'courses': courses, 'departments': departments}
+              'courses': courses, 'departments': departments, 'img': img}
     if request.method == "POST" and request.FILES['exam_file']:
         qpaperfile = request.FILES['exam_file']
         fileurl = qpaperfile
@@ -214,7 +227,7 @@ def viewExam(request, examid):
     else:
         template_values = 'ocp_app/dashboardTeach.html'
     params = {'name': name, 'etype': etype, 'date': date, 'st': st, 'et': et, 'detail': detail,
-              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid, 'template': template_values}
+              'fileUpload': fileUpload, 'dept': dept, 'uploadedBy': uploadedBy, 'cid': cid, 'template': template_values, 'img': img}
     if request.method == "POST" and request.FILES['exam_file']:
         if g_id == 1:
             solutionfile = request.FILES['exam_file']
@@ -239,23 +252,25 @@ def viewAllExam(request):
         deleteVisible = True
         template_values = 'ocp_app/dashboardTeach.html'
     params = {'exams': exams, 'deleteVisible': deleteVisible,
-              'template': template_values}
+              'template': template_values, 'img': img}
     return render(request, 'viewAllExam.html', params)
 
 
 def viewSubmitExamTeach(request, examid):
     answers = ExamAnswer.objects.filter(exam_id=examid)
-    exam_id=answers[0].exam_id
-    course_id=answers[0].course_id
+    exam_id = answers[0].exam_id
+    course_id = answers[0].course_id
     stud_id = answers[0].stud_id
-    studName = Student.objects.filter(username=stud_id).values('firstname','lastname')
+    studName = Student.objects.filter(
+        username=stud_id).values('firstname', 'lastname')
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
     id = request.user.username
     if g_id != 1:
         template_values = 'ocp_app/dashboardTeach.html'
-    params = {'examAnswer': answers, 'template': template_values, 'exam_id':exam_id, 'course_id':course_id, 'studName': studName[0]}
+    params = {'examAnswer': answers, 'template': template_values, 'exam_id': exam_id,
+              'course_id': course_id, 'studName': studName[0], 'img': img}
     return render(request, 'viewSubmitExamTeach.html', params)
 
 

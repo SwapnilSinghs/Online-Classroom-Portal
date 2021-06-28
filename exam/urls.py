@@ -9,6 +9,7 @@ urlpatterns = [
     path('deleteAssignment/<int:assignid>',views.deleteAssignment,name='deleteAssignment'),
     path('viewExam/<int:examid>',views.viewExam,name='viewExam'),
     path('viewAllAssignment/',views.viewAllAssignment,name='viewAllAssignment'),
+    path('submitAssignScore/<int:assignid>/<studid>',views.submitAssignScore,name='submitAssignScore'),
     path('viewAllExam/',views.viewAllExam,name='viewAllExam'),
     path('deleteExam/<int:examid>',views.deleteExam,name='deleteExam'),
     path('viewSubmitExamTeach/<int:examid>',views.viewSubmitExamTeach,name='viewSubmitExamTeach'),

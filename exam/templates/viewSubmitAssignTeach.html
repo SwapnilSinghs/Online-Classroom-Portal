@@ -234,22 +234,29 @@
                                 <th>Student Name</th>
                                 <th>Submission Date & Time</th>
                                 <th>View Submission</th>
+                                <th>Score</th>
+                                <th>Save Score</th>
                             </tr>
                         </thead>
                         <!--Table head-->
                         <!--Table body-->
+                        
                             <tbody>
-                                {% for i in assignmentAnswer %}
+                                {% for i in assignmentAnswer %} 
+                                <form action='/exam/submitAssignScore/{{i.assign_id}}/{{i.stud_id}}' method="post" enctype="multipart/form-data">{% csrf_token %}
                                     <tr>
                                         <td>{{i.stud_id}}</td>
-                                        <td>{{studName.firstname}} {{studName.lastname}}</td>
+                                        <td>{{i.stud.firstname}} {{i.stud.lastname}}</td>
                                         <td>{{i.date}}</td>
                                         <td>
                                             <a href="{{i.submittedfile.url}}" target="_blank"
                                                 ><button class="btn btn-primary">View Answer Sheet</button></a
                                             >
                                         </td>
+                                        <td><input id="mgot" name='mgot' style="width: 55px;" value="{{i.amarksObtained}}"> / {{i.amarksOutOf}}</td>
+                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
                                     </tr>
+                                </form>
                                 {% endfor %}
                             </tbody>
                         <!--Table body-->
