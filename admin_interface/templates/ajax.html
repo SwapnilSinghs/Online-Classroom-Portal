@@ -260,7 +260,7 @@
         console.log(id);
         mydata = { sid: id };
         $.ajax({
-            url: "{% url 'del_course' %}",
+            url: "{% url 'remove_course' %}",
             method: "GET",
             data: mydata,
             success: function (data) {

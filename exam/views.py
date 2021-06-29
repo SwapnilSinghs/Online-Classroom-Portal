@@ -78,9 +78,9 @@ def examloginhandle(request):
             return redirect('../examDashboard/')
         else:
             # context = "Please enter valid username and password."
-            return render(request,'examlogin.html/',context)
+            return render(request,'examlogin.html/')
     else:
-        return render(request,'examlogin.html/',context)
+        return render(request,'examlogin.html/')
 
 def examDashboard(request):
     g = request.user.groups.all()

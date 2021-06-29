@@ -325,7 +325,7 @@ def view_course(request):
         return JsonResponse({'status': 0})
 
 
-def del_course(request):
+def remove_course(request):
     if request.method == 'GET':
         cid = request.GET.get('sid')
 

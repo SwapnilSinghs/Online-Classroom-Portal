@@ -449,7 +449,7 @@ def addAnnouncements(request):
     params = {'img': img, 'user': id, 'dept': depart}
     return render(request, 'ocp_app/addAnnouncement.html', params)
 
-
+@login_required
 def add_announcement(request):
     if request.method == "POST" and request.FILES['announce_file']:
         file_type = request.POST.get('file_type', '')
@@ -615,7 +615,7 @@ def del_course(request):
 
         return JsonResponse({'status': 1})
 
-
+@login_required
 def view_material(request, cid):
     img, id = fun(request)
     course = Courses.objects.get(pk=cid)
@@ -628,26 +628,26 @@ def view_material(request, cid):
     else:
         template_values = 'ocp_app/dashboardTeach.html'
 
-        params = {'img': img, 'user': id, 'material': material,
+    params = {'img': img, 'user': id, 'material': material,
                   'my_template': template_values, 'course_id': cid}
 
-        return render(request, 'ocp_app/view_study.html', params)
+    return render(request, 'ocp_app/view_study.html', params)
 
-
+@login_required
 def addMaterial(request, cid):
     img, id = fun(request)
     params = {'img': img, 'user': id, 'course_id': cid}
 
     return render(request, 'ocp_app/add_material.html', params)
 
-
+@login_required
 def add_Material(request, cid):
     img, id = fun(request)
     params = {'img': img, 'user': id}
     if request.method == "POST" and request.FILES['material_file']:
         file_type = request.POST.get('file_type', '')
         imgfile = request.FILES['material_file']
-        if file_type == 'img':
+        if file_type == 'img' or file_type=='Video' or file_type=='PPT':
             fs = FileSystemStorage()
             imgfilename = fs.save(imgfile.name, imgfile)
             imgurl = fs.url(imgfilename)
@@ -672,13 +672,13 @@ def add_Material(request, cid):
         params = {'img': img, 'user': id, 'course_id': cid}
         return render(request, 'ocp_app/add_material.html', params)
 
-
+@login_required
 def viewStudent(request):
     img, id = fun(request)
     params = {'img': img, 'user': id}
     return render(request,'ocp_app/viewStudent.html',params)
 
-
+@login_required
 def search_student(request):
     img, id = fun(request)
 
@@ -698,11 +698,12 @@ def search_student(request):
     else:
         return JsonResponse({'status': 0})
 
+@login_required
 def view_query(request):
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
-
+    print(request.user.email)
     query1 = Forum.objects.filter(email=request.user.email)
     query2 = Forum.objects.filter(r_email=request.user.email)
 
@@ -713,4 +714,4 @@ def view_query(request):
 
     params = {'img': img, 'user': id,'query1':query1,'query2':query2,'my_template':template_values}
 
-    return render(request,'viewQueries.html',params)
+    return render(request,'ocp_app/viewQueries.html',params)
