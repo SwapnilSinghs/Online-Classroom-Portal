@@ -41,14 +41,18 @@ def admin_dashboard(request):
 
 def signinhandle(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['pass']
+        username = request.POST.get('username','')
+        password = request.POST.get('pass','')
+        print(username,password)
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-
-    return redirect(admin_dashboard)
-
+        if request.user.is_staff==1:
+            return redirect(admin_dashboard)
+        else:
+            logout(request)
+            return redirect(home)
+    return redirect(home)
 
 def signup(request):
     return render(request, 'signup.html')
@@ -61,12 +65,13 @@ def signOut(request):
 
 def signuphandle(request):
     if request.method == "POST":
-        username = "admin123"
+        username = request.POST.get('username','')
         firstname = request.POST.get('firstname', '')
         lastname = request.POST.get('lastname', '')
         email = request.POST.get('email', '')
         password = request.POST.get('password', '')
-        confirm_pass = request.POST.get('confirm_pass', '')
+        passcode = request.POST.get('passcode', '')
+
 
         if not username.isalnum():
             messages.error(
@@ -76,9 +81,10 @@ def signuphandle(request):
             messages.error(request, "Name must be alphabetical.")
             return redirect('/admin/signup/')
 
-        if password != confirm_pass:
-            messages.error(request, "Password does not match.")
+        if passcode != "1234":
+            messages.error(request, "Passcode does not match.")
             return redirect('/admin/signup/')
+
         if len(password) <= 8:
             messages.error(
                 request, "Password should be greater than 8 characters.")
@@ -87,9 +93,10 @@ def signuphandle(request):
         myuser = User.objects.create_user(username, email, password)
         myuser.first_name = firstname
         myuser.last_name = lastname
+        myuser.is_staff = 1
         myuser.save()
 
-        return render(request, 'home.html')
+        return redirect(home)
 
 
 @login_required
