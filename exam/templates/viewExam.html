@@ -92,7 +92,6 @@ margin-left: 4px;
 .signup_btn{
     color: black;
     background-color: #FFC312;
-    width: 250px;
     }
     
 .signup_btn:hover{
@@ -306,10 +305,14 @@ input[type=checkbox] {
           {{detail}}
           <hr />
           <label class="col-sm-8"
-            >Click the following button to open the question paper</label
+            >Click the following button to start the exam</label
           >
+          <a class="btn signup_btn" role="button" onclick="getElementById('myBtn').disabled = false;">Start Exam</a>
+          <!-- <input type="button" style="display: none;"><a href=""
+          >Start Exam</a
+          ></input> -->
           <a href="{{fileUpload.url}}" target="_blank"
-            ><button class="btn btn-primary">View Question Paper</button></a
+            ><button class="btn btn-primary" disabled="true" id="myBtn">View Question Paper</button></a
           >
         </div>
       </div>
