@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from ocp_app.models import Student, Department, Teacher, Courses, Announcement, Forum
 from exam.models import Exam, Assignment, AssignmentAnswer, ExamAnswer
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse
 from . import facesTrain
 import numpy as np
 import cv2
@@ -229,6 +229,21 @@ def submitAssignScore(request, assignid, studid):
     return HttpResponse("<script>setTimeout(function(){window.history.back();},0000);</script>")
 
 
+def resultAssignment(request):
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    st = Student.objects.filter(username=id)
+    st1 = st[0].firstname + " " + st[0].lastname
+    stud = AssignmentAnswer.objects.filter(stud_id=id)
+    if g_id == 1:
+        template_values = 'examDashboard.html'
+    params = {'template': template_values,
+              'img': img, 'stud': stud, 'name': st1}
+    return render(request, 'resultAssignment.html', params)
+
+
 def addExam(request):
     img, id = fun(request)
     g = request.user.groups.all()
@@ -320,7 +335,6 @@ def viewAllExam(request):
 
 
 def resultExam(request):
-    exams = Exam.objects.all()
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
@@ -330,8 +344,8 @@ def resultExam(request):
     stud = ExamAnswer.objects.filter(stud_id=id)
     if g_id == 1:
         template_values = 'examDashboard.html'
-    params = {'exams': exams,
-              'template': template_values, 'img': img, 'stud':stud, 'name': st1, 'st1':"Sessional Test - 1", 'st2':"Sessional Test - 2", 'put': "Pre-University Test", 'ut':"University Test"}
+    params = {'template': template_values, 'img': img, 'stud': stud, 'name': st1, 'st1': "Sessional Test - 1",
+              'st2': "Sessional Test - 2", 'put': "Pre-University Test", 'ut': "University Test"}
     return render(request, 'resultExam.html', params)
 
 
@@ -376,6 +390,7 @@ def submitExamScore(request, examid, studid):
                 exam_id=examid, stud=studid).update(emarksObtained=mgot)
     return HttpResponse("<script>setTimeout(function(){window.history.back();},0000);</script>")
 
+
 def test_proc(request):
     face_cascade = cv2.CascadeClassifier(
         'exam/haarcascade_frontalface_alt2.xml')
@@ -392,13 +407,13 @@ def test_proc(request):
     frame_height = int(cap.get(4))
 
     size = (frame_width, frame_height)
-    user=request.user.username
+    user = request.user.username
     result = cv2.VideoWriter('exam/recordings/'+str(user)+'.avi',
-                            cv2.VideoWriter_fourcc(*'MJPG'),
-                            10, size)
+                             cv2.VideoWriter_fourcc(*'MJPG'),
+                             10, size)
     count = 0
-    
-    x=0
+
+    x = 0
     while(True):
         ret, frame = cap.read()
         print(x)
@@ -406,9 +421,9 @@ def test_proc(request):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.2, 5)
         result.write(frame)
-        if  x>1000:
+        if x > 1000:
             print(x)
-            count=2
+            count = 2
             return JsonResponse({'status': 0, 'count': count})
 
         for (x, y, w, h) in faces:
@@ -417,11 +432,11 @@ def test_proc(request):
             roi_color = frame[y:y+h, x:x+w]
             # pridicting faces
             id_, conf = recognizer.predict(roi_gray)
-            if (x<0):
-                x=100
-            
-            x=x-50
-            if conf>=40 :
+            if (x < 0):
+                x = 100
+
+            x = x-50
+            if conf >= 40:
                 if labels[id_] == request.user.username:
                     print(labels[id_])
                     result.write(frame)
@@ -431,6 +446,6 @@ def test_proc(request):
                     print(count)
                     return JsonResponse({'status': 1, 'count': count})
             else:
-                count=2
+                count = 2
                 return JsonResponse({'status': 0, 'count': count})
-        x=x+25
+        x = x+25
