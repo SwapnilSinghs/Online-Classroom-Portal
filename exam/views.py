@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User, Group
 from ocp_app.models import Student, Department, Teacher, Courses, Announcement, Forum
 from exam.models import Exam, Assignment, AssignmentAnswer, ExamAnswer
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from . import facesTrain
 import numpy as np
 import cv2
@@ -359,3 +359,62 @@ def submitExamScore(request, examid, studid):
             ExamAnswer.objects.filter(
                 exam_id=examid, stud=studid).update(emarksObtained=mgot)
     return HttpResponse("<script>setTimeout(function(){window.history.back();},0000);</script>")
+
+def test_proc(request):
+    face_cascade = cv2.CascadeClassifier(
+        'exam/haarcascade_frontalface_alt2.xml')
+
+    recognizer = cv2.face.LBPHFaceRecognizer_create()
+    recognizer.read("exam/trainner.yml")
+
+    labels = {"person_name": 1}
+    with open("exam/labels.pickle", 'rb') as f:
+        og_labels = pickle.load(f)
+        labels = {v: k for k, v in og_labels.items()}
+    cap = cv2.VideoCapture(0)
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+
+    size = (frame_width, frame_height)
+    user=request.user.username
+    result = cv2.VideoWriter('exam/recordings/'+str(user)+'.avi',
+                            cv2.VideoWriter_fourcc(*'MJPG'),
+                            10, size)
+    count = 0
+    
+    x=0
+    while(True):
+        ret, frame = cap.read()
+        print(x)
+
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, 1.2, 5)
+        result.write(frame)
+        if  x>1000:
+            print(x)
+            count=2
+            return JsonResponse({'status': 0, 'count': count})
+
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 10)
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_color = frame[y:y+h, x:x+w]
+            # pridicting faces
+            id_, conf = recognizer.predict(roi_gray)
+            if (x<0):
+                x=100
+            
+            x=x-50
+            if conf>=40 :
+                if labels[id_] == request.user.username:
+                    print(labels[id_])
+                    result.write(frame)
+                    continue
+                else:
+                    count = 1
+                    print(count)
+                    return JsonResponse({'status': 1, 'count': count})
+            else:
+                count=2
+                return JsonResponse({'status': 0, 'count': count})
+        x=x+25

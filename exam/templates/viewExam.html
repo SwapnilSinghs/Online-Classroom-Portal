@@ -309,7 +309,7 @@ input[type=checkbox] {
           <label class="col-sm-8"
             >Click the following button to start the exam</label
           >
-          <a class="btn signup_btn" role="button" onclick="getElementById('myBtn').disabled = false;">Start Exam</a>
+          <a class="btn signup_btn" role="button"id="start_exam"onclick=check()>Start Exam</a>
           <!-- <input type="button" style="display: none;"><a href=""
           >Start Exam</a
           ></input> -->
@@ -384,4 +384,29 @@ input[type=checkbox] {
       $(".custom-file-label").html(fileName);
     });
   </script>
+
+  <script>
+    var check = function(){
+      console.log("Test Button clicked");
+      
+      $.ajax({
+           url: "{% url 'test_proc' %}",
+           method:"GET",
+           success : function(data){
+            if(data.count==1){
+                alert('Unknown Faces Found')
+                location.reload()
+            }   
+            if(data.count==2)
+            {
+                alert('No Face Found')
+                location.reload();
+            }
+           }
+        });
+      //document.getElementById('myBtn').disabled = false;
+    };
+  </script>
+ 
+
   {% endblock %}
