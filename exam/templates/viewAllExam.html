@@ -238,7 +238,8 @@
                                 <th>Due date</th>
                                 <th>Timing</th>
                                 <th>Created By</th>
-                                <th>View</th>
+                                <th>Question Paper</th>
+                                <th>Submissions</th>
                                 <th>Delete</th>
                             </tr>
                             {% else %}
@@ -266,7 +267,12 @@
                                         <td>{{i.exam_start_time}} to {{i.exam_end_time}}</td>
                                         <td>{{i.uploaded_by_id}}</td>
                                         <td>
-                                            <a href="/exam/viewSubmitExamTeach/{{i.exam_id}}" class="btn btn-danger">View</a>
+                                            <input type="button" style="display: none;"><a href="{{i.exam_fileUpload.url}}" target="_blank"
+                                            >View Question Paper</a
+                                            ></input>
+                                        </td>
+                                        <td>
+                                            <a href="/exam/viewSubmitExamTeach/{{i.exam_id}}" class="btn btn-danger">View Submissions</a>
                                         </td>
                                         <td>
                                             <a href="/exam/deleteExam/{{i.exam_id}}" class="btn btn-danger">Delete</a>
