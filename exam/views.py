@@ -319,6 +319,22 @@ def viewAllExam(request):
     return render(request, 'viewAllExam.html', params)
 
 
+def resultExam(request):
+    exams = Exam.objects.all()
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    st = Student.objects.filter(username=id)
+    st1 = st[0].firstname + " " + st[0].lastname
+    stud = ExamAnswer.objects.filter(stud_id=id)
+    if g_id == 1:
+        template_values = 'examDashboard.html'
+    params = {'exams': exams,
+              'template': template_values, 'img': img, 'stud':stud, 'name': st1, 'st1':"Sessional Test - 1", 'st2':"Sessional Test - 2", 'put': "Pre-University Test", 'ut':"University Test"}
+    return render(request, 'resultExam.html', params)
+
+
 def viewSubmitExamTeach(request, examid):
     answers = ExamAnswer.objects.filter(exam_id=examid)
     exam_id = answers[0].exam_id

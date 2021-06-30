@@ -28,6 +28,7 @@ x_train = []
 
 for root, dirs, files in os.walk(image_dir):
     for file in files:
+        print(file)
         #currently reading image with this formate only 
         if file.endswith("png") or file.endswith("jpg") or  file.endswith("jpeg") or file.endswith("JPEG"):
             path = os.path.join(root, file)

@@ -10,6 +10,7 @@ urlpatterns = [
     path('viewSubmitAssignTeach/<int:assignid>',views.viewSubmitAssignTeach,name='viewSubmitAssignTeach'),
     path('deleteAssignment/<int:assignid>',views.deleteAssignment,name='deleteAssignment'),
     path('viewExam/<int:examid>',views.viewExam,name='viewExam'),
+    path('resultExam/',views.resultExam,name='resultExam'),
     path('viewAllAssignment/',views.viewAllAssignment,name='viewAllAssignment'),
     path('submitAssignScore/<int:assignid>/<studid>',views.submitAssignScore,name='submitAssignScore'),
     path('viewAllExam/',views.viewAllExam,name='viewAllExam'),

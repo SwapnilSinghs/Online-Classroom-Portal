@@ -313,9 +313,7 @@ input[type=checkbox] {
           <!-- <input type="button" style="display: none;"><a href=""
           >Start Exam</a
           ></input> -->
-          <a href="{{fileUpload.url}}" target="_blank"
-            ><button class="btn btn-primary" disabled="true" id="myBtn">View Question Paper</button></a
-          >
+          <button class="btn btn-primary" disabled="true" id="myBtn"><a href="{{fileUpload.url}}" target="_blank"  style="color: black;">View Question Paper</a></button>
         </div>
       </div>
     </div>
@@ -388,7 +386,7 @@ input[type=checkbox] {
   <script>
     var check = function(){
       console.log("Test Button clicked");
-      
+      document.getElementById('myBtn').disabled = false;
       $.ajax({
            url: "{% url 'test_proc' %}",
            method:"GET",
@@ -404,7 +402,6 @@ input[type=checkbox] {
             }
            }
         });
-      //document.getElementById('myBtn').disabled = false;
     };
   </script>
  
