@@ -27,8 +27,10 @@ def fun(request):
         img = teacher[0].img
     return img, id
 
+
 def faceTest(request):
-    face_cascade = cv2.CascadeClassifier('exam/haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(
+        'exam/haarcascade_frontalface_alt2.xml')
 
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     recognizer.read("exam/trainner.yml")
@@ -36,51 +38,53 @@ def faceTest(request):
     labels = {"person_name": 1}
     with open("exam/labels.pickle", 'rb') as f:
         og_labels = pickle.load(f)
-        labels = {v:k for k,v in og_labels.items()}
+        labels = {v: k for k, v in og_labels.items()}
 
-    #intiating webcam 
+    # intiating webcam
     cap = cv2.VideoCapture(0)
-
 
     while(True):
         # Capture frame-by-frame
         ret, frame = cap.read()
-        #converting image into gray
-        gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        #getting faces
-        faces = face_cascade.detectMultiScale(gray, 1.2,5)
-        
+        # converting image into gray
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # getting faces
+        faces = face_cascade.detectMultiScale(gray, 1.2, 5)
+
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 10)
             roi_gray = gray[y:y+h, x:x+w]
             roi_color = frame[y:y+h, x:x+w]
-            #pridicting faces 
+            # pridicting faces
             id_, conf = recognizer.predict(roi_gray)
-            # confi sbesically accuracy of the pridiction 
+            # confi sbesically accuracy of the pridiction
             # if conf>=70 and conf <= 80:
             #     font = cv2.FONT_HERSHEY_SIMPLEX
-            print(labels[id_] , conf)
+            print(labels[id_], conf)
             return labels[id_]
 
+
 def examlogin(request):
-    return render(request,'examlogin.html')
+    return render(request, 'examlogin.html')
+
 
 def examloginhandle(request):
-    if request.method=='POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        ans=faceTest(request)
-        l=list(map(str,ans.split('.')))
-        if l[0].lower()==username.lower():
-            user=authenticate(username=username,password=password)
-            login(request,user)
-        
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        ans = faceTest(request)
+        l = list(map(str, ans.split('.')))
+        if l[0].lower() == username.lower():
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
             return redirect('../examDashboard/')
         else:
             # context = "Please enter valid username and password."
-            return render(request,'examlogin.html/')
+            return render(request, 'examlogin.html/')
     else:
-        return render(request,'examlogin.html/')
+        return render(request, 'examlogin.html/')
+
 
 def examDashboard(request):
     g = request.user.groups.all()
@@ -280,6 +284,7 @@ def viewExam(request, examid):
     dept = exam[0].dept
     uploadedBy = exam[0].uploaded_by_id
     cid = exam[0].course_id
+    moutof = exam[0].exam_marksOutOf
     if g_id == 1:
         template_values = 'examDashboard.html'
     else:
@@ -291,7 +296,7 @@ def viewExam(request, examid):
             solutionfile = request.FILES['exam_file']
             fileurl = solutionfile
             solution = ExamAnswer(exam_id=examid, stud_id=id,
-                                  submittedfile=fileurl, course_id=cid)
+                                  submittedfile=fileurl, course_id=cid, emarksOutOf=moutof)
             solution.save()
             return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllExam/'},0000);</script>")
     return render(request, 'viewExam.html', params)
@@ -318,9 +323,6 @@ def viewSubmitExamTeach(request, examid):
     answers = ExamAnswer.objects.filter(exam_id=examid)
     exam_id = answers[0].exam_id
     course_id = answers[0].course_id
-    stud_id = answers[0].stud_id
-    studName = Student.objects.filter(
-        username=stud_id).values('firstname', 'lastname')
     img, id = fun(request)
     g = request.user.groups.all()
     g_id = Group.objects.get(name=g[0]).id
@@ -328,7 +330,7 @@ def viewSubmitExamTeach(request, examid):
     if g_id != 1:
         template_values = 'ocp_app/dashboardTeach.html'
     params = {'examAnswer': answers, 'template': template_values, 'exam_id': exam_id,
-              'course_id': course_id, 'studName': studName[0], 'img': img}
+              'course_id': course_id, 'img': img}
     return render(request, 'viewSubmitExamTeach.html', params)
 
 
@@ -344,3 +346,16 @@ def deleteExam(request, examid):
         dc.delete()
         return HttpResponse("<script>setTimeout(function(){window.location.href='/exam/viewAllExam/'},0000);</script>")
     return render(request, 'viewAllExam.html')
+
+
+def submitExamScore(request, examid, studid):
+    img, id = fun(request)
+    g = request.user.groups.all()
+    g_id = Group.objects.get(name=g[0]).id
+    id = request.user.username
+    if request.method == "POST":
+        if g_id != 1:
+            mgot = request.POST.get('mgot', '')
+            ExamAnswer.objects.filter(
+                exam_id=examid, stud=studid).update(emarksObtained=mgot)
+    return HttpResponse("<script>setTimeout(function(){window.history.back();},0000);</script>")

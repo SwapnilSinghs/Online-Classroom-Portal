@@ -16,4 +16,5 @@ urlpatterns = [
     path('deleteExam/<int:examid>',views.deleteExam,name='deleteExam'),
     path('viewSubmitExamTeach/<int:examid>',views.viewSubmitExamTeach,name='viewSubmitExamTeach'),
     path('addExam/',views.addExam,name='addExam'),
+    path('submitExamScore/<int:examid>/<studid>',views.submitExamScore,name='submitExamScore'),
 ]

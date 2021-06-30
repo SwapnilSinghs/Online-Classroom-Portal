@@ -249,9 +249,9 @@
                                         <td>{{i.stud.firstname}} {{i.stud.lastname}}</td>
                                         <td>{{i.date}}</td>
                                         <td>
-                                            <a href="{{i.submittedfile.url}}" target="_blank"
-                                                ><button class="btn btn-primary">View Answer Sheet</button></a
-                                            >
+                                            <input type="button" style="display: none;"><a href="{{i.submittedfile.url}}" target="_blank"
+                                            >View Answer Sheet</a
+                                            ></input>
                                         </td>
                                         <td><input id="mgot" name='mgot' style="width: 55px;" value="{{i.amarksObtained}}"> / {{i.amarksOutOf}}</td>
                                         <td><button type="submit" class="btn btn-primary">Save</button></td>

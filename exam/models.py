@@ -14,7 +14,7 @@ class Exam(models.Model):
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     dept = models.CharField(max_length=255,default="")
     uploaded_by = models.ForeignKey(Teacher, to_field='username', on_delete=models.CASCADE,null=True)
-    exam_marksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0,unique=True)
+    exam_marksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0)
 
 class Assignment(models.Model):
     assignment_id = models.AutoField(primary_key=True)
@@ -27,7 +27,7 @@ class Assignment(models.Model):
     course = models.ForeignKey(Courses, to_field='course_id', on_delete=models.CASCADE,null=True)
     dept = models.CharField(max_length=255,default="")
     uploaded_by = models.ForeignKey(Teacher, to_field='username', on_delete=models.CASCADE,null=True)
-    assignment_marksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0,unique=True)
+    assignment_marksOutOf = models.DecimalField(max_digits = 6,decimal_places = 2,default=0)
 
 class AssignmentAnswer(models.Model):
     sno = models.AutoField(primary_key=True)
