@@ -1,0 +1,40 @@
+{% extends './examDashboard.html' %}
+{% load static %}
+{% block css %}
+aimg{
+    height:500px;
+    width:500px;
+}
+
+{% endblock %}
+{% block body %}
+
+{% if vannounce %}
+
+{% for i in vannounce %}
+    <h3><font color="red"> Name :</font><b> {{i.announcement_name}}</b></h3>
+    <br/>
+    <h3> <font color="red">Detail:</font> {{i.detail}}</h3>
+    <br/>
+    <h4><font color="red">Date:</font> <b> {{i.date_of_announcement}}</b></h4>
+    <h4><font color="red">Time:</font> <b> {{i.time_of_announcement}}</b></h4>
+    {% if  i.file_type == 'img' %}
+    <img id="aimg" src="{{i.announcement_file}}">
+    {%else%}
+    <a href="{{i.announcement_file.url}}"target="blank"><button class="btn btn-primary"> View </button></a>
+    
+    {%endif%}
+    <hr/>
+    <br/>
+    {% endfor %}
+
+
+{%else%}
+
+No Announcement !! 
+
+{% endif %}
+
+
+
+{% endblock %}

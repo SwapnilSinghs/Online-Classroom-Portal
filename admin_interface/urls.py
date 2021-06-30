@@ -27,4 +27,6 @@ urlpatterns = [
     path('viewCourse/', views.viewCourse, name='viewCourse'),
     path('view_course/', views.view_course, name='view_course'),
     path('remove_course/',views.remove_course, name='remove_course'),
+    path('adminforum/',views.aforum,name="adminforum"),
+    path('viewAdminForum/',views.view_aquery,name='viewAdminForum')
 ]

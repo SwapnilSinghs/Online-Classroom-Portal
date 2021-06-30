@@ -126,6 +126,7 @@
                     console.log(x[0])
                     $("#msg").text("Faculty Found");
                     $("#msg").show().delay(2000).fadeOut();
+                    
                     var image = x[0].img;
                     var image_file = '<img src="' + image + '" height="200" width="200" />';
                     console.log(image.url, 5)
@@ -144,11 +145,6 @@
                     $("#userTable td#email ").append(email);
                     var phone = x[0].phone;
                     $("#userTable td#phone ").append(phone);
-                    var year = x[0].year;
-                    $("#userTable td#year ").append(year);
-                    var course = x[0].course;
-                    console.log(course)
-                    $("#userTable td#course ").append(course);
                     butt = '<input type="button" id="facdel" class="btn btn-danger" value="Delete" data-sid=' + x[0].username + '>';
                     $("#delfaculty ").append(butt);
                 }

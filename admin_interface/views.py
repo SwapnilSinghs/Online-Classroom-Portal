@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 from django.urls import reverse
 
 from ocp_app.models import Student, Department, Teacher, Courses, Announcement, Forum, studyMaterial
+from exam.models import Exam
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.mail import send_mail
@@ -32,27 +33,29 @@ def admin_dashboard(request):
     total_stud = Student.objects.all().count()
     total_fac = Teacher.objects.all().count()
     total_course = Courses.objects.all().count()
+    total_exam = Exam.objects.all().count()
 
     params = {'user': id, "total_dep": total_dep, "total_stud": total_stud,
-              "total_fac": total_fac, "total_course": total_course}
+              "total_fac": total_fac, "total_course": total_course,"total_exam":total_exam}
 
     return render(request, 'admin_dashboard.html', params)
 
 
 def signinhandle(request):
     if request.method == "POST":
-        username = request.POST.get('username','')
-        password = request.POST.get('pass','')
-        print(username,password)
+        username = request.POST.get('username', '')
+        password = request.POST.get('pass', '')
+        print(username, password)
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-        if request.user.is_staff==1:
+        if request.user.is_superuser == 1:
             return redirect(admin_dashboard)
         else:
             logout(request)
             return redirect(home)
     return redirect(home)
+
 
 def signup(request):
     return render(request, 'signup.html')
@@ -65,13 +68,12 @@ def signOut(request):
 
 def signuphandle(request):
     if request.method == "POST":
-        username = request.POST.get('username','')
+        username = request.POST.get('username', '')
         firstname = request.POST.get('firstname', '')
         lastname = request.POST.get('lastname', '')
         email = request.POST.get('email', '')
         password = request.POST.get('password', '')
         passcode = request.POST.get('passcode', '')
-
 
         if not username.isalnum():
             messages.error(
@@ -94,9 +96,38 @@ def signuphandle(request):
         myuser.first_name = firstname
         myuser.last_name = lastname
         myuser.is_staff = 1
+        myuser.is_superuser = 1
         myuser.save()
 
         return redirect(home)
+
+@login_required
+def aforum(request):
+    id = request.user.username
+    name=request.user.first_name + request.user.last_name
+    email=request.user.email
+    params = { 'user': id, 'name': name, 'email': email}
+    if request.method == "POST":
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        r_email = request.POST.get('r_email','')
+        subject = request.POST.get('subject', '')
+        msg = request.POST.get('msg', '')
+        print(name, email, subject, msg)
+        forum = Forum(name=name, email=email, r_email=r_email, subject=subject, msg=msg)
+        forum.save()
+        return HttpResponse("<script>setTimeout(function(){window.location.href='/aforum/'},0000);</script>")
+    return render(request, 'forum.html', params)
+
+def view_aquery(request):
+    id = request.user.username
+    query1 = Forum.objects.filter(email=request.user.email)
+    query2 = Forum.objects.filter(r_email=request.user.email)
+
+    params = {'user': id,'query1':query1,'query2':query2}
+
+    return render(request,'viewQueries.html',params)
+
 
 
 @login_required

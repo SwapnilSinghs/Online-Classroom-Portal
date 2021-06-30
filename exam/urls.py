@@ -20,4 +20,5 @@ urlpatterns = [
     path('submitExamScore/<int:examid>/<studid>',views.submitExamScore,name='submitExamScore'),
     path('resultAssignment/',views.resultAssignment,name='resultAssignment'),
     path('test_proc/',views.test_proc,name='test_proc'),
+    path('vannouncements/',views.vannouncements,name="vannouncements")
 ]

@@ -1,4 +1,4 @@
-{% extends my_template %}
+{% extends './dashboard.html' %}
 
 {% load static %}
 {% block css %}
@@ -31,6 +31,7 @@ div{
 <li>Date : {{i.date}}</li>
 <li>By : {{i.email}}</li>
 <p class="msg">{{i.msg}}</p>
+
 {% endfor %}
 
 {% endblock %}

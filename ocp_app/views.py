@@ -629,7 +629,7 @@ def view_material(request, cid):
         template_values = 'ocp_app/dashboardTeach.html'
 
     params = {'img': img, 'user': id, 'material': material,
-                  'my_template': template_values, 'course_id': cid}
+                  'my_template': template_values, 'course_id': cid,'g_id':g_id}
 
     return render(request, 'ocp_app/view_study.html', params)
 

@@ -98,6 +98,11 @@ def examDashboard(request):
     else:
         return HttpResponse("<script>setTimeout(function(){window.location.href='/signIn/'},0000);</script>")
 
+def vannouncements(request):
+    img, id = fun(request)
+    vannounce=Announcement.objects.all()
+    params = {'img': img, 'user': id,'vannounce':vannounce}
+    return render(request,'vannouncements.html',params)
 
 def addAssignment(request):
     img, id = fun(request)
