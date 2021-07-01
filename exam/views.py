@@ -9,6 +9,8 @@ from exam.models import Exam, Assignment, AssignmentAnswer, ExamAnswer
 from django.http import HttpResponse, JsonResponse
 from . import facesTrain
 import numpy as np
+from django.conf import settings
+from django.core.mail import send_mail
 import cv2
 import pickle
 # Create your views here.
@@ -407,6 +409,15 @@ def test_proc(request):
     with open("exam/labels.pickle", 'rb') as f:
         og_labels = pickle.load(f)
         labels = {v: k for k, v in og_labels.items()}
+
+    firstname=request.user.first_name
+    lastname=request.user.last_name
+    email = request.user.email
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email, 'admin123@admin.com']
+    n1='\n'
+
+    
     cap = cv2.VideoCapture(0)
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
@@ -419,6 +430,7 @@ def test_proc(request):
     count = 0
 
     x = 0
+
     while(True):
         ret, frame = cap.read()
         print(x)
@@ -429,6 +441,10 @@ def test_proc(request):
         if x > 1000:
             print(x)
             count = 2
+            subject = 'Candidature Cancellation'
+            message = f'Dear {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}You ave been indulge in suspicious activity. No Faces  have been Detected. Your Candidature is Cancelled.{n1}{n1} Wish You all the very Best. {n1} Thankyou!!.'
+            send_mail(subject, message, email_from, recipient_list)
+            return JsonResponse({'status': 0, 'count': count})
             return JsonResponse({'status': 0, 'count': count})
 
         for (x, y, w, h) in faces:
@@ -448,9 +464,15 @@ def test_proc(request):
                     continue
                 else:
                     count = 1
+                    subject = 'Candidature Cancellation'
+                    message = f'Dear {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}You ave been indulge in suspicious activity. Unknown Faces have been Detected. Your Candidature is Cancelled.{n1}{n1} Wish You all the very Best. {n1} Thankyou!!.'
+                    send_mail(subject, message, email_from, recipient_list)
                     print(count)
                     return JsonResponse({'status': 1, 'count': count})
             else:
                 count = 2
+                subject = 'Candidature Cancellation'
+                message = f'Dear {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}You ave been indulge in suspicious activity. Unknown Faces have been Detected. Your Candidature is Cancelled.{n}{n} Wish You all the very Best. {n} Thankyou!!.'
+                send_mail(subject, message, email_from, recipient_list)
                 return JsonResponse({'status': 0, 'count': count})
         x = x+25
