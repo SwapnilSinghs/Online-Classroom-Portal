@@ -83,9 +83,9 @@ def examloginhandle(request):
             return redirect('../examDashboard/')
         else:
             # context = "Please enter valid username and password."
-            return render(request, 'examlogin.html/')
+            return redirect('../examlogin')
     else:
-        return render(request, 'examlogin.html/')
+        return redirect('../examlogin')
 
 
 def examDashboard(request):
