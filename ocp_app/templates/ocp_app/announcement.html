@@ -5,36 +5,51 @@ aimg{
     height:500px;
     width:500px;
 }
-
 {% endblock %}
 {% block body %}
-
+<div class="col-md-12">
+    <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text">Announcements</h2>
+</div>
 {% if announce %}
 
-{% for i in announce %}
-    <h3><font color="red"> Name :</font><b> {{i.announcement_name}}</b></h3>
-    <br/>
-    <h3> <font color="red">Detail:</font> {{i.detail}}</h3>
-    <br/>
-    <h4><font color="red">Date:</font> <b> {{i.date_of_announcement}}</b></h4>
-    <h4><font color="red">Time:</font> <b> {{i.time_of_announcement}}</b></h4>
-    {% if  i.file_type == 'img' %}
-    <img id="aimg" src="{{i.announcement_file}}">
-    {%else%}
-    <a href="{{i.announcement_file.url}}"target="blank"><button class="btn btn-primary"> View </button></a>
-    
-    {%endif%}
-    <hr/>
-    <br/>
-    {% endfor %}
+                    {% for i in announce %}
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        <div class="card-body">
 
-
+                            <div>
+                                <h3 style="float: left;"><b>Notice - {{forloop.counter}}</b></h3>
+                                <h4 style="float: right"> {{i.time_of_announcement}}</h4>
+                                <h4 style="float: right; margin-right: 2%">{{i.date_of_announcement}}</h4>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div style="display: inline-block;">
+                                <h3><font color="green">{{i.announcement_name}}</font></h3>
+                                <br>
+                                <h4> <font color="red">NOTE:</font> {{i.detail}}</h4>
+                                <br/>
+                            </div>
+                            
+                            
+                            <br>
+                            {% if  i.file_type == 'img' %}
+                            <a href="{{i.announcement_file}}" target="_blank">
+                                <img id="aimg" src="{{i.announcement_file}}" height="200" width="200" title="Click to view on full screen">
+                            </a>
+                            {%else%}
+                            <a href="{{i.announcement_file.url}}"target="blank"><button class="btn btn-primary"> View attached file >></button></a>
+                            
+                            {%endif%}
+                        </div>
+                    </div>
+                    
+                    {% endfor %}
+                    
 {%else%}
 
 No Announcement !! 
 
 {% endif %}
-
-
 
 {% endblock %}
