@@ -116,7 +116,6 @@ def aforum(request):
         print(name, email, subject, msg)
         forum = Forum(name=name, email=email, r_email=r_email, subject=subject, msg=msg)
         forum.save()
-        return HttpResponse("<script>setTimeout(function(){window.location.href='/aforum/'},0000);</script>")
     return render(request, 'forum.html', params)
 
 def view_aquery(request):

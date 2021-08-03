@@ -711,7 +711,7 @@ def view_query(request):
         template_values = 'ocp_app/dashboard.html'
     else:
         template_values = 'ocp_app/dashboardTeach.html'
-
+    print(query1,query2)
     params = {'img': img, 'user': id,'query1':query1,'query2':query2,'my_template':template_values}
 
     return render(request,'ocp_app/viewQueries.html',params)

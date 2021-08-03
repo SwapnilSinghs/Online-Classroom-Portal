@@ -1,10 +1,7 @@
 {% extends my_template %}
-
 {% load static %}
 {% block css %}
-div{
-    padding-top:5px;
-}
+
 #query1{
     background-color: pink;
     padding:15px;
@@ -13,24 +10,45 @@ div{
     background-color: lightgreen;
     padding:15px;
 }
-.msg{
-    padding:15px;
-}
+
 {% endblock %}
 {% block body %}
+<div class="col-md-12">
+    <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text">View Queries</h2>
+</div>
 
-<div id="query1">Asked Queies</div>
-{% for i in query1 %}
-<li>Date : {{i.date}}</li>
-<p class="msg">{{i.msg}}</p>
+                    {% for i in query1 %}
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        <div class="card-body">
+                            <div>
+                                <h6 style="float: left;" id="query1"><b>Asked Query - {{forloop.counter}}</b></h6>
+                                <h6 style="float: right;">{{i.date}}</h6>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div style="display: inline-block;">
+                                <h6>{{i.msg}}</h6>
+                                <br>
+                            </div>
 
-{% endfor %}
+                            {% for i in query2 %}
+                                <div>
+                                    <h6 style="float: left;" id="query2"><b>Solution By - {{ i.email }}</b></h6>
+                                    <h6 style="float: right;">{{i.date}}</h6>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <div style="display: inline-block;">
+                                    <h6>{{i.msg}}</h6>
+                                    <br>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    {% endfor %}
 
-<div id="query2">Solution Queries</div>
-{% for i in query2 %}
-<li>Date : {{i.date}}</li>
-<li>By : {{i.email}}</li>
-<p class="msg">{{i.msg}}</p>
-{% endfor %}
 
 {% endblock %}
