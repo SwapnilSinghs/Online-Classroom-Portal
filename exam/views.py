@@ -442,7 +442,7 @@ def test_proc(request):
             print(x)
             count = 2
             subject = 'Candidature Cancellation'
-            message = f'Dear {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}You ave been indulge in suspicious activity. No Faces  have been Detected. Your Candidature is Cancelled.{n1}{n1} Wish You all the very Best. {n1} Thankyou!!.'
+            message = f'Dear {firstname} {lastname}, {n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. Your face was not detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerly request you not to get involved in such activities of violating rules during examination. {n1} Thankyou!!.'
             send_mail(subject, message, email_from, recipient_list)
             return JsonResponse({'status': 0, 'count': count})
             return JsonResponse({'status': 0, 'count': count})
@@ -465,14 +465,14 @@ def test_proc(request):
                 else:
                     count = 1
                     subject = 'Candidature Cancellation'
-                    message = f'Dear {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}You ave been indulge in suspicious activity. Unknown Faces have been Detected. Your Candidature is Cancelled.{n1}{n1} Wish You all the very Best. {n1} Thankyou!!.'
+                    message = f'Dear {firstname} {lastname}, {n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. An unkown face was detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerly request you not to get involved in such activities of violating rules during examination. {n1} Thankyou!!.'
                     send_mail(subject, message, email_from, recipient_list)
                     print(count)
                     return JsonResponse({'status': 1, 'count': count})
             else:
                 count = 2
                 subject = 'Candidature Cancellation'
-                message = f'Dear {firstname} {lastname}, {n1}{n1}Welcome to the Online Classroom Portal.{n1}{n1}You ave been indulge in suspicious activity. Unknown Faces have been Detected. Your Candidature is Cancelled.{n}{n} Wish You all the very Best. {n} Thankyou!!.'
+                message = f'Dear {firstname} {lastname}, {n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. Your face was not detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerly request you not to get involved in such activities of violating rules during examination. {n1} Thankyou!!.'
                 send_mail(subject, message, email_from, recipient_list)
                 return JsonResponse({'status': 0, 'count': count})
         x = x+25
