@@ -412,6 +412,7 @@ def test_proc(request):
 
     firstname=request.user.first_name
     lastname=request.user.last_name
+    username=request.user.username
     email = request.user.email
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email, 'admin123@admin.com']
@@ -442,7 +443,7 @@ def test_proc(request):
             print(x)
             count = 2
             subject = 'Candidature Cancellation'
-            message = f'Dear {firstname} {lastname}, {n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. Your face was not detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerly request you not to get involved in such activities of violating rules during examination. {n1} Thankyou!!.'
+            message = f'Dear {firstname} {lastname},{n1}{n1}Username - {username}{n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. Your face was not detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1}We sincerely request you not to get involved in such activities of violating rules during examination.{n1}{n1}Warm regards,{n1}Online Classroom Portal(OCP)'
             send_mail(subject, message, email_from, recipient_list)
             return JsonResponse({'status': 0, 'count': count})
             return JsonResponse({'status': 0, 'count': count})
@@ -465,14 +466,14 @@ def test_proc(request):
                 else:
                     count = 1
                     subject = 'Candidature Cancellation'
-                    message = f'Dear {firstname} {lastname}, {n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. An unkown face was detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerly request you not to get involved in such activities of violating rules during examination. {n1} Thankyou!!.'
+                    message = f'Dear {firstname} {lastname},{n1}{n1}Username - {username}{n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. An unkown face was detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerely request you not to get involved in such activities of violating rules during examination.{n1}{n1}Warm regards,{n1}Online Classroom Portal(OCP)'
                     send_mail(subject, message, email_from, recipient_list)
                     print(count)
                     return JsonResponse({'status': 1, 'count': count})
             else:
                 count = 2
                 subject = 'Candidature Cancellation'
-                message = f'Dear {firstname} {lastname}, {n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. Your face was not detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerly request you not to get involved in such activities of violating rules during examination. {n1} Thankyou!!.'
+                message = f'Dear {firstname} {lastname},{n1}{n1}Username - {username}{n1}{n1}This mail is to inform you that you have violated the academic integrity rule.{n1}{n1}You have been indulged in suspicious activity. Your face was not detected by the human proctor as well as by the AI monitoring system of Online Classroom Portal. Your Candidature stands cancelled for this respective exam.{n1}{n1} We sincerely request you not to get involved in such activities of violating rules during examination.{n1}{n1}Warm regards,{n1}Online Classroom Portal(OCP)'
                 send_mail(subject, message, email_from, recipient_list)
                 return JsonResponse({'status': 0, 'count': count})
         x = x+25
